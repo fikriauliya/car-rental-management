@@ -2,6 +2,7 @@ package jp.co.worksap.roster.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -12,7 +13,10 @@ import org.hibernate.validator.constraints.Email;
 @XmlRootElement
 @Entity
 @Table(name = "S_USERS")
-@NamedQuery(name="findAllUsers", query = "SELECT u from User u ORDER BY u.id")
+@NamedQueries({
+	@NamedQuery(name="findAllUsers", query = "SELECT u from User u ORDER BY u.id"),
+	@NamedQuery(name="countAllUsers", query = "SELECT COUNT(u) from User u")
+})
 public class User {
 	@Id
 	private String id;

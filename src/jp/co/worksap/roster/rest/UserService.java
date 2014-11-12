@@ -9,28 +9,29 @@ import javax.ejb.Stateless;
 import javax.validation.ConstraintViolation;
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
-import javax.xml.bind.JAXB;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.sun.jersey.json.impl.provider.entity.JSONArrayProvider;
 
 import jp.co.worksap.roster.ejb.UserEJB;
 import jp.co.worksap.roster.entity.User;
+import jp.co.worksap.roster.rest.modelview.UsersInfo;
+
+import com.google.gson.Gson;
 
 @Path("/users")
 @Stateless
 public class UserService {
+	private final int SIZE = 10;
+
 	@EJB
 	private UserEJB userEJB;
 
@@ -39,9 +40,15 @@ public class UserService {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<User> index() {
-		List<User> users = userEJB.findAllUsers();
-		return users;
+	public UsersInfo index(@DefaultValue("0") @QueryParam("page") int page) {
+		List<User> users = userEJB.findAllUsers(page, SIZE);
+		long totalUsers = userEJB.countAllUsers();
+
+		UsersInfo res = new UsersInfo();
+		res.setUsers(users);
+		res.setCurrentPage(page);
+		res.setTotalPage(totalUsers / SIZE + 1);
+		return res;
 	}
 
 	@POST

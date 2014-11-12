@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Set;
 
 import javax.ejb.Stateless;
-import javax.ejb.TransactionRolledbackLocalException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -19,9 +18,16 @@ public class UserEJB {
 	@PersistenceContext(unitName="RosterManagement")
 	private EntityManager em;
 
-	public List<User> findAllUsers() {
-		TypedQuery<User> q = em.createNamedQuery("findAllUsers", User.class);
+	public List<User> findAllUsers(int page, int size) {
+		TypedQuery<User> q = em.createNamedQuery("findAllUsers", User.class)
+				.setFirstResult(page * size)
+				.setMaxResults(size);
 		return q.getResultList();
+	}
+
+	public long countAllUsers() {
+		TypedQuery<Long> q = em.createNamedQuery("countAllUsers", Long.class);
+		return q.getSingleResult();
 	}
 
 	public Set<ConstraintViolation<?>> createUser(User user) {

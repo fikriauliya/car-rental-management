@@ -15,8 +15,8 @@ public class UserController {
 	@EJB
 	private UserEJB userEJB;
 
-	public List<User> getUsers() {
-		List<User> users = userEJB.findAllUsers();
+	public List<User> getUsers(int page, int size) {
+		List<User> users = userEJB.findAllUsers(page, size);
 		return users;
 	}
 
