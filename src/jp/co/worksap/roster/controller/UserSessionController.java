@@ -15,7 +15,6 @@ public class UserSessionController implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	public String logout() {
-		System.out.println("Log out");
 		FacesContext context = FacesContext.getCurrentInstance();
 		HttpServletRequest request = (HttpServletRequest) context
 				.getExternalContext().getRequest();

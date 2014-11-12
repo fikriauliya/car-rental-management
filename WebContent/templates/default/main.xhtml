@@ -13,10 +13,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title><h:outputText value="Roster Management" /></title>
+  <script>
+    var basePath = '#{request.contextPath}';
+  </script>
 
   <h:outputScript library="jquery" name="js/jquery-1.11.1.min.js" />
   <h:outputStylesheet library="bootstrap" name="css/bootstrap.css"  />
   <h:outputScript library="bootstrap" name="js/bootstrap.js" />
+  <h:outputScript library="angularjs" name="angular.min.js" />
+  <h:outputScript library="angularjs" name="angular-resource.min.js" />
+  <h:outputScript name="js/services/services.js" />
+  <h:outputScript name="js/apps.js" />
   <h:outputStylesheet name="css/styles.css"  />
 
   <ui:insert name="header" />
