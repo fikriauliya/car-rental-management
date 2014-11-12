@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/templates/default/main.xhtml">
+  <ui:define name="content">
+    <h4>Please log in:</h4>
+    <hr/>
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="alert alert-danger" role="alert">Your username/password is incorrect</div>
+      </div>
+    </div>
+    <div class="row">
+      <form method="post" name="loginform" action="j_security_check" role="form"
+        class="form-horizontal">
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Username:</label>
+          <div class="col-sm-4">
+            <h:inputText id="j_username" autocomplete="off" size="20" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">Password:</label>
+          <div class="col-sm-4">
+            <h:inputSecret id="j_password" autocomplete="off" size="20" class="form-control" />
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <h:commandButton type="submit" value="Submit" class="btn btn-primary"/>&nbsp;
+            <h:commandButton type="reset" value="Reset" class="btn btn-warning"/>
+          </div>
+        </div>
+      </form>
+    </div>
+  </ui:define>
+</ui:composition>
+</html>

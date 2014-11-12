@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core">
+
+<f:loadBundle basename="resources.application" var="msg"/>
+
+<h:head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title><h:outputText value="Roster Management" /></title>
+
+  <h:outputScript library="jquery" name="js/jquery-1.11.1.min.js" />
+  <h:outputStylesheet library="bootstrap" name="css/bootstrap.css"  />
+  <h:outputScript library="bootstrap" name="js/bootstrap.js" />
+  <h:outputStylesheet name="css/styles.css"  />
+
+  <ui:insert name="header" />
+</h:head>
+
+<h:body>
+  <nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <h:link class="navbar-brand" outcome="/index.jsf" value="Roster Management"/>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href=""><h:outputText value="#{userSessionController.userName}" rendered="#{userSessionController.userLoggedIn}" /></a></li>
+          <li>
+            <h:form rendered="#{userSessionController.userLoggedIn}">
+              <h:commandButton value="Logout" id="logout" action="#{userSessionController.logout}" class="btn btn-danger btn-sm" style="margin-top:10px"/>
+            </h:form>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <ui:insert name="content" />
+  </div> <!-- /container -->
+</h:body>
+</html>

@@ -1,0 +1,12 @@
+td {
+  width: 40px;
+  height: 40px;
+}
+button !important {
+  padding: 0px;
+  height: 90%;
+}
+
+button {
+  width: 90%;
+}
