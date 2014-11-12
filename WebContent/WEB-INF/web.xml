@@ -5,7 +5,7 @@
 	id="WebApp_ID" version="3.0">
 	<display-name>RosterManagement</display-name>
 	<welcome-file-list>
-		<welcome-file>index.jsf</welcome-file>
+		<welcome-file>admin/index.jsf</welcome-file>
 	</welcome-file-list>
 	<servlet>
 		<description>JAX-RS Tools Generated - Do not modify</description>

@@ -1,5 +1,6 @@
 package jp.co.worksap.roster.controller;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import javax.ejb.Stateless;
@@ -24,7 +25,12 @@ public class UserSessionController implements Serializable {
 			context.addMessage(null, new FacesMessage("Logout failed."));
 		}
 
-		return "/index.jsf";
+		try {
+			context.getExternalContext().redirect("/" + request.getContextPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "";
 	}
 
 	public boolean isUserLoggedIn() {
