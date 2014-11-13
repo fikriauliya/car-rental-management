@@ -5,10 +5,10 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @XmlRootElement
 @Entity
@@ -21,12 +21,12 @@ public class User {
 	@Id
 	private String id;
 
-	@NotNull
+	@NotEmpty
 	private String firstName;
-	@NotNull
+	@NotEmpty
 	private String lastName;
 
-	@Email @NotNull
+	@Email @NotEmpty
 	private String email;
 
 	public String getId() {
