@@ -1,9 +1,10 @@
 myApp = angular.module('myApp');
-myApp.controller('IndexUserController', ['$scope', 'Users',
-  function($scope, Users) {
+myApp.controller('IndexUserController', ['$scope', 'Users', 'Organizations',
+  function($scope, Users, Organizations) {
 	$scope.newUser = new Users();
 	$scope.currentPage = 0;
 	$scope.totalPage = 1;
+	$scope.units = [];
 
 	$scope.createUser = function() {
 		$scope.newUser.$save({},
@@ -22,12 +23,7 @@ myApp.controller('IndexUserController', ['$scope', 'Users',
 
 	$scope.refreshUsers = function(page) {
 		Users.query({page: page}, function(data, header) {
-			if( Object.prototype.toString.call( data.users ) === '[object Array]' ) {
-				$scope.users = data.users;
-			} else {
-				// stupid Jersey fix
-				$scope.users = [data.users];
-			}
+			$scope.users = data.users;
 			$scope.currentPage = parseInt(data.currentPage);
 			$scope.totalPage = parseInt(data.totalPage);
 		});
@@ -41,6 +37,20 @@ myApp.controller('IndexUserController', ['$scope', 'Users',
 		$scope.refreshUsers($scope.currentPage - 1);
 	};
 
+	$scope.refreshUnits = function() {
+		Organizations.query({}, function(data, header) {
+			$scope.units = [data];
+			$scope.selectedUnit = data;
+			console.log($scope.selectedUnit);
+		});
+	};
+
+	$scope.changeUnit = function(branch) {
+		$scope.selectedUnit = branch;
+		console.log(branch);
+	}
+
 	$scope.refreshUsers(0);
+	$scope.refreshUnits();
   }]
 );

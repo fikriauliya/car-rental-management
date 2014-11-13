@@ -7,3 +7,13 @@ userServices.factory("Users",
 	  });
    }
   ]);
+
+organizationServices = angular.module('organizationServices', ['ngResource']);
+organizationServices.factory("Organizations",
+  ["$resource",
+   function($resource) {
+	  return $resource(basePath + "/api/organizations", {}, {
+		  'query': {method:'GET', isArray:false}
+	  });
+   }
+  ]);
