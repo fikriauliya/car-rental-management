@@ -21,6 +21,7 @@ import jp.co.worksap.roster.ejb.OrganizationEJB;
 import jp.co.worksap.roster.entity.OrganizationUnit;
 import jp.co.worksap.roster.entity.OrganizationUnitTree;
 import jp.co.worksap.roster.rest.modelview.OrganizationHierarchy;
+import jp.co.worksap.roster.rest.modelview.OrganizationUnitWithParent;
 
 @Path("/organizations")
 @Stateless
@@ -29,11 +30,10 @@ public class OrganizationService {
 	private OrganizationEJB organizationEJB;
 
 	@POST
-	public void createOrganization() {
-		OrganizationUnit newOrg = new OrganizationUnit();
-		newOrg.setName("Singapore Office");
-		newOrg.setDescription("WORKS Singapore 3, One North");
-		organizationEJB.createOrganization(newOrg, 351);
+	public void createOrganization(OrganizationUnitWithParent newOrg) {
+		System.out.println(((OrganizationUnit)newOrg).toString());
+		System.out.println(newOrg.getParentId());
+		organizationEJB.createOrganization(newOrg.toOrganizationUnit(), newOrg.getParentId());
 	}
 
 	@GET
@@ -47,8 +47,6 @@ public class OrganizationService {
 		Set<OrganizationUnit> notRoots = new HashSet<OrganizationUnit>();
 
 		for (OrganizationUnitTree t : tree) {
-			System.out.println("Item: " + t);
-
 			rootCandidates.add(t.getAncestor());
 			notRoots.add(t.getDescendant());
 
@@ -84,8 +82,6 @@ public class OrganizationService {
 			}
 		}
 
-		System.out.println(StringUtils.join(rootCandidates));
-		System.out.println(StringUtils.join(notRoots));
 		rootCandidates.removeAll(notRoots);
 		if (rootCandidates.isEmpty() || rootCandidates.size() != 1) {
 			throw new RuntimeException("Broken tree");

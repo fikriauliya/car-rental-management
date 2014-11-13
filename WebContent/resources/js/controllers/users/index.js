@@ -1,18 +1,27 @@
 myApp = angular.module('myApp');
-myApp.controller('IndexUserController', ['$scope', 'Users', 'Organizations',
-  function($scope, Users, Organizations) {
+myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organizations',
+  function($scope, $timeout, Users, Organizations) {
 	$scope.newUser = new Users();
+	$scope.newUnit = new Organizations();
 	$scope.currentPage = 0;
 	$scope.totalPage = 1;
 	$scope.units = [];
+	$scope.unitsControl = {};
+
+	$scope.displayNewUserDialog = function() {
+		$scope.info = "";
+		$scope.error = "";
+		$('.new-employee-modal').modal('show');
+	}
 
 	$scope.createUser = function() {
 		$scope.newUser.$save({},
 			function(data, header) {
+				$scope.errors = "";
+				$scope.info = "User " + $scope.newUser.id + " has been created";
+
 				$scope.refreshUsers();
 				$scope.newUser = new Users();
-				$scope.errors = "";
-				$scope.info = "User created";
 			},
 			function(data, header) {
 				$scope.errors = data.data;
@@ -41,6 +50,12 @@ myApp.controller('IndexUserController', ['$scope', 'Users', 'Organizations',
 		Organizations.query({}, function(data, header) {
 			$scope.units = [data];
 			$scope.selectedUnit = data;
+
+			console.log($scope.unitsControl);
+			$timeout(function() {
+				$scope.unitsControl.expand_all();
+				$scope.unitsControl.select_first_branch();
+			}, 500);
 			console.log($scope.selectedUnit);
 		});
 	};
@@ -48,7 +63,30 @@ myApp.controller('IndexUserController', ['$scope', 'Users', 'Organizations',
 	$scope.changeUnit = function(branch) {
 		$scope.selectedUnit = branch;
 		console.log(branch);
+	};
+
+	$scope.displayNewUnitDialog = function() {
+		$scope.info = "";
+		$scope.error = "";
+		$('.new-unit-modal').modal('show');
 	}
+
+	$scope.createUnit = function() {
+		$scope.newUnit.parentId = $scope.selectedUnit.data.id;
+		$scope.newUnit.$save({},
+			function(data, header) {
+				$scope.errors = "";
+				$scope.info = "Unit " + $scope.newUnit.name + " has been created";
+
+				$scope.refreshUnits();
+				$scope.newUnit = new Organizations();
+			},
+			function(data, header) {
+				$scope.errors = data.data;
+				$scope.info = "";
+			}
+	   );
+	};
 
 	$scope.refreshUsers(0);
 	$scope.refreshUnits();

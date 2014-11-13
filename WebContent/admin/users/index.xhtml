@@ -20,44 +20,60 @@
       </div>
       <div class="row" ng-app="myApp">
         <div class="col col-md-2">
-          <abn-tree tree-data="units" on-select="changeUnit(branch)"></abn-tree>
+          <abn-tree tree-data="units" on-select="changeUnit(branch)" expand-level="2" tree-control="unitsControl"></abn-tree>
         </div>
         <div class="col col-md-10">
-          <h4>{{selectedUnit.data.name}}</h4>
-          {{selectedUnit.data.description}}
-
-          <hr/>
-          <div style="margin-bottom:20px">
-            <button class="btn btn-xs btn-info" ng-disabled="currentPage == 0" ng-click="prevPage()">Prev</button>
-            {{currentPage + 1}} / {{totalPage}}
-            <button class="btn btn-xs btn-info" ng-disabled="currentPage == totalPage - 1" ng-click="nextPage()">Next</button>
-            <button class="btn btn-xs btn-primary" style="margin-left:10px" data-toggle="modal" data-target=".bs-example-modal-lg">
+          <div class="col col-md-12">
+            <h4>{{selectedUnit.data.name}}</h4>
+            {{selectedUnit.data.description}}
+            <br/><br/>
+            <button class="btn btn-xs btn-primary" style="margin-left:10px" data-toggle="modal" ng-click="displayNewUnitDialog();">
               <span class="glyphicon glyphicon-plus"/>
-              New employee
+              Add sub unit
+            </button>
+            <button class="btn btn-xs btn-danger" style="margin-left:5px">
+              <span class="glyphicon glyphicon-trash"/>
+              Delete this unit
+            </button>
+            <button class="btn btn-xs btn-warning" style="margin-left:5px">
+              <span class="glyphicon glyphicon-edit"/>
+              Edit this unit
             </button>
           </div>
-          <table class="table table-striped table-condensed">
-            <thead>
-              <tr>
-                <th>Id</th>
-                <th>First name</th>
-                <th>Last name</th>
-                <th>Email</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="user in users">
-                <td>{{user.id}}</td>
-                <td>{{user.firstName}}</td>
-                <td>{{user.lastName}}</td>
-                <td>{{user.email}}</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="col col-md-12">
+            <hr/>
+            <div style="margin-bottom:20px">
+              <button class="btn btn-xs btn-info" ng-disabled="currentPage == 0" ng-click="prevPage()">Prev</button>
+              {{currentPage + 1}} / {{totalPage}}
+              <button class="btn btn-xs btn-info" ng-disabled="currentPage == totalPage - 1" ng-click="nextPage()">Next</button>
+              <button class="btn btn-xs btn-primary" style="margin-left:10px" data-toggle="modal" ng-click="displayNewUserDialog()">
+                <span class="glyphicon glyphicon-plus"/>
+                Add employee
+              </button>
+            </div>
+            <table class="table table-striped table-condensed">
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>First name</th>
+                  <th>Last name</th>
+                  <th>Email</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="user in users">
+                  <td>{{user.id}}</td>
+                  <td>{{user.firstName}}</td>
+                  <td>{{user.lastName}}</td>
+                  <td>{{user.email}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
-      <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal fade new-employee-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
@@ -101,6 +117,46 @@
                 <div class="form-group">
                   <div class="col-sm-offset-3 col-sm-4">
                     <button class="btn btn-primary btn-sm" ng-click="createUser()">Create</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade new-unit-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <h4 class="modal-title" id="myModalLabel">New Unit</h4>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-danger" ng-if="errors">
+                <ul>
+                  <li ng-repeat="error in errors">{{error}}</li>
+                </ul>
+              </div>
+              <div class="alert alert-info" ng-if="info">
+                {{info}}
+              </div>
+              <form class="form-horizontal">
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">Name</label>
+                  <div class="col-sm-9">
+                    <input class="form-control" id="id" ng-model="newUnit.name"/>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-3 control-label">Description</label>
+                  <div class="col-sm-9">
+                    <input class="form-control" id="firstName" ng-model="newUnit.description"/>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-offset-3 col-sm-4">
+                    <button class="btn btn-primary btn-sm" ng-click="createUnit()">Create</button>
                   </div>
                 </div>
               </form>
