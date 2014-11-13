@@ -24,14 +24,16 @@
         </div>
         <div class="col col-md-10">
           <div class="col col-md-12">
-            <h4>{{selectedUnit.data.name}}</h4>
-            {{selectedUnit.data.description}}
-            <br/><br/>
+            <div ng-if="selectedUnit">
+              <h4>{{selectedUnit.data.name}}</h4>
+              {{selectedUnit.data.description}}
+              <br/><br/>
+            </div>
             <button class="btn btn-xs btn-primary" style="margin-left:10px" data-toggle="modal" ng-click="displayNewUnitDialog();">
               <span class="glyphicon glyphicon-plus"/>
               Add sub unit
             </button>
-            <button class="btn btn-xs btn-danger" style="margin-left:5px">
+            <button class="btn btn-xs btn-danger" style="margin-left:5px" ng-click="deleteUnit()">
               <span class="glyphicon glyphicon-trash"/>
               Delete this unit
             </button>

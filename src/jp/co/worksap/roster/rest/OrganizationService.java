@@ -2,20 +2,21 @@ package jp.co.worksap.roster.rest;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-
-import org.apache.commons.lang3.StringUtils;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import jp.co.worksap.roster.ejb.OrganizationEJB;
 import jp.co.worksap.roster.entity.OrganizationUnit;
@@ -31,14 +32,17 @@ public class OrganizationService {
 
 	@POST
 	public void createOrganization(OrganizationUnitWithParent newOrg) {
-		System.out.println(((OrganizationUnit)newOrg).toString());
-		System.out.println(newOrg.getParentId());
 		organizationEJB.createOrganization(newOrg.toOrganizationUnit(), newOrg.getParentId());
+	}
+
+	@DELETE
+	public void deleteOrganization(@QueryParam("id") int id) {
+		organizationEJB.deleteOrganization(id);
 	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public OrganizationHierarchy getOrganizationHierarchy() {
+	public Object getOrganizationHierarchy() {
 		List<OrganizationUnitTree> tree = organizationEJB.getOrganizationStucture();
 
 		Map<OrganizationUnit, OrganizationHierarchy> m = new HashMap<OrganizationUnit, OrganizationHierarchy>();
@@ -47,43 +51,55 @@ public class OrganizationService {
 		Set<OrganizationUnit> notRoots = new HashSet<OrganizationUnit>();
 
 		for (OrganizationUnitTree t : tree) {
-			rootCandidates.add(t.getAncestor());
-			notRoots.add(t.getDescendant());
-
-			if (!m.containsKey(t.getAncestor())) {
-				OrganizationHierarchy parent = new OrganizationHierarchy();
-				parent.setData(t.getAncestor());
-
-				OrganizationHierarchy child = null;
-				if (m.containsKey(t.getDescendant())) {
-					child = m.get(t.getDescendant());
-				} else {
-					child = new OrganizationHierarchy();
-					child.setData(t.getDescendant());
-
-					m.put(t.getDescendant(), child);
+			if (t.getLength() == 0) {
+				rootCandidates.add(t.getAncestor());
+				if (!m.containsKey(t.getAncestor())) {
+					OrganizationHierarchy parent = new OrganizationHierarchy();
+					parent.setData(t.getAncestor());
+					m.put(t.getAncestor(), parent);
 				}
+			}
 
-				parent.getChildren().add(child);
-				m.put(t.getAncestor(), parent);
-			} else {
-				OrganizationHierarchy newChild = null;
+			if (t.getLength() > 0) {
+				notRoots.add(t.getDescendant());
+				if (!m.containsKey(t.getAncestor())) {
+					OrganizationHierarchy parent = new OrganizationHierarchy();
+					parent.setData(t.getAncestor());
 
-				if (m.containsKey(t.getDescendant())) {
-					newChild = m.get(t.getDescendant());
+					OrganizationHierarchy child = null;
+					if (m.containsKey(t.getDescendant())) {
+						child = m.get(t.getDescendant());
+					} else {
+						child = new OrganizationHierarchy();
+						child.setData(t.getDescendant());
 
+						m.put(t.getDescendant(), child);
+					}
+
+					parent.getChildren().add(child);
+					m.put(t.getAncestor(), parent);
 				} else {
-					newChild = new OrganizationHierarchy();
-					newChild.setData(t.getDescendant());
+					OrganizationHierarchy newChild = null;
 
-					m.put(t.getDescendant(), newChild);
+					if (m.containsKey(t.getDescendant())) {
+						newChild = m.get(t.getDescendant());
+
+					} else {
+						newChild = new OrganizationHierarchy();
+						newChild.setData(t.getDescendant());
+
+						m.put(t.getDescendant(), newChild);
+					}
+					m.get(t.getAncestor()).getChildren().add(newChild);
 				}
-				m.get(t.getAncestor()).getChildren().add(newChild);
 			}
 		}
 
 		rootCandidates.removeAll(notRoots);
-		if (rootCandidates.isEmpty() || rootCandidates.size() != 1) {
+		if (rootCandidates.isEmpty()) {
+			return Response.status(Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON).build();
+		}
+		if (rootCandidates.size() != 1) {
 			throw new RuntimeException("Broken tree");
 		}
 

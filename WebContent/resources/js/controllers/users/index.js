@@ -51,28 +51,32 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 			$scope.units = [data];
 			$scope.selectedUnit = data;
 
-			console.log($scope.unitsControl);
 			$timeout(function() {
 				$scope.unitsControl.expand_all();
 				$scope.unitsControl.select_first_branch();
 			}, 500);
-			console.log($scope.selectedUnit);
+		}, function(data, header) {
+			$scope.units = [];
+			$scope.selectedUnit = null;
 		});
 	};
 
 	$scope.changeUnit = function(branch) {
 		$scope.selectedUnit = branch;
-		console.log(branch);
 	};
 
 	$scope.displayNewUnitDialog = function() {
 		$scope.info = "";
 		$scope.error = "";
 		$('.new-unit-modal').modal('show');
-	}
+	};
 
 	$scope.createUnit = function() {
-		$scope.newUnit.parentId = $scope.selectedUnit.data.id;
+		if ($scope.selectedUnit)
+			$scope.newUnit.parentId = $scope.selectedUnit.data.id;
+		else
+			$scope.newUnit.parentId = -1;
+
 		$scope.newUnit.$save({},
 			function(data, header) {
 				$scope.errors = "";
@@ -80,6 +84,8 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 
 				$scope.refreshUnits();
 				$scope.newUnit = new Organizations();
+
+				$('.new-unit-modal').modal('hide');
 			},
 			function(data, header) {
 				$scope.errors = data.data;
@@ -87,6 +93,16 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 			}
 	   );
 	};
+
+	$scope.deleteUnit = function() {
+		if ($scope.selectedUnit) {
+			Organizations.remove({id: $scope.selectedUnit.data.id},
+				function(data, header) {
+					$scope.refreshUnits();
+				}
+			);
+		}
+	}
 
 	$scope.refreshUsers(0);
 	$scope.refreshUnits();

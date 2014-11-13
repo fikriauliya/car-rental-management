@@ -29,6 +29,9 @@ public class User {
 	@Email @NotEmpty
 	private String email;
 
+//	@NotEmpty
+//	private OrganizationUnit unit;
+
 	public String getId() {
 		return id;
 	}

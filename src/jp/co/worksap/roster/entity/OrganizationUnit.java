@@ -3,6 +3,8 @@ package jp.co.worksap.roster.entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -11,6 +13,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 @XmlRootElement
 @Entity
 @Table(name="S_ORGANIZATION_UNIT")
+@NamedQueries({
+	@NamedQuery(name="findOrganizationUnit", query = "SELECT u from OrganizationUnit u where u.id = :id"),
+})
 public class OrganizationUnit {
 	@Id @GeneratedValue
 	private int id;

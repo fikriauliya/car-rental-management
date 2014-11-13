@@ -24,7 +24,7 @@ public class OrganizationEJB {
 		tree.setLength(0);
 		em.persist(tree);
 
-		TypedQuery<OrganizationUnitTree> q = em.createNamedQuery("findAncestors", OrganizationUnitTree.class);
+		TypedQuery<OrganizationUnitTree> q = em.createNamedQuery("findOrganiaztionUnitTreeAncestors", OrganizationUnitTree.class);
 		q.setParameter("descendant_id", parentId);
 		List<OrganizationUnitTree> anchestors = q.getResultList();
 		for (OrganizationUnitTree anchestor : anchestors) {
@@ -37,8 +37,19 @@ public class OrganizationEJB {
 	}
 
 	public List<OrganizationUnitTree> getOrganizationStucture() {
-		TypedQuery<OrganizationUnitTree> q = em.createNamedQuery("findAll", OrganizationUnitTree.class);
+		TypedQuery<OrganizationUnitTree> q = em.createNamedQuery("findAllOrganizationUnitTree", OrganizationUnitTree.class);
 		List<OrganizationUnitTree> res = q.getResultList();
 		return res;
+	}
+
+	public void deleteOrganization(int id) {
+		TypedQuery<OrganizationUnitTree> q2 = em.createNamedQuery("deleteOrganizationUnitTree", OrganizationUnitTree.class);
+		q2.setParameter("id", id);
+		q2.executeUpdate();
+
+		TypedQuery<OrganizationUnit> q = em.createNamedQuery("findOrganizationUnit", OrganizationUnit.class);
+		q.setParameter("id", id);
+		OrganizationUnit o = q.getSingleResult();
+		em.remove(o);
 	}
 }

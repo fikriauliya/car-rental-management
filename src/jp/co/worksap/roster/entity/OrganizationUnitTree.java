@@ -13,8 +13,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "S_ORGANIZATION_UNIT_TREE")
 
 @NamedQueries({
-	@NamedQuery(name="findAncestors", query = "SELECT u from OrganizationUnitTree u where u.descendant.id = :descendant_id"),
-	@NamedQuery(name="findAll", query = "SELECT u from OrganizationUnitTree u where u.length = 1")
+	@NamedQuery(name="findOrganiaztionUnitTreeAncestors", query = "SELECT u from OrganizationUnitTree u where u.descendant.id = :descendant_id"),
+	@NamedQuery(name="findAllOrganizationUnitTree", query = "SELECT u from OrganizationUnitTree u where u.length = 1 or u.length = 0"),
+	@NamedQuery(name="deleteOrganizationUnitTree", query = "DELETE from OrganizationUnitTree u where u.descendant.id IN (SELECT w.descendant.id from OrganizationUnitTree w where w.ancestor.id = :id)")
 })
 public class OrganizationUnitTree {
 	@Id @GeneratedValue
