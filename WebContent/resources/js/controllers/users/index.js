@@ -7,6 +7,7 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	$scope.totalPage = 1;
 	$scope.units = [];
 	$scope.unitsControl = {};
+	$scope.inEditMode = false;
 
 	$scope.displayNewUserDialog = function() {
 		$scope.info = "";
@@ -102,7 +103,20 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 				}
 			);
 		}
-	}
+	};
+
+	$scope.editUnit = function(status) {
+		$scope.inEditMode = status;
+	};
+
+	$scope.updateUnit = function() {
+		Organizations.update({}, $scope.selectedUnit.data,
+			function(data, header) {
+				$scope.selectedUnit.label = $scope.selectedUnit.data.name;
+				$scope.editUnit(false);
+			}
+		);
+	};
 
 	$scope.refreshUsers(0);
 	$scope.refreshUnits();

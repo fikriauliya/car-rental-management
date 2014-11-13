@@ -52,4 +52,14 @@ public class OrganizationEJB {
 		OrganizationUnit o = q.getSingleResult();
 		em.remove(o);
 	}
+
+	public void updateOrganization(OrganizationUnit org) {
+		TypedQuery<OrganizationUnit> q = em.createNamedQuery("findOrganizationUnit", OrganizationUnit.class);
+		q.setParameter("id", org.getId());
+		OrganizationUnit o = q.getSingleResult();
+
+		o.setDescription(org.getDescription());
+		o.setName(org.getName());
+		em.persist(o);
+	}
 }

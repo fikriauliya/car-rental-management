@@ -13,7 +13,8 @@ organizationServices.factory("Organizations",
   ["$resource",
    function($resource) {
 	  return $resource(basePath + "/api/organizations", {}, {
-		  'query': {method:'GET', isArray:false}
+		  'query': {method:'GET', isArray:false},
+		  'update': { method:'PUT' }
 	  });
    }
   ]);
