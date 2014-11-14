@@ -31,8 +31,10 @@ public class UserEJB {
 		return q.getResultList();
 	}
 
-	public long countAllUsers() {
-		TypedQuery<Long> q = em.createNamedQuery("countAllUsers", Long.class);
+	public long countAllUsers(int unitId, boolean isAttached) {
+		TypedQuery<Long> q = em.createNamedQuery("countAllUsers", Long.class)
+				.setParameter("unitId", unitId)
+				.setParameter("isAttached", isAttached);
 		return q.getSingleResult();
 	}
 
