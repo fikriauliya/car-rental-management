@@ -50,6 +50,11 @@ public class UserEJB {
 		o.setLastName(user.getLastName());
 		o.setAttached(user.isAttached());
 
+		TypedQuery<OrganizationUnit> q2 = em.createNamedQuery("findOrganizationUnit", OrganizationUnit.class);
+		q2.setParameter("id", user.getUnit().getId());
+		OrganizationUnit unit = q2.getSingleResult();
+		o.setUnit(unit);
+
 		em.persist(o);
 	}
 }

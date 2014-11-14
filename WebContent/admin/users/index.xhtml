@@ -22,8 +22,15 @@
         <div class="col col-md-2">
           <abn-tree tree-data="units" on-select="changeUnit(branch)" expand-level="2" tree-control="unitsControl"></abn-tree>
         </div>
-        <div class="col col-md-10">
-          <div class="col col-md-12">
+        <div class="col col-md-10" ng-switch="inTransferMode">
+          <div class="col col-md-12" ng-switch-when="true">
+            <div class="well">
+              <p>You are about to transfer: {{toBeTransferedUser.id}}</p>
+              <p>Select the unit to be transfered to on the left side</p>
+              <button class="btn btn-danger btn-xs" ng-click="cancelTransferUser()">Cancel transfer</button>
+            </div>
+          </div>
+          <div class="col col-md-12" ng-switch-default="true">
             <div class="alert alert-danger" ng-if="errors">
               <ul>
                 <li ng-repeat="error in errors">{{error}}</li>
@@ -83,7 +90,7 @@
               </div>
             </div>
           </div>
-          <div class="col col-md-12">
+          <div class="col col-md-12" ng-switch-default="true">
             <hr/>
             <div style="margin-bottom:20px">
               <button class="btn btn-xs btn-info" ng-disabled="currentPage == 0" ng-click="prevPage()">Prev</button>

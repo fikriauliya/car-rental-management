@@ -8,6 +8,7 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	$scope.units = [];
 	$scope.unitsControl = {};
 	$scope.inEditMode = false;
+	$scope.inTransferMode = false;
 
 	$scope.displayNewUserDialog = function() {
 		$scope.info = "";
@@ -22,7 +23,7 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 				$scope.errors = "";
 				$scope.info = "User " + $scope.newUser.id + " has been created";
 
-				$scope.refreshUsers();
+				$scope.refreshUsers(0);
 				$scope.newUser = new Users();
 			},
 			function(data, header) {
@@ -66,8 +67,27 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	};
 
 	$scope.changeUnit = function(branch) {
-		$scope.selectedUnit = branch;
-		$scope.refreshUsers(0);
+		if ($scope.inTransferMode) {
+			$scope.toBeTransferedUser.unit.id = branch.data.id;
+			Users.update({}, _.omit($scope.toBeTransferedUser, 'inEditMode'),
+				function(data, header) {
+					$scope.errors = "";
+					$scope.info = "User " + $scope.toBeTransferedUser.id + " has been transfered";
+					$scope.selectedUnit = branch;
+					$scope.refreshUsers(0);
+					$scope.inTransferMode = false;
+				},
+				function(data, header) {
+					$scope.errors = data.data;
+					$scope.selectedUnit = branch;
+					$scope.refreshUsers(0);
+					$scope.inTransferMode = false;
+				}
+			);
+		} else {
+			$scope.selectedUnit = branch;
+			$scope.refreshUsers(0);
+		}
 	};
 
 	$scope.displayNewUnitDialog = function() {
@@ -141,7 +161,7 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 			function(data, header) {
 				$scope.errors = data.data;
 				$scope.editUser(user, false);
-				$scope.refreshUsers();
+				$scope.refreshUsers(0);
 			}
 		);
 	};
@@ -153,14 +173,23 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 				function(data, header) {
 					$scope.errors = "";
 					$scope.info = "User " + user.id + " has been set to 'leaved'";
-					$scope.refreshUsers();
+					$scope.refreshUsers(0);
 				},
 				function(data, header) {
 					$scope.errors = data.data;
-					$scope.refreshUsers();
+					$scope.refreshUsers(0);
 				}
 			);
 		}
+	};
+
+	$scope.transferUser = function(user) {
+		$scope.toBeTransferedUser = user;
+		$scope.inTransferMode = true;
+	};
+
+	$scope.cancelTransferUser = function() {
+		$scope.inTransferMode = false;
 	};
 
 	$scope.refreshUnits();
