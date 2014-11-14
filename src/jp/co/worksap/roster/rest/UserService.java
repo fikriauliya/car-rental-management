@@ -43,8 +43,8 @@ public class UserService {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public UsersInfo index(@QueryParam("unitId") int unitId, @DefaultValue("0") @QueryParam("page") int page) {
-		List<User> users = userEJB.findAllUsers(unitId, page, SIZE);
+	public UsersInfo index(@QueryParam("unitId") int unitId, @QueryParam("isAttached") boolean isAttached, @DefaultValue("0") @QueryParam("page") int page) {
+		List<User> users = userEJB.findAllUsers(unitId, isAttached, page, SIZE);
 		long totalUsers = userEJB.countAllUsers();
 
 		UsersInfo res = new UsersInfo();

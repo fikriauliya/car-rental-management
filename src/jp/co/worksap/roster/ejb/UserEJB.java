@@ -22,9 +22,10 @@ public class UserEJB {
 		return q.getResultList();
 	}
 
-	public List<User> findAllUsers(int unitId, int page, int size) {
-		TypedQuery<User> q = em.createNamedQuery("findAllUsersInUnit", User.class)
+	public List<User> findAllUsers(int unitId, boolean isAttached, int page, int size) {
+		TypedQuery<User> q = em.createNamedQuery("findAllUsersInUnitByIsAttached", User.class)
 				.setParameter("unitId", unitId)
+				.setParameter("isAttached", isAttached)
 				.setFirstResult(page * size)
 				.setMaxResults(size);
 		return q.getResultList();

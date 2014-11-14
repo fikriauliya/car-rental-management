@@ -33,7 +33,7 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	};
 
 	$scope.refreshUsers = function(page) {
-		Users.query({unitId: $scope.selectedUnit.data.id, page: page}, function(data, header) {
+		Users.query({unitId: $scope.selectedUnit.data.id, isAttached: true, page: page}, function(data, header) {
 			$scope.users = data.users;
 			$scope.currentPage = parseInt(data.currentPage);
 			$scope.totalPage = parseInt(data.totalPage);
