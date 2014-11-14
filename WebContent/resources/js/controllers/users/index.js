@@ -118,6 +118,11 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 			function(data, header) {
 				$scope.selectedUnit.label = $scope.selectedUnit.data.name;
 				$scope.editUnit(false);
+			},
+			function(data, header) {
+				$scope.errors = data.data;
+				$scope.editUnit(false);
+				$scope.refreshUnits();
 			}
 		);
 	};
