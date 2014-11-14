@@ -11,7 +11,7 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 
 	$scope.displayNewUserDialog = function() {
 		$scope.info = "";
-		$scope.error = "";
+		$scope.errors = "";
 		$('.new-employee-modal').modal('show');
 	}
 
@@ -69,7 +69,7 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 
 	$scope.displayNewUnitDialog = function() {
 		$scope.info = "";
-		$scope.error = "";
+		$scope.errors = "";
 		$('.new-unit-modal').modal('show');
 	};
 
