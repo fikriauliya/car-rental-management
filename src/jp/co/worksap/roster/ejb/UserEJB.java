@@ -7,6 +7,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import jp.co.worksap.roster.entity.OrganizationUnit;
 import jp.co.worksap.roster.entity.User;
 
 @Stateless
@@ -36,5 +37,17 @@ public class UserEJB {
 
 	public void createUser(User user) {
 		em.persist(user);
+	}
+
+	public void updateUser(User user) {
+		TypedQuery<User> q = em.createNamedQuery("findUser", User.class);
+		q.setParameter("id", user.getId());
+		User o = q.getSingleResult();
+
+		o.setEmail(user.getEmail());
+		o.setFirstName(user.getFirstName());
+		o.setLastName(user.getLastName());
+
+		em.persist(o);
 	}
 }

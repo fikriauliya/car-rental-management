@@ -24,6 +24,15 @@
         </div>
         <div class="col col-md-10">
           <div class="col col-md-12">
+            <div class="alert alert-danger" ng-if="errors">
+              <ul>
+                <li ng-repeat="error in errors">{{error}}</li>
+              </ul>
+            </div>
+            <div class="alert alert-info" ng-if="info">
+              {{info}}
+            </div>
+
             <div ng-switch="inEditMode">
               <div ng-switch-when="true">
                 <form class="form-horizontal">
@@ -92,14 +101,29 @@
                   <th>First name</th>
                   <th>Last name</th>
                   <th>Email</th>
+                  <th style="width:200px"></th>
                 </tr>
               </thead>
               <tbody>
-                <tr ng-repeat="user in users">
-                  <td>{{user.id}}</td>
-                  <td>{{user.firstName}}</td>
-                  <td>{{user.lastName}}</td>
-                  <td>{{user.email}}</td>
+                <tr ng-repeat="user in users" ng-switch="user.inEditMode">
+                  <td ng-switch-when="true">{{user.id}}</td>
+                  <td ng-switch-when="true"><input ng-model="user.firstName"/></td>
+                  <td ng-switch-when="true"><input ng-model="user.lastName"/></td>
+                  <td ng-switch-when="true"><input ng-model="user.email"/></td>
+                  <td ng-switch-when="true">
+                    <button class="btn btn-primary btn-xs" ng-click="updateUser(user)">Save</button>
+                    <button class="btn btn-danger btn-xs" ng-click="editUser(user, false)">Cancel</button>
+                  </td>
+
+                  <td ng-switch-default="true">{{user.id}}</td>
+                  <td ng-switch-default="true">{{user.firstName}}</td>
+                  <td ng-switch-default="true">{{user.lastName}}</td>
+                  <td ng-switch-default="true">{{user.email}}</td>
+                  <td ng-switch-default="true">
+                    <button class="btn btn-warning btn-xs" ng-click="editUser(user, true)">Edit</button>
+                    <button class="btn btn-info btn-xs" ng-click="transferUser(user)">Transfer</button>
+                    <button class="btn btn-danger btn-xs" ng-click="leaveUser(user)">Leave</button>
+                  </td>
                 </tr>
               </tbody>
             </table>

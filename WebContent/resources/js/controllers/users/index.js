@@ -122,6 +122,25 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 		);
 	};
 
+	$scope.editUser = function(user, status) {
+		user.inEditMode = status;
+	};
+
+	$scope.updateUser = function(user) {
+		Users.update({}, _.omit(user, 'inEditMode'),
+			function(data, header) {
+				$scope.errors = "";
+				$scope.info = "User " + user.id + " updated";
+				$scope.editUser(user, false);
+			},
+			function(data, header) {
+				$scope.errors = data.data;
+				$scope.editUser(user, false);
+				$scope.refreshUsers();
+			}
+		);
+	};
+
 	$scope.refreshUnits();
   }]
 );
