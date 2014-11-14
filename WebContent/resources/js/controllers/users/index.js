@@ -16,6 +16,7 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	}
 
 	$scope.createUser = function() {
+		$scope.newUser.unitId = $scope.selectedUnit.data.id;
 		$scope.newUser.$save({},
 			function(data, header) {
 				$scope.errors = "";

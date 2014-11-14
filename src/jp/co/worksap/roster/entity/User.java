@@ -5,6 +5,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.validator.constraints.Email;
@@ -18,7 +19,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 	@NamedQuery(name="countAllUsers", query = "SELECT COUNT(u) from User u")
 })
 public class User {
-	@Id
+	@Id @NotEmpty
 	private String id;
 
 	@NotEmpty
@@ -29,8 +30,13 @@ public class User {
 	@Email @NotEmpty
 	private String email;
 
-//	@NotEmpty
-//	private OrganizationUnit unit;
+	@NotNull
+	private OrganizationUnit unit;
+
+	private boolean isAttached;
+
+	@NotEmpty
+	private String password;
 
 	public String getId() {
 		return id;
@@ -62,5 +68,29 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public OrganizationUnit getUnit() {
+		return unit;
+	}
+
+	public void setUnit(OrganizationUnit unit) {
+		this.unit = unit;
+	}
+
+	public boolean isAttached() {
+		return isAttached;
+	}
+
+	public void setAttached(boolean isAttached) {
+		this.isAttached = isAttached;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }

@@ -7,7 +7,6 @@ import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.validation.ConstraintViolation;
-import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -15,15 +14,17 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import javax.ws.rs.core.UriInfo;
 
+import jp.co.worksap.roster.ejb.OrganizationEJB;
 import jp.co.worksap.roster.ejb.UserEJB;
 import jp.co.worksap.roster.entity.User;
+import jp.co.worksap.roster.rest.modelview.UserWithUnit;
 import jp.co.worksap.roster.rest.modelview.UsersInfo;
+
+import org.apache.commons.codec.digest.DigestUtils;
 
 import com.google.gson.Gson;
 
@@ -35,8 +36,8 @@ public class UserService {
 	@EJB
 	private UserEJB userEJB;
 
-	@Context
-	private UriInfo uriInfo;
+	@EJB
+	private OrganizationEJB orgEJB;
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -54,19 +55,29 @@ public class UserService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(@Valid User user) {
-		Set<ConstraintViolation<?>> errors = userEJB.createUser(user);
-		if (errors == null) {
-			return Response.created(uriInfo.getAbsolutePathBuilder().path(user.getId().toString()).build()).build();
-		} else {
-			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(toResponses(errors)).type(MediaType.APPLICATION_JSON).build();
-		}
+	public Response create(UserWithUnit userWithUnit) {
+		User u = new User();
+		u.setAttached(true);
+		u.setEmail(userWithUnit.getEmail());
+		u.setFirstName(userWithUnit.getEmail());
+		u.setLastName(userWithUnit.getLastName());
+		if (userWithUnit.getPassword() != null)
+			u.setPassword(DigestUtils.md5Hex(userWithUnit.getPassword()));
+		u.setId(userWithUnit.getId());
+		u.setUnit(orgEJB.getOrganizationUnit(userWithUnit.getUnitId()));
+
+		userEJB.createUser(u);
+		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
 	}
 
 	public String toResponses(Set<ConstraintViolation<?>> errors) {
 		List<String> res = new LinkedList<String>();
 		for (ConstraintViolation<?> error : errors) {
-			res.add(error.getPropertyPath().toString() + ": " + error.getMessage());
+			if (error.getPropertyPath() != null) {
+				res.add(error.getPropertyPath().toString() + ": " + error.getMessage());
+			} else {
+				res.add(error.getMessage());
+			}
 		}
 		return (new Gson()).toJson(res);
 	}

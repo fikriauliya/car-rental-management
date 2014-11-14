@@ -42,6 +42,13 @@ public class OrganizationEJB {
 		return res;
 	}
 
+	public OrganizationUnit getOrganizationUnit(int id) {
+		TypedQuery<OrganizationUnit> q = em.createNamedQuery("findOrganizationUnit", OrganizationUnit.class);
+		q.setParameter("id", id);
+		OrganizationUnit o = q.getSingleResult();
+		return o;
+	}
+
 	public void deleteOrganization(int id) {
 		TypedQuery<OrganizationUnitTree> q2 = em.createNamedQuery("deleteOrganizationUnitTree", OrganizationUnitTree.class);
 		q2.setParameter("id", id);

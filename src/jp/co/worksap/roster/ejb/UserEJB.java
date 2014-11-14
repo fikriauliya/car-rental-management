@@ -1,15 +1,11 @@
 package jp.co.worksap.roster.ejb;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 
 import jp.co.worksap.roster.entity.User;
 
@@ -30,14 +26,7 @@ public class UserEJB {
 		return q.getSingleResult();
 	}
 
-	public Set<ConstraintViolation<?>> createUser(User user) {
-		try {
-			em.persist(user);
-			return null;
-		} catch (ConstraintViolationException ex) {
-			return ((ConstraintViolationException)ex).getConstraintViolations();
-		} catch (Exception ex) {
-			return new HashSet<ConstraintViolation<?>>();
-		}
+	public void createUser(User user) {
+		em.persist(user);
 	}
 }
