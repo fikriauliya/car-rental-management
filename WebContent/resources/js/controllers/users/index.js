@@ -146,6 +146,23 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 		);
 	};
 
+	$scope.leaveUser = function(user) {
+		if (confirm("Are you sure to set this user as leaved?")) {
+			user.attached = false;
+			Users.update({}, _.omit(user, 'inEditMode'),
+				function(data, header) {
+					$scope.errors = "";
+					$scope.info = "User " + user.id + " has been set to 'leaved'";
+					$scope.refreshUsers();
+				},
+				function(data, header) {
+					$scope.errors = data.data;
+					$scope.refreshUsers();
+				}
+			);
+		}
+	};
+
 	$scope.refreshUnits();
   }]
 );

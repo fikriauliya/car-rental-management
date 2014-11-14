@@ -48,6 +48,7 @@ public class UserEJB {
 		o.setEmail(user.getEmail());
 		o.setFirstName(user.getFirstName());
 		o.setLastName(user.getLastName());
+		o.setAttached(user.isAttached());
 
 		em.persist(o);
 	}
