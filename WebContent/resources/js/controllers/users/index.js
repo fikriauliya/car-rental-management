@@ -33,7 +33,7 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	};
 
 	$scope.refreshUsers = function(page) {
-		Users.query({page: page}, function(data, header) {
+		Users.query({unitId: $scope.selectedUnit.data.id, page: page}, function(data, header) {
 			$scope.users = data.users;
 			$scope.currentPage = parseInt(data.currentPage);
 			$scope.totalPage = parseInt(data.totalPage);
@@ -53,6 +53,8 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 			$scope.units = [data];
 			$scope.selectedUnit = data;
 
+			$scope.refreshUsers(0);
+
 			$timeout(function() {
 				$scope.unitsControl.expand_all();
 				$scope.unitsControl.select_first_branch();
@@ -65,6 +67,7 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 
 	$scope.changeUnit = function(branch) {
 		$scope.selectedUnit = branch;
+		$scope.refreshUsers(0);
 	};
 
 	$scope.displayNewUnitDialog = function() {
@@ -119,7 +122,6 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 		);
 	};
 
-	$scope.refreshUsers(0);
 	$scope.refreshUnits();
   }]
 );

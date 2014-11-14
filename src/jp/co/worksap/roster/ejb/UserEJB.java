@@ -21,6 +21,14 @@ public class UserEJB {
 		return q.getResultList();
 	}
 
+	public List<User> findAllUsers(int unitId, int page, int size) {
+		TypedQuery<User> q = em.createNamedQuery("findAllUsersInUnit", User.class)
+				.setParameter("unitId", unitId)
+				.setFirstResult(page * size)
+				.setMaxResults(size);
+		return q.getResultList();
+	}
+
 	public long countAllUsers() {
 		TypedQuery<Long> q = em.createNamedQuery("countAllUsers", Long.class);
 		return q.getSingleResult();

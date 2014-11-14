@@ -16,6 +16,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name = "S_USERS")
 @NamedQueries({
 	@NamedQuery(name="findAllUsers", query = "SELECT u from User u ORDER BY u.id"),
+	@NamedQuery(name="findAllUsersInUnit", query = "SELECT u from User u WHERE u.unit.id = :unitId ORDER BY u.id"),
 	@NamedQuery(name="countAllUsers", query = "SELECT COUNT(u) from User u")
 })
 public class User {
