@@ -1,5 +1,6 @@
 package jp.co.worksap.roster.ejb;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.ejb.Stateless;
@@ -8,6 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import jp.co.worksap.roster.entity.OrganizationUnit;
+import jp.co.worksap.roster.entity.TransferLog;
 import jp.co.worksap.roster.entity.User;
 
 @Stateless
@@ -52,11 +54,24 @@ public class UserEJB {
 		o.setLastName(user.getLastName());
 		o.setAttached(user.isAttached());
 
-		TypedQuery<OrganizationUnit> q2 = em.createNamedQuery("findOrganizationUnit", OrganizationUnit.class);
-		q2.setParameter("id", user.getUnit().getId());
-		OrganizationUnit unit = q2.getSingleResult();
-		o.setUnit(unit);
+		if (o.getUnit().getId() != user.getUnit().getId()) {
+			TypedQuery<OrganizationUnit> q3 = em.createNamedQuery("findOrganizationUnit", OrganizationUnit.class);
+			q3.setParameter("id", o.getUnit().getId());
+			OrganizationUnit fromUnit = q3.getSingleResult();
 
+			TypedQuery<OrganizationUnit> q2 = em.createNamedQuery("findOrganizationUnit", OrganizationUnit.class);
+			q2.setParameter("id", user.getUnit().getId());
+			OrganizationUnit toUnit = q2.getSingleResult();
+			o.setUnit(toUnit);
+
+			TransferLog log = new TransferLog();
+			log.setFromUnit(fromUnit);
+			log.setToUnit(user.getUnit());
+			log.setTimestamp(new Date());
+			log.setUser(o);
+
+			em.persist(log);
+		}
 		em.persist(o);
 	}
 }
