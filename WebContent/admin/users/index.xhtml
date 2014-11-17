@@ -31,71 +31,68 @@
             </div>
           </div>
           <div class="col col-md-12" ng-switch-default="true">
-            <div class="alert alert-danger" ng-if="errors">
-              <ul>
-                <li ng-repeat="error in errors">{{error}}</li>
-              </ul>
-            </div>
-            <div class="alert alert-info" ng-if="info">
-              {{info}}
-            </div>
-
-            <div ng-switch="inEditMode">
-              <div ng-switch-when="true">
-                <form class="form-horizontal">
-                  <div class="form-group">
-                    <label class="col-sm-1 control-label">Name</label>
-                    <div class="col-sm-4">
-                      <input class="form-control" ng-model="selectedUnit.data.name"/>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-sm-1 control-label">Description</label>
-                    <div class="col-sm-4">
-                      <input class="form-control" ng-model="selectedUnit.data.description"/>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="col-sm-offset-1 col-sm-4">
-                      <button class="btn btn-xs btn-primary" style="margin-left:10px" ng-click="updateUnit();">
-                        <span class="glyphicon glyphicon-plus"/>
-                        Save
-                      </button>
-                      <button class="btn btn-xs btn-danger" style="margin-left:5px" ng-click="editUnit(false)">
-                        <span class="glyphicon glyphicon-trash"/>
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-          <div class="col col-md-12" ng-switch-default="true">
             <div ng-if="loading > 0">
               <div style="margin-top:100px">
                 <span us-spinner="us-spinner"></span>
               </div>
             </div>
             <div ng-if="loading &lt;= 0">
-              <div>
-                <div ng-if="selectedUnit">
-                  <h4>{{selectedUnit.data.name}}</h4>
-                  {{selectedUnit.data.description}}
-                  <br/><br/>
+              <div class="alert alert-danger" ng-if="errors">
+                <ul>
+                  <li ng-repeat="error in errors">{{error}}</li>
+                </ul>
+              </div>
+              <div class="alert alert-info" ng-if="info">
+                {{info}}
+              </div>
+              <div ng-switch="inEditMode">
+                <div ng-switch-when="true">
+                  <form class="form-horizontal">
+                    <div class="form-group">
+                      <label class="col-sm-1 control-label">Name</label>
+                      <div class="col-sm-4">
+                        <input class="form-control" ng-model="selectedUnit.data.name"/>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-1 control-label">Description</label>
+                      <div class="col-sm-4">
+                        <input class="form-control" ng-model="selectedUnit.data.description"/>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="col-sm-offset-1 col-sm-4">
+                        <button class="btn btn-xs btn-primary" style="margin-left:10px" ng-click="updateUnit();">
+                          <span class="glyphicon glyphicon-plus"/>
+                          Save
+                        </button>
+                        <button class="btn btn-xs btn-danger" style="margin-left:5px" ng-click="editUnit(false)">
+                          <span class="glyphicon glyphicon-trash"/>
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </form>
                 </div>
-                <button class="btn btn-xs btn-primary" style="margin-left:10px" data-toggle="modal" ng-click="displayNewUnitDialog();">
-                  <span class="glyphicon glyphicon-plus"/>
-                  Add sub unit
-                </button>
-                <button class="btn btn-xs btn-danger" style="margin-left:5px" ng-click="deleteUnit()" ng-disabled="!selectedUnit">
-                  <span class="glyphicon glyphicon-trash"/>
-                  Delete this unit
-                </button>
-                <button class="btn btn-xs btn-warning" style="margin-left:5px" ng-click="editUnit(true)" ng-disabled="!selectedUnit">
-                  <span class="glyphicon glyphicon-edit"/>
-                  Edit this unit
-                </button>
+                <div ng-switch-default="true">
+                  <div ng-if="selectedUnit">
+                    <h4>{{selectedUnit.data.name}}</h4>
+                    {{selectedUnit.data.description}}
+                    <br/><br/>
+                  </div>
+                  <button class="btn btn-xs btn-primary" style="margin-left:10px" data-toggle="modal" ng-click="displayNewUnitDialog();">
+                    <span class="glyphicon glyphicon-plus"/>
+                    Add sub unit
+                  </button>
+                  <button class="btn btn-xs btn-danger" style="margin-left:5px" ng-click="deleteUnit()" ng-disabled="!selectedUnit">
+                    <span class="glyphicon glyphicon-trash"/>
+                    Delete this unit
+                  </button>
+                  <button class="btn btn-xs btn-warning" style="margin-left:5px" ng-click="editUnit(true)" ng-disabled="!selectedUnit">
+                    <span class="glyphicon glyphicon-edit"/>
+                    Edit this unit
+                  </button>
+                </div>
               </div>
               <hr/>
               <div style="margin-bottom:20px">

@@ -154,19 +154,21 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	};
 
 	$scope.editUnit = function(status) {
+		if (status == false) {
+			$scope.refreshUnits();
+		}
 		$scope.inEditMode = status;
 	};
 
 	$scope.updateUnit = function() {
 		Organizations.update({}, $scope.selectedUnit.data,
 			function(data, header) {
+				$scope.errors = "";
 				$scope.selectedUnit.label = $scope.selectedUnit.data.name;
-				$scope.editUnit(false);
+				$scope.inEditMode = false;
 			},
 			function(data, header) {
 				$scope.errors = data.data;
-				$scope.editUnit(false);
-				$scope.refreshUnits();
 			}
 		);
 	};
