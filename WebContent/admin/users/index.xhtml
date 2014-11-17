@@ -69,7 +69,16 @@
                   </div>
                 </form>
               </div>
-              <div ng-switch-default="true">
+            </div>
+          </div>
+          <div class="col col-md-12" ng-switch-default="true">
+            <div ng-if="loading > 0">
+              <div style="margin-top:100px">
+                <span us-spinner="us-spinner"></span>
+              </div>
+            </div>
+            <div ng-if="loading &lt;= 0">
+              <div>
                 <div ng-if="selectedUnit">
                   <h4>{{selectedUnit.data.name}}</h4>
                   {{selectedUnit.data.description}}
@@ -88,15 +97,6 @@
                   Edit this unit
                 </button>
               </div>
-            </div>
-          </div>
-          <div class="col col-md-12" ng-switch-default="true">
-            <div ng-if="loading > 0">
-              <div style="margin-top:100px">
-                <span us-spinner="us-spinner"></span>
-              </div>
-            </div>
-            <div ng-if="loading == 0">
               <hr/>
               <div style="margin-bottom:20px">
                 <button class="btn btn-xs btn-info" ng-disabled="currentPage == 0" ng-click="prevPage()">Prev</button>
