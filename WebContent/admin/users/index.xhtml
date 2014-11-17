@@ -108,7 +108,7 @@
                   <th>First name</th>
                   <th>Last name</th>
                   <th>Email</th>
-                  <th style="width:200px"></th>
+                  <th style="width:250px"></th>
                 </tr>
               </thead>
               <tbody>
@@ -130,6 +130,7 @@
                     <button class="btn btn-warning btn-xs" ng-click="editUser(user, true)">Edit</button>
                     <button class="btn btn-info btn-xs" ng-click="transferUser(user)">Transfer</button>
                     <button class="btn btn-danger btn-xs" ng-click="leaveUser(user)">Leave</button>
+                    <button class="btn btn-primary btn-xs" ng-click="changeRoles(user)">Change roles</button>
                   </td>
                 </tr>
               </tbody>
@@ -228,6 +229,41 @@
                 <div class="form-group">
                   <div class="col-sm-offset-3 col-sm-4">
                     <button class="btn btn-primary btn-sm" ng-click="createUnit()">Create</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade change-role-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+              <h4 class="modal-title" id="myModalLabel">{{toBeRoleChangedUser.id}}'s roles:</h4>
+            </div>
+            <div class="modal-body">
+              <div class="alert alert-danger" ng-if="errors">
+                <ul>
+                  <li ng-repeat="error in errors">{{error}}</li>
+                </ul>
+              </div>
+              <div class="alert alert-info" ng-if="info">
+                {{info}}
+              </div>
+              <form class="form-horizontal">
+                <div class="checkbox" ng-repeat="role in availableRoles">
+                  <label>
+                    <input type="checkbox" name="selectedRoles[]" value="{{role}}" ng-click="toggleRoleSelection(role)" ng-checked="assignedRoles.indexOf(role) > -1"/>
+                    {{role}}
+                  </label>
+                </div>
+                <hr/>
+                <div class="form-group">
+                  <div class="col-sm-4">
+                    <button class="btn btn-primary btn-sm" ng-click="saveRoles()">Save</button>
                   </div>
                 </div>
               </form>

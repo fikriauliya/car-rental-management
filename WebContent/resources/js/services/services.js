@@ -2,7 +2,7 @@ userServices = angular.module('userServices', ['ngResource']);
 userServices.factory("Users",
   ["$resource",
    function($resource) {
-	  return $resource(basePath + "/api/users", {}, {
+	  return $resource(basePath + "/api/users/:id", {}, {
 		  'query': {method:'GET', isArray:false},
 	  	  'update': { method:'PUT' }
 	  });

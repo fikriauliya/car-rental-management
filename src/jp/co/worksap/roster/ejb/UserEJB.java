@@ -1,7 +1,10 @@
 package jp.co.worksap.roster.ejb;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -9,8 +12,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import jp.co.worksap.roster.entity.OrganizationUnit;
+import jp.co.worksap.roster.entity.Role;
 import jp.co.worksap.roster.entity.TransferLog;
 import jp.co.worksap.roster.entity.User;
+import jp.co.worksap.roster.entity.UserRole;
 
 @Stateless
 public class UserEJB {
@@ -41,6 +46,11 @@ public class UserEJB {
 	}
 
 	public void createUser(User user) {
+		// assign as employee by default
+		UserRole ur = new UserRole();
+		ur.setId(user.getId());
+		ur.setRoleName("employee");
+		em.persist(ur);
 		em.persist(user);
 	}
 
@@ -73,5 +83,37 @@ public class UserEJB {
 			em.persist(log);
 		}
 		em.persist(o);
+	}
+
+	public List<Role> findAllRoles() {
+		TypedQuery<Role> q = em.createNamedQuery("findAllRoles", Role.class);
+		return q.getResultList();
+	}
+
+	public List<UserRole> findAllAssignedRoles(String userId) {
+		TypedQuery<UserRole> q = em.createNamedQuery("findAllAssignedRoles", UserRole.class)
+				.setParameter("id", userId);
+		return q.getResultList();
+	}
+
+	public void updateRoles(String userId, String[] roles) {
+		Set<String> sRoles = new HashSet<String>();
+		for (String r : roles) sRoles.add(r);
+
+		List<UserRole> assignedRoles = findAllAssignedRoles(userId);
+		for (UserRole r : assignedRoles) {
+			if (sRoles.contains(r.getRoleName())) {
+				sRoles.remove(r.getRoleName());
+			} else {
+				em.remove(r);
+			}
+		}
+
+		for (String r: sRoles) {
+			UserRole ur = new UserRole();
+			ur.setId(userId);
+			ur.setRoleName(r);
+			em.persist(ur);
+		}
 	}
 }

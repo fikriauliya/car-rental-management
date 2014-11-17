@@ -192,6 +192,37 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 		$scope.inTransferMode = false;
 	};
 
+	$scope.changeRoles = function(user) {
+		$scope.info = "";
+		$scope.errors = "";
+
+		$scope.currentUserRoles = Users.query({id: user.id}, function(data, header) {
+			$scope.toBeRoleChangedUser = user;
+			$scope.availableRoles = data.availableRoles;
+			$scope.assignedRoles = data.assignedRoles;
+			console.log($scope.availableRoles);
+			console.log($scope.assignedRoles);
+			$('.change-role-modal').modal('show');
+		});
+	};
+
+	$scope.toggleRoleSelection = function(role) {
+		var idx = $scope.assignedRoles.indexOf(role);
+
+		if (idx > -1) {
+			$scope.assignedRoles.splice(idx, 1);
+		}
+		else {
+			$scope.assignedRoles.push(role);
+		}
+	};
+
+	$scope.saveRoles = function() {
+		Users.update({id: $scope.toBeRoleChangedUser.id}, $scope.assignedRoles, function(data, header) {
+			$('.change-role-modal').modal('hide');
+		});
+	};
+
 	$scope.refreshUnits();
   }]
 );
