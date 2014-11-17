@@ -1,10 +1,14 @@
 package jp.co.worksap.roster.entity;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -40,6 +44,9 @@ public class User {
 
 	@NotEmpty
 	private String password;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date leaveTimestamp;
 
 	public String getId() {
 		return id;
@@ -95,5 +102,13 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Date getLeaveTimestamp() {
+		return leaveTimestamp;
+	}
+
+	public void setLeaveTimestamp(Date leaveTimestamp) {
+		this.leaveTimestamp = leaveTimestamp;
 	}
 }

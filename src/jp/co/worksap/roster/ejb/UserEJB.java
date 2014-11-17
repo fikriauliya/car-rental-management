@@ -61,8 +61,13 @@ public class UserEJB {
 		o.setEmail(user.getEmail());
 		o.setFirstName(user.getFirstName());
 		o.setLastName(user.getLastName());
-		o.setAttached(user.isAttached());
 
+		if (o.isAttached() != user.isAttached()) {
+			if (!user.isAttached()){
+				o.setLeaveTimestamp(new Date());
+			}
+		}
+		o.setAttached(user.isAttached());
 
 		if (o.getUnit().getId() != user.getUnit().getId()) {
 			TypedQuery<OrganizationUnit> q3 = em.createNamedQuery("findOrganizationUnit", OrganizationUnit.class);

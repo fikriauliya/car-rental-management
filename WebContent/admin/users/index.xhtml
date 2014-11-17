@@ -149,12 +149,14 @@
                 <thead>
                   <tr>
                     <th>Name</th>
+                    <th>From</th>
                     <th>Date</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr ng-repeat="log in transferInLogs">
                     <td>{{log.user.firstName}} {{log.user.lastName}}</td>
+                    <td>{{log.fromUnit.name}}</td>
                     <td>{{log.timestamp | date: 'mediumDate'}}</td>
                   </tr>
                 </tbody>
@@ -176,12 +178,14 @@
                 <thead>
                   <tr>
                     <th>Name</th>
+                    <th>To</th>
                     <th>Date</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr ng-repeat="log in transferOutLogs">
                     <td>{{log.user.firstName}} {{log.user.lastName}}</td>
+                    <td>{{log.toUnit.name}}</td>
                     <td>{{log.timestamp | date: 'mediumDate'}}</td>
                   </tr>
                 </tbody>
@@ -203,11 +207,13 @@
                 <thead>
                   <tr>
                     <th>Name</th>
+                    <th>Date</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr ng-repeat="log in leaveUsers">
                     <td>{{log.firstName}} {{log.lastName}}</td>
+                    <td>{{log.leaveTimestamp | date:'mediumDate'}}</td>
                   </tr>
                 </tbody>
               </table>
