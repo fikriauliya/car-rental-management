@@ -49,7 +49,7 @@ public class UserService {
 		UsersInfo res = new UsersInfo();
 		res.setUsers(users);
 		res.setCurrentPage(page);
-		res.setTotalPage(totalUsers / SIZE + 1);
+		res.setTotalPage((totalUsers - 1) / SIZE + 1);
 		return res;
 	}
 

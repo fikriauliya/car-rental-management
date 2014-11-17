@@ -40,7 +40,7 @@ public class TransferLogService {
 		}
 		res.setTransferLogs(tl);
 		res.setCurrentPage(page);
-		res.setTotalPage(totalTransfers / SIZE + 1);
+		res.setTotalPage((totalTransfers - 1) / SIZE + 1);
 		return res;
 	}
 }
