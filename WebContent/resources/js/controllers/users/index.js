@@ -63,7 +63,7 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	};
 
 	$scope.refreshUnitUsers = function() {
-		$scope.loading = 0;
+//		$scope.loading = 0;
 
 		$scope.refreshUsers(0);
 		$scope.refreshTransferIns(0);
