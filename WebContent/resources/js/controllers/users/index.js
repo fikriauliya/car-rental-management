@@ -1,6 +1,6 @@
 myApp = angular.module('myApp');
-myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organizations',
-  function($scope, $timeout, Users, Organizations) {
+myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organizations', 'TransferLogs',
+  function($scope, $timeout, Users, Organizations, TransferLogs) {
 	$scope.newUser = new Users();
 	$scope.newUnit = new Organizations();
 	$scope.currentPage = 0;
@@ -9,6 +9,13 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	$scope.unitsControl = {};
 	$scope.inEditMode = false;
 	$scope.inTransferMode = false;
+
+	$scope.currentTransferInPage = 0;
+	$scope.totalTransferInPage = 1;
+	$scope.currentTransferOutPage = 0;
+	$scope.totalTransferOutPage = 1;
+	$scope.currentLeavePage = 0;
+	$scope.totalLeavePage = 1;
 
 	$scope.displayNewUserDialog = function() {
 		$scope.info = "";
@@ -55,6 +62,9 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 			$scope.selectedUnit = data;
 
 			$scope.refreshUsers(0);
+			$scope.refreshTransferIns(0);
+			$scope.refreshTransferOuts(0);
+			$scope.refreshLeaves(0);
 
 			$timeout(function() {
 				$scope.unitsControl.expand_all();
@@ -74,19 +84,32 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 					$scope.errors = "";
 					$scope.info = "User " + $scope.toBeTransferedUser.id + " has been transfered";
 					$scope.selectedUnit = branch;
+
 					$scope.refreshUsers(0);
+					$scope.refreshTransferIns(0);
+					$scope.refreshTransferOuts(0);
+					$scope.refreshLeaves(0);
+
 					$scope.inTransferMode = false;
 				},
 				function(data, header) {
 					$scope.errors = data.data;
 					$scope.selectedUnit = branch;
+
 					$scope.refreshUsers(0);
+					$scope.refreshTransferIns(0);
+					$scope.refreshTransferOuts(0);
+					$scope.refreshLeaves(0);
+
 					$scope.inTransferMode = false;
 				}
 			);
 		} else {
 			$scope.selectedUnit = branch;
 			$scope.refreshUsers(0);
+			$scope.refreshTransferIns(0);
+			$scope.refreshTransferOuts(0);
+			$scope.refreshLeaves(0);
 		}
 	};
 
@@ -222,6 +245,42 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 			$('.change-role-modal').modal('hide');
 		});
 	};
+
+	$scope.refreshTransferIns = function(page) {
+		TransferLogs.query({unitId: $scope.selectedUnit.data.id, page: page, type: "in"}, function(data, header) {
+			$scope.transferInLogs = data.transferLogs;
+			$scope.currentTransferInPage = parseInt(data.currentPage);
+			$scope.totalTransferInPage = parseInt(data.totalPage);
+		});
+	};
+
+	$scope.nextTransferInPage = function() {
+		$scope.refreshTransferIns($scope.currentTransferInPage + 1);
+	};
+
+	$scope.prevTransferInPage = function() {
+		$scope.refreshTransferIns($scope.currentTransferInPage - 1);
+	};
+
+	$scope.refreshTransferOuts = function(page) {
+		TransferLogs.query({unitId: $scope.selectedUnit.data.id, page: page, type: "out"}, function(data, header) {
+			$scope.transferOutLogs = data.transferLogs;
+			$scope.currentTransferOutPage = parseInt(data.currentPage);
+			$scope.totalTransferOutPage = parseInt(data.totalPage);
+		});
+	};
+
+	$scope.nextTransferOutPage = function() {
+		$scope.refreshTransferOuts($scope.currentTransferInPage + 1);
+	};
+
+	$scope.prevTransferOutPage = function() {
+		$scope.refreshTransferOuts($scope.currentTransferInPage - 1);
+	};
+
+	$scope.refreshLeaves = function(page) {
+
+	}
 
 	$scope.refreshUnits();
   }]

@@ -19,3 +19,13 @@ organizationServices.factory("Organizations",
 	  });
    }
   ]);
+
+transferLogsServices = angular.module('transferLogsServices', ['ngResource']);
+transferLogsServices.factory("TransferLogs",
+  ["$resource",
+   function($resource) {
+	  return $resource(basePath + "/api/logs/transfers", {}, {
+		  'query': {method:'GET', isArray:false},
+	  });
+   }
+  ]);

@@ -135,6 +135,64 @@
                 </tr>
               </tbody>
             </table>
+            <hr/>
+          </div>
+          <div class="col col-md-4">
+            <h4>Transfered In</h4>
+            <div ng-if="transferInLogs.length > 0">
+              <div style="margin-bottom:20px">
+                <button class="btn btn-xs btn-info" ng-disabled="currentTransferInPage == 0" ng-click="prevTransferInPage()">Prev</button>
+                {{currentTransferInPage + 1}} / {{totalTransferInPage}}
+                <button class="btn btn-xs btn-info" ng-disabled="currentTransferInPage == totalTransferInPage - 1" ng-click="nextTransferInPage()">Next</button>
+              </div>
+              <table class="table table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="log in transferInLogs">
+                    <td>{{log.user.firstName}} {{log.user.lastName}}</td>
+                    <td>{{log.timestamp | date: 'mediumDate'}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div ng-if="transferInLogs.length == 0">
+              No record
+            </div>
+          </div>
+          <div class="col col-md-4">
+            <h4>Transfered Out</h4>
+            <div ng-if="transferOutLogs.length > 0">
+              <div style="margin-bottom:20px">
+                <button class="btn btn-xs btn-info" ng-disabled="currentTransferOutPage == 0" ng-click="prevTransferOutPage()">Prev</button>
+                {{currentTransferOutPage + 1}} / {{totalTransferOutPage}}
+                <button class="btn btn-xs btn-info" ng-disabled="currentTransferOutPage == totalTransferOutPage - 1" ng-click="nextTransferOutPage()">Next</button>
+              </div>
+              <table class="table table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="log in transferOutLogs">
+                    <td>{{log.user.firstName}} {{log.user.lastName}}</td>
+                    <td>{{log.timestamp | date: 'mediumDate'}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div ng-if="transferOutLogs.length == 0">
+              No record
+            </div>
+          </div>
+          <div class="col col-md-4">
+            <h4>Leave</h4>
           </div>
         </div>
       </div>

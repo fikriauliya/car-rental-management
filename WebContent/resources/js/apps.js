@@ -1,1 +1,1 @@
-myApp = angular.module('myApp', ['userServices', 'organizationServices', 'angularBootstrapNavTree']);
+myApp = angular.module('myApp', ['userServices', 'organizationServices', 'angularBootstrapNavTree', 'transferLogsServices']);
