@@ -280,11 +280,11 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	};
 
 	$scope.nextTransferOutPage = function() {
-		$scope.refreshTransferOuts($scope.currentTransferInPage + 1);
+		$scope.refreshTransferOuts($scope.currentTransferOutPage + 1);
 	};
 
 	$scope.prevTransferOutPage = function() {
-		$scope.refreshTransferOuts($scope.currentTransferInPage - 1);
+		$scope.refreshTransferOuts($scope.currentTransferOutPage - 1);
 	};
 
 	$scope.refreshLeaves = function(page) {
