@@ -1,6 +1,5 @@
 package jp.co.worksap.roster.ejb;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -64,6 +63,7 @@ public class UserEJB {
 		o.setLastName(user.getLastName());
 		o.setAttached(user.isAttached());
 
+
 		if (o.getUnit().getId() != user.getUnit().getId()) {
 			TypedQuery<OrganizationUnit> q3 = em.createNamedQuery("findOrganizationUnit", OrganizationUnit.class);
 			q3.setParameter("id", o.getUnit().getId());
@@ -82,6 +82,7 @@ public class UserEJB {
 
 			em.persist(log);
 		}
+
 		em.persist(o);
 	}
 

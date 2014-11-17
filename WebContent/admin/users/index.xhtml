@@ -193,6 +193,28 @@
           </div>
           <div class="col col-md-4">
             <h4>Leave</h4>
+            <div ng-if="leaveUsers.length > 0">
+              <div style="margin-bottom:20px">
+                <button class="btn btn-xs btn-info" ng-disabled="currentLeavePage == 0" ng-click="prevLeavePage()">Prev</button>
+                {{currentLeavePage + 1}} / {{totalLeavePage}}
+                <button class="btn btn-xs btn-info" ng-disabled="currentLeavePage == totalLeavePage - 1" ng-click="nextLeavePage()">Next</button>
+              </div>
+              <table class="table table-striped table-condensed">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr ng-repeat="log in leaveUsers">
+                    <td>{{log.firstName}} {{log.lastName}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div ng-if="leaveUsers.length == 0">
+              No record
+            </div>
           </div>
         </div>
       </div>

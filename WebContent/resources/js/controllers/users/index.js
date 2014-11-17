@@ -56,15 +56,19 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 		$scope.refreshUsers($scope.currentPage - 1);
 	};
 
+	$scope.refreshUnitUsers = function() {
+		$scope.refreshUsers(0);
+		$scope.refreshTransferIns(0);
+		$scope.refreshTransferOuts(0);
+		$scope.refreshLeaves(0);
+	}
+
 	$scope.refreshUnits = function() {
 		Organizations.query({}, function(data, header) {
 			$scope.units = [data];
 			$scope.selectedUnit = data;
 
-			$scope.refreshUsers(0);
-			$scope.refreshTransferIns(0);
-			$scope.refreshTransferOuts(0);
-			$scope.refreshLeaves(0);
+			$scope.refreshUnitUsers();
 
 			$timeout(function() {
 				$scope.unitsControl.expand_all();
@@ -85,31 +89,20 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 					$scope.info = "User " + $scope.toBeTransferedUser.id + " has been transfered";
 					$scope.selectedUnit = branch;
 
-					$scope.refreshUsers(0);
-					$scope.refreshTransferIns(0);
-					$scope.refreshTransferOuts(0);
-					$scope.refreshLeaves(0);
-
+					$scope.refreshUnitUsers();
 					$scope.inTransferMode = false;
 				},
 				function(data, header) {
 					$scope.errors = data.data;
 					$scope.selectedUnit = branch;
 
-					$scope.refreshUsers(0);
-					$scope.refreshTransferIns(0);
-					$scope.refreshTransferOuts(0);
-					$scope.refreshLeaves(0);
-
+					$scope.refreshUnitUsers();
 					$scope.inTransferMode = false;
 				}
 			);
 		} else {
 			$scope.selectedUnit = branch;
-			$scope.refreshUsers(0);
-			$scope.refreshTransferIns(0);
-			$scope.refreshTransferOuts(0);
-			$scope.refreshLeaves(0);
+			$scope.refreshUnitUsers();
 		}
 	};
 
@@ -196,11 +189,11 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 				function(data, header) {
 					$scope.errors = "";
 					$scope.info = "User " + user.id + " has been set to 'leaved'";
-					$scope.refreshUsers(0);
+					$scope.refreshUnitUsers();
 				},
 				function(data, header) {
 					$scope.errors = data.data;
-					$scope.refreshUsers(0);
+					$scope.refreshUnitUsers();
 				}
 			);
 		}
@@ -279,8 +272,20 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	};
 
 	$scope.refreshLeaves = function(page) {
+		Users.query({unitId: $scope.selectedUnit.data.id, isAttached: false, page: page}, function(data, header) {
+			$scope.leaveUsers = data.users;
+			$scope.currentLeavePage = parseInt(data.currentPage);
+			$scope.totalLeavePage = parseInt(data.totalPage);
+		});
+	};
 
-	}
+	$scope.nextLeavePage = function() {
+		$scope.refreshLeaves($scope.currentLeavePage + 1);
+	};
+
+	$scope.prevLeavePage = function() {
+		$scope.refreshLeaves($scope.currentLeavePage - 1);
+	};
 
 	$scope.refreshUnits();
   }]
