@@ -17,8 +17,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "S_TRANSFER_LOG")
 @NamedQueries({
-	@NamedQuery(name="findAllTransferIns", query = "SELECT u from TransferLog u WHERE u.toUnit.id = :unitId"),
-	@NamedQuery(name="findAllTransferOuts", query = "SELECT u from TransferLog u WHERE u.fromUnit.id = :unitId"),
+	@NamedQuery(name="findAllTransferIns", query = "SELECT u from TransferLog u WHERE u.toUnit.id = :unitId ORDER BY u.timestamp DESC"),
+	@NamedQuery(name="findAllTransferOuts", query = "SELECT u from TransferLog u WHERE u.fromUnit.id = :unitId ORDER BY u.timestamp DESC"),
 	@NamedQuery(name="countAllTransferIns", query = "SELECT COUNT(u) from TransferLog u WHERE u.toUnit.id = :unitId"),
 	@NamedQuery(name="countAllTransferOuts", query = "SELECT COUNT(u) from TransferLog u WHERE u.fromUnit.id = :unitId"),
 })

@@ -44,7 +44,7 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 
 	$scope.refreshUsers = function(page) {
 		$scope.loading++;
-		Users.query({unitId: $scope.selectedUnit.data.id, isAttached: true, page: page}, function(data, header) {
+		Users.query({unitId: $scope.selectedUnit.data.id, isAttached: true, orderedByLeaveTimestamp: false, page: page}, function(data, header) {
 			$scope.users = data.users;
 			$scope.currentPage = parseInt(data.currentPage);
 			$scope.totalPage = parseInt(data.totalPage);
@@ -289,7 +289,7 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 
 	$scope.refreshLeaves = function(page) {
 		$scope.loading++;
-		Users.query({unitId: $scope.selectedUnit.data.id, isAttached: false, page: page}, function(data, header) {
+		Users.query({unitId: $scope.selectedUnit.data.id, isAttached: false, orderedByLeaveTimestamp: true, page: page}, function(data, header) {
 			$scope.leaveUsers = data.users;
 			$scope.currentLeavePage = parseInt(data.currentPage);
 			$scope.totalLeavePage = parseInt(data.totalPage);

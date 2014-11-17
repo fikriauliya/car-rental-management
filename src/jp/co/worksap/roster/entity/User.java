@@ -20,6 +20,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name = "S_USERS")
 @NamedQueries({
 	@NamedQuery(name="findAllUsers", query = "SELECT u from User u ORDER BY u.id"),
+	@NamedQuery(name="findAllUsersInUnitByIsAttachedOrderByLeaveTimestamp", query = "SELECT u from User u WHERE u.unit.id = :unitId AND u.isAttached = :isAttached ORDER BY u.leaveTimestamp"),
 	@NamedQuery(name="findAllUsersInUnit", query = "SELECT u from User u WHERE u.unit.id = :unitId ORDER BY u.id"),
 	@NamedQuery(name="findAllUsersInUnitByIsAttached", query = "SELECT u from User u WHERE u.unit.id = :unitId AND u.isAttached = :isAttached ORDER BY u.id"),
 	@NamedQuery(name="countAllUsers", query = "SELECT COUNT(u) from User u WHERE u.unit.id = :unitId AND u.isAttached = :isAttached"),

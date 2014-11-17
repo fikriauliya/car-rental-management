@@ -28,8 +28,10 @@ public class UserEJB {
 		return q.getResultList();
 	}
 
-	public List<User> findAllUsers(int unitId, boolean isAttached, int page, int size) {
-		TypedQuery<User> q = em.createNamedQuery("findAllUsersInUnitByIsAttached", User.class)
+	public List<User> findAllUsers(int unitId, boolean isAttached, boolean isOrderedByLeaveTimestamp, int page, int size) {
+		String queryName = isOrderedByLeaveTimestamp ? "findAllUsersInUnitByIsAttachedOrderByLeaveTimestamp" : "findAllUsersInUnitByIsAttached";
+
+		TypedQuery<User> q = em.createNamedQuery(queryName, User.class)
 				.setParameter("unitId", unitId)
 				.setParameter("isAttached", isAttached)
 				.setFirstResult(page * size)
