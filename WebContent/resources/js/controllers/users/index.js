@@ -1,6 +1,8 @@
 myApp = angular.module('myApp');
 myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organizations', 'TransferLogs',
   function($scope, $timeout, Users, Organizations, TransferLogs) {
+	$scope.loading = 0;
+
 	$scope.newUser = new Users();
 	$scope.newUnit = new Organizations();
 	$scope.currentPage = 0;
@@ -41,10 +43,14 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	};
 
 	$scope.refreshUsers = function(page) {
+		$scope.loading++;
 		Users.query({unitId: $scope.selectedUnit.data.id, isAttached: true, page: page}, function(data, header) {
 			$scope.users = data.users;
 			$scope.currentPage = parseInt(data.currentPage);
 			$scope.totalPage = parseInt(data.totalPage);
+			$scope.loading--;
+		}, function(data, header) {
+			$scope.loading--;
 		});
 	};
 
@@ -57,6 +63,8 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	};
 
 	$scope.refreshUnitUsers = function() {
+		$scope.loading = 0;
+
 		$scope.refreshUsers(0);
 		$scope.refreshTransferIns(0);
 		$scope.refreshTransferOuts(0);
@@ -240,10 +248,14 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	};
 
 	$scope.refreshTransferIns = function(page) {
+		$scope.loading++;
 		TransferLogs.query({unitId: $scope.selectedUnit.data.id, page: page, type: "in"}, function(data, header) {
 			$scope.transferInLogs = data.transferLogs;
 			$scope.currentTransferInPage = parseInt(data.currentPage);
 			$scope.totalTransferInPage = parseInt(data.totalPage);
+			$scope.loading--;
+		}, function(data, header) {
+			$scope.loading--;
 		});
 	};
 
@@ -256,10 +268,14 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	};
 
 	$scope.refreshTransferOuts = function(page) {
+		$scope.loading++;
 		TransferLogs.query({unitId: $scope.selectedUnit.data.id, page: page, type: "out"}, function(data, header) {
 			$scope.transferOutLogs = data.transferLogs;
 			$scope.currentTransferOutPage = parseInt(data.currentPage);
 			$scope.totalTransferOutPage = parseInt(data.totalPage);
+			$scope.loading--;
+		}, function(data, header) {
+			$scope.loading--;
 		});
 	};
 
@@ -272,10 +288,14 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	};
 
 	$scope.refreshLeaves = function(page) {
+		$scope.loading++;
 		Users.query({unitId: $scope.selectedUnit.data.id, isAttached: false, page: page}, function(data, header) {
 			$scope.leaveUsers = data.users;
 			$scope.currentLeavePage = parseInt(data.currentPage);
 			$scope.totalLeavePage = parseInt(data.totalPage);
+			$scope.loading--;
+		}, function(data, header) {
+			$scope.loading--;
 		});
 	};
 
