@@ -76,7 +76,7 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 			$scope.units = [data];
 			$scope.selectedUnit = data;
 
-			$scope.refreshUnitUsers();
+//			$scope.refreshUnitUsers();
 
 			$timeout(function() {
 				$scope.unitsControl.expand_all();
