@@ -2,6 +2,7 @@ package jp.co.worksap.roster.ejb;
 
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,6 +15,12 @@ import jp.co.worksap.roster.entity.OrganizationUnitTree;
 public class OrganizationEJB {
 	@PersistenceContext(unitName="RosterManagement")
 	private EntityManager em;
+
+	@EJB
+	private TransferLogEJB transferLogEJB;
+
+	@EJB
+	private UserEJB userEJB;
 
 	public void createOrganization(OrganizationUnit organizationUnit, int parentId) {
 		em.persist(organizationUnit);
@@ -50,14 +57,26 @@ public class OrganizationEJB {
 	}
 
 	public void deleteOrganization(int id) {
+		TypedQuery<OrganizationUnitTree> q0 = em.createNamedQuery("findSubTree", OrganizationUnitTree.class);
+		q0.setParameter("parentId", id);
+		List<OrganizationUnitTree> subTree = q0.getResultList();
+
 		TypedQuery<OrganizationUnitTree> q2 = em.createNamedQuery("deleteOrganizationUnitTree", OrganizationUnitTree.class);
 		q2.setParameter("id", id);
 		q2.executeUpdate();
 
-		TypedQuery<OrganizationUnit> q = em.createNamedQuery("findOrganizationUnit", OrganizationUnit.class);
-		q.setParameter("id", id);
-		OrganizationUnit o = q.getSingleResult();
-		em.remove(o);
+		for (OrganizationUnitTree subTreeNode : subTree) {
+			transferLogEJB.deleteTransferLogs(subTreeNode.getDescendant().getId());
+			userEJB.deleteUsersByUnit(subTreeNode.getDescendant().getId());
+		}
+
+		for (OrganizationUnitTree subTreeNode : subTree) {
+			TypedQuery<OrganizationUnit> q = em.createNamedQuery("findOrganizationUnit", OrganizationUnit.class);
+			q.setParameter("id", subTreeNode.getDescendant().getId());
+			OrganizationUnit o = q.getSingleResult();
+
+			em.remove(o);
+		}
 	}
 
 	public void updateOrganization(OrganizationUnit org) {

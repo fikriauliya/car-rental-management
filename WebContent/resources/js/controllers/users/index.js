@@ -144,12 +144,21 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	};
 
 	$scope.deleteUnit = function() {
-		if ($scope.selectedUnit) {
-			Organizations.remove({id: $scope.selectedUnit.data.id},
-				function(data, header) {
-					$scope.refreshUnits();
-				}
-			);
+		if (confirm("Warning! Deleting this unit will delete ALL users and sub-units. ")) {
+			$scope.loading++;
+			if ($scope.selectedUnit) {
+				Organizations.remove({id: $scope.selectedUnit.data.id},
+					function(data, header) {
+						$scope.info = "Unit " + $scope.selectedUnit.label + " has been deleted";
+						$scope.refreshUnits();
+						$scope.loading--;
+					},
+					function(data, header) {
+						$scope.errors = data.data;
+						$scope.loading--;
+					}
+				);
+			}
 		}
 	};
 

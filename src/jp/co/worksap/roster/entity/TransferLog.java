@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 	@NamedQuery(name="findAllTransferOuts", query = "SELECT u from TransferLog u WHERE u.fromUnit.id = :unitId ORDER BY u.timestamp DESC"),
 	@NamedQuery(name="countAllTransferIns", query = "SELECT COUNT(u) from TransferLog u WHERE u.toUnit.id = :unitId"),
 	@NamedQuery(name="countAllTransferOuts", query = "SELECT COUNT(u) from TransferLog u WHERE u.fromUnit.id = :unitId"),
+	@NamedQuery(name="deleteTransferLogs", query = "DELETE from TransferLog u where u.fromUnit.id = :unitId OR u.toUnit.id = :unitId")
 })
 public class TransferLog {
 	@Id @GeneratedValue
@@ -29,10 +30,8 @@ public class TransferLog {
 	@NotNull
 	private User user;
 
-	@NotNull
 	private OrganizationUnit fromUnit;
 
-	@NotNull
 	private OrganizationUnit toUnit;
 
 	@NotNull

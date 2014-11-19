@@ -42,8 +42,10 @@ public class OrganizationService {
 	}
 
 	@PUT
-	public void updateOrganization(OrganizationUnit org) {
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateOrganization(OrganizationUnit org) {
 		organizationEJB.updateOrganization(org);
+		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
 	}
 
 	@GET

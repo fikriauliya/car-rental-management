@@ -124,4 +124,10 @@ public class UserEJB {
 			em.persist(ur);
 		}
 	}
+
+	public int deleteUsersByUnit(int unitId) {
+		TypedQuery<User> q = em.createNamedQuery("deleteUsersByUnit", User.class)
+				.setParameter("unitId", unitId);
+		return q.executeUpdate();
+	}
 }

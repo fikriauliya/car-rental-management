@@ -15,6 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
 	@NamedQuery(name="findOrganiaztionUnitTreeAncestors", query = "SELECT u from OrganizationUnitTree u where u.descendant.id = :descendant_id"),
 	@NamedQuery(name="findAllOrganizationUnitTree", query = "SELECT u from OrganizationUnitTree u where u.length = 1 or u.length = 0"),
+	@NamedQuery(name="findSubTree", query = "SELECT u from OrganizationUnitTree u where u.ancestor.id = :parentId"),
 	@NamedQuery(name="deleteOrganizationUnitTree", query = "DELETE from OrganizationUnitTree u where u.descendant.id IN (SELECT w.descendant.id from OrganizationUnitTree w where w.ancestor.id = :id)")
 })
 public class OrganizationUnitTree {
