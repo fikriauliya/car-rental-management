@@ -60,7 +60,7 @@ public class UserService {
 		User u = new User();
 		u.setAttached(true);
 		u.setEmail(userWithUnit.getEmail());
-		u.setFirstName(userWithUnit.getEmail());
+		u.setFirstName(userWithUnit.getFirstName());
 		u.setLastName(userWithUnit.getLastName());
 		if (userWithUnit.getPassword() != null)
 			u.setPassword(DigestUtils.md5Hex(userWithUnit.getPassword()));

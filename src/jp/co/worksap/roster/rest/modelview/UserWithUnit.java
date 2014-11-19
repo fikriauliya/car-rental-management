@@ -52,4 +52,12 @@ public class UserWithUnit {
 	public void setId(String id) {
 		this.id = id;
 	}
+
+	@Override
+	public String toString() {
+		return "UserWithUnit [id=" + id + ", firstName=" + firstName
+				+ ", lastName=" + lastName + ", email=" + email + ", unitId="
+				+ unitId + ", isAttached=" + isAttached + ", password="
+				+ password + "]";
+	}
 }
