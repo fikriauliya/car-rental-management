@@ -8,6 +8,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @XmlRootElement
@@ -21,9 +22,11 @@ public class OrganizationUnit {
 	private int id;
 
 	@NotEmpty
+	@Length(min=1, max=200)
 	private String name;
 
 	@NotEmpty
+	@Length(min=1, max=200)
 	private String description;
 
 	public int getId() {

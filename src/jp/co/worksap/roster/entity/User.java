@@ -10,9 +10,11 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @XmlRootElement
@@ -29,14 +31,20 @@ import org.hibernate.validator.constraints.NotEmpty;
 })
 public class User {
 	@Id @NotEmpty
+	@Pattern(regexp="^[a-zA-Z0-9]+$", message="may not contain character other than letters and numbers")
+	@Length(min=5, max=200)
 	private String id;
 
 	@NotEmpty
+	@Length(min=1, max=200)
 	private String firstName;
+
 	@NotEmpty
+	@Length(min=1, max=200)
 	private String lastName;
 
 	@Email @NotEmpty
+	@Length(min=5, max=200)
 	private String email;
 
 	@NotNull
@@ -45,6 +53,7 @@ public class User {
 	private boolean isAttached;
 
 	@NotEmpty
+	@Length(min=5, max=200)
 	private String password;
 
 	@Temporal(TemporalType.TIMESTAMP)
