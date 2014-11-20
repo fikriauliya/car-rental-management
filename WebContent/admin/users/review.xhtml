@@ -49,10 +49,10 @@
       <div class="col col-md-8">
         <div class="col col-md-12">
           <h4>Peer review of {{userId}}</h4>
-          <div ng-if="years.length == 0">
+          <div ng-show="years.length == 0">
             <b>No records</b>
           </div>
-          <div ng-if="years.length > 0">
+          <div ng-show="years.length > 0">
             <div class="form-horizontal">
               <div class="form-group">
                 <label class="col-sm-2 control-label">Year</label>
