@@ -35,7 +35,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class User {
 	@Id @NotEmpty
 	@Pattern(regexp="^[a-zA-Z0-9]+$", message="may not contain character other than letters and numbers")
-	@Length(min=5, max=200)
+	@Length(min=2, max=200)
 	private String id;
 
 	@NotEmpty
