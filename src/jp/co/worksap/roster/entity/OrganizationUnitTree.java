@@ -13,10 +13,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "S_ORGANIZATION_UNIT_TREE")
 
 @NamedQueries({
-	@NamedQuery(name="findOrganiaztionUnitTreeAncestors", query = "SELECT u from OrganizationUnitTree u where u.descendant.id = :descendant_id"),
-	@NamedQuery(name="findAllOrganizationUnitTree", query = "SELECT u from OrganizationUnitTree u where u.length = 1 or u.length = 0"),
-	@NamedQuery(name="findSubTree", query = "SELECT u from OrganizationUnitTree u where u.ancestor.id = :parentId"),
-	@NamedQuery(name="deleteOrganizationUnitTree", query = "DELETE from OrganizationUnitTree u where u.descendant.id IN (SELECT w.descendant.id from OrganizationUnitTree w where w.ancestor.id = :id)")
+	@NamedQuery(name="findOrganiaztionUnitTreeAncestors", query = "SELECT u from OrganizationUnitTree u where (u.descendant.id = :descendant_id) AND (u.isDeleted = FALSE)"),
+	@NamedQuery(name="findAllOrganizationUnitTree", query = "SELECT u from OrganizationUnitTree u where (u.length = 1 or u.length = 0) and (u.isDeleted = FALSE)"),
+	@NamedQuery(name="findSubTree", query = "SELECT u from OrganizationUnitTree u where (u.ancestor.id = :parentId) and (u.isDeleted = FALSE)"),
+	@NamedQuery(name="markDeletedOrganizationUnitTree", query = "UPDATE OrganizationUnitTree u SET u.isDeleted = TRUE where u.descendant.id IN (SELECT w.descendant.id from OrganizationUnitTree w where w.ancestor.id = :id)")
 })
 public class OrganizationUnitTree {
 	@Id @GeneratedValue
@@ -25,6 +25,7 @@ public class OrganizationUnitTree {
 	private OrganizationUnit ancestor;
 	private OrganizationUnit descendant;
 	private int length;
+	private boolean isDeleted;
 
 	public int getId() {
 		return Id;
@@ -56,6 +57,14 @@ public class OrganizationUnitTree {
 
 	public void setLength(int length) {
 		this.length = length;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 
 	@Override

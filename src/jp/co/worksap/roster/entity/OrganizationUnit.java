@@ -6,6 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.validator.constraints.Length;
@@ -29,6 +30,9 @@ public class OrganizationUnit {
 	@Length(min=1, max=200)
 	private String description;
 
+	@NotNull
+	private boolean isDeleted;
+
 	public int getId() {
 		return id;
 	}
@@ -51,6 +55,14 @@ public class OrganizationUnit {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 
 	@Override

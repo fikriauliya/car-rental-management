@@ -144,7 +144,7 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	};
 
 	$scope.deleteUnit = function() {
-		if (confirm("Warning! Deleting this unit will delete ALL users and sub-units. ")) {
+		if (confirm("Warning! Deleting this unit will delete ALL sub-units and users under them. Are you sure want to delete?")) {
 			$scope.loading++;
 			if ($scope.selectedUnit) {
 				Organizations.remove({id: $scope.selectedUnit.data.id},

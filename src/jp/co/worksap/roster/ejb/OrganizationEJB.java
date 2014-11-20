@@ -61,21 +61,17 @@ public class OrganizationEJB {
 		q0.setParameter("parentId", id);
 		List<OrganizationUnitTree> subTree = q0.getResultList();
 
-		TypedQuery<OrganizationUnitTree> q2 = em.createNamedQuery("deleteOrganizationUnitTree", OrganizationUnitTree.class);
+		TypedQuery<OrganizationUnitTree> q2 = em.createNamedQuery("markDeletedOrganizationUnitTree", OrganizationUnitTree.class);
 		q2.setParameter("id", id);
 		q2.executeUpdate();
-
-		for (OrganizationUnitTree subTreeNode : subTree) {
-			transferLogEJB.deleteTransferLogs(subTreeNode.getDescendant().getId());
-			userEJB.deleteUsersByUnit(subTreeNode.getDescendant().getId());
-		}
 
 		for (OrganizationUnitTree subTreeNode : subTree) {
 			TypedQuery<OrganizationUnit> q = em.createNamedQuery("findOrganizationUnit", OrganizationUnit.class);
 			q.setParameter("id", subTreeNode.getDescendant().getId());
 			OrganizationUnit o = q.getSingleResult();
+			o.setDeleted(true);
 
-			em.remove(o);
+			em.persist(o);
 		}
 	}
 
