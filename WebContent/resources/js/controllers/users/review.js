@@ -18,7 +18,7 @@ myApp.controller('ReviewUserController', ['$scope', '$location', '$timeout', 'Us
 			});
 			$scope.years = _.keys($scope.groupedReviews);
 			if ($scope.years.length > 0)
-				$scope.selectedYear = $scope.years[0];
+				$scope.selectedYear = $scope.years[$scope.years.length - 1];
 
 			$scope.tableParams.reload();
 		});
