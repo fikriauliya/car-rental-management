@@ -4,14 +4,25 @@ myApp.controller('ReviewUserController', ['$scope', '$location', '$timeout', 'Us
   function($scope, $location, $timeout, Users, PeerReviews, ngTableParams, $filter) {
 	$scope.userId = $location.search().userId;
 	$scope.newReview = new PeerReviews();
-	$scope.reviews = [];
+	$scope.newReview.point = 1;
+	$scope.groupedReviews = {};
+	$scope.years = [];
+	$scope.averagePoint = 0;
 
 	$scope.refreshReviews = function() {
 		PeerReviews.query({userId: $scope.userId}, function(data, header) {
-			$scope.reviews = data;
+			$scope.groupedReviews = _.groupBy(data, function(d) {
+				var date = new Date(d.timestamp);
+				var year = date.getFullYear();
+				return year;
+			});
+			$scope.years = _.keys($scope.groupedReviews);
+			if ($scope.years.length > 0)
+				$scope.selectedYear = $scope.years[0];
+
 			$scope.tableParams.reload();
 		});
-	}
+	};
 
 	$scope.createReview = function() {
 		$scope.newReview.to = $location.search().userId;
@@ -24,17 +35,31 @@ myApp.controller('ReviewUserController', ['$scope', '$location', '$timeout', 'Us
 		});
 	};
 
-	 $scope.tableParams = new ngTableParams({
+	$scope.tableParams = new ngTableParams({
 		    page: 1, count: 10,
 		    sorting: {
-		        name: 'asc'     // initial sorting
+		        name: 'desc'
 		    }
 		}, {
 	    total: 0,
 	    getData: function($defer, params) {
-	        var orderedData = params.sorting() ? $filter('orderBy')($scope.reviews, params.orderBy()) : $scope.reviews;
-            params.total(orderedData.length);
-            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+	    	if ($scope.selectedYear) {
+		    	var reviews = $scope.groupedReviews[$scope.selectedYear];
+		        var orderedData = params.sorting() ? $filter('orderBy')(reviews, params.orderBy()) : reviews;
+
+		        if (reviews.length == 0) {
+		        	$scope.averagePoint = 0;
+		        } else {
+		        	var sum = _.reduce(reviews, function(memo, item) {
+		        		return memo + item.point;
+		        	}, 0);
+		        	var size = reviews.length;
+		        	$scope.averagePoint = sum/size;
+		        }
+
+	            params.total(orderedData.length);
+	            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+	    	}
         }
     });
 
