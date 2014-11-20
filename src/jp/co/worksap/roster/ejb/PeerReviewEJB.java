@@ -12,6 +12,7 @@ import javax.ws.rs.POST;
 
 import jp.co.worksap.roster.controller.UserSessionController;
 import jp.co.worksap.roster.entity.PeerReview;
+import jp.co.worksap.roster.entity.User;
 
 @Stateless
 public class PeerReviewEJB {
@@ -26,5 +27,11 @@ public class PeerReviewEJB {
 
 	public void createPeerReview(PeerReview peerReview) {
 		em.persist(peerReview);
+	}
+
+	public int deletePeerReviewByUser(String userId) {
+		TypedQuery<PeerReview> q = em.createNamedQuery("deletePeerReviewByUser", PeerReview.class)
+				.setParameter("userId", userId);
+		return q.executeUpdate();
 	}
 }

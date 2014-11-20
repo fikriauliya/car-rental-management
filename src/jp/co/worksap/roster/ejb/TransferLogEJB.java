@@ -47,4 +47,10 @@ public class TransferLogEJB {
 				.setParameter("unitId", unitId);
 		return q.executeUpdate();
 	}
+
+	public int deleteTransferLogsByUser(String userId) {
+		TypedQuery<TransferLog> q = em.createNamedQuery("deleteTransferLogsByUser", TransferLog.class)
+				.setParameter("userId", userId);
+		return q.executeUpdate();
+	}
 }

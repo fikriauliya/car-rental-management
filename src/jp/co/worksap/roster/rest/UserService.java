@@ -6,6 +6,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -19,6 +20,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import jp.co.worksap.roster.ejb.OrganizationEJB;
+import jp.co.worksap.roster.ejb.PeerReviewEJB;
+import jp.co.worksap.roster.ejb.TransferLogEJB;
 import jp.co.worksap.roster.ejb.UserEJB;
 import jp.co.worksap.roster.entity.Role;
 import jp.co.worksap.roster.entity.User;
@@ -39,6 +42,12 @@ public class UserService {
 
 	@EJB
 	private OrganizationEJB orgEJB;
+
+	@EJB
+	private PeerReviewEJB peerReviewEJB;
+
+	@EJB
+	private TransferLogEJB transferLogEJB;
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -104,5 +113,15 @@ public class UserService {
 	@Path("/{id}")
 	public void update(@PathParam("id") String id, String[] roles) {
 		userEJB.updateRoles(id, roles);
+	}
+
+	@DELETE
+	@Path("/{id}")
+	public void delete(@PathParam("id") String id){
+		System.out.println("Delete");
+		System.out.println(id);
+		transferLogEJB.deleteTransferLogsByUser(id);
+		peerReviewEJB.deletePeerReviewByUser(id);
+		userEJB.deleteUser(id);
 	}
 }

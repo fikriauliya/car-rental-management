@@ -29,7 +29,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 	@NamedQuery(name="findAllUsersInUnitByIsAttached", query = "SELECT u from User u WHERE u.unit.id = :unitId AND u.isAttached = :isAttached ORDER BY u.id"),
 	@NamedQuery(name="countAllUsers", query = "SELECT COUNT(u) from User u WHERE u.unit.id = :unitId AND u.isAttached = :isAttached"),
 	@NamedQuery(name="findUser", query = "SELECT u from User u where u.id = :id"),
-	@NamedQuery(name="deleteUsersByUnit", query = "DELETE from User u where u.unit.id = :unitId")
+	@NamedQuery(name="deleteUsersByUnit", query = "DELETE from User u where u.unit.id = :unitId"),
+	@NamedQuery(name="deleteUser", query = "DELETE from User u where u.id = :id")
 })
 public class User {
 	@Id @NotEmpty

@@ -136,4 +136,10 @@ public class UserEJB {
 				.setParameter("unitId", unitId);
 		return q.executeUpdate();
 	}
+
+	public int deleteUser(String userId) {
+		TypedQuery<User> q = em.createNamedQuery("deleteUser", User.class)
+				.setParameter("id", userId);
+		return q.executeUpdate();
+	}
 }

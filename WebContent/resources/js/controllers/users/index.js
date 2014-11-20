@@ -218,6 +218,20 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 		}
 	};
 
+	$scope.deleteUser = function(user) {
+		console.log("Dete");
+		if (confirm("WARNING: deleting user will also delete all informations related to the user. Are you sure want to delete?")) {
+			console.log(user);
+			Users.remove({id: user.id}, function(data, header) {
+				$scope.info = "User " + user.id + " has been deleted";
+				$scope.refreshUnitUsers();
+			}, function(data, header) {
+				$scope.errors = data.data;
+				$scope.refreshUnitUsers();
+			});
+		};
+	};
+
 	$scope.transferUser = function(user) {
 		$scope.toBeTransferedUser = user;
 		$scope.inTransferMode = true;

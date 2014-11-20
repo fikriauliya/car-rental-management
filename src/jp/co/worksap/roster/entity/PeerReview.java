@@ -23,7 +23,8 @@ import org.hibernate.validator.constraints.Range;
 @Table(name="S_PEER_REVIEW")
 @Entity
 @NamedQueries({
-	@NamedQuery(name="findAllPeerReviews", query="SELECT u FROM PeerReview u WHERE u.to.id = :userId")
+	@NamedQuery(name="findAllPeerReviews", query="SELECT u FROM PeerReview u WHERE u.to.id = :userId"),
+	@NamedQuery(name="deletePeerReviewByUser", query = "DELETE from PeerReview u where u.from.id = :userId or u.to.id = :userId")
 })
 public class PeerReview {
 	@Id @GeneratedValue
