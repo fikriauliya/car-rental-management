@@ -29,3 +29,12 @@ transferLogsServices.factory("TransferLogs",
 	  });
    }
   ]);
+
+peerReviewServices = angular.module('peerReviewServices', ['ngResource']);
+peerReviewServices.factory("PeerReviews",
+  ["$resource",
+   function($resource) {
+	  return $resource(basePath + "/api/reviews", {}, {
+	  });
+   }
+  ]);

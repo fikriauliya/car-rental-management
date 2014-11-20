@@ -113,7 +113,7 @@
                       <th>First name</th>
                       <th>Last name</th>
                       <th>Email</th>
-                      <th style="width:250px"></th>
+                      <th style="width:320px"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -136,6 +136,7 @@
                         <button class="btn btn-info btn-xs" ng-click="transferUser(user)">Transfer</button>
                         <button class="btn btn-danger btn-xs" ng-click="leaveUser(user)">Leave</button>
                         <button class="btn btn-primary btn-xs" ng-click="changeRoles(user)">Change roles</button>
+                        <a ng-href="review.jsf?userId={{user.id}}" class="btn btn-default btn-xs">Review</a>
                       </td>
                     </tr>
                   </tbody>

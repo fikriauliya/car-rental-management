@@ -21,6 +21,12 @@ public class UserEJB {
 	@PersistenceContext(unitName="RosterManagement")
 	private EntityManager em;
 
+	public User findUser(String userId) {
+		TypedQuery<User> q = em.createNamedQuery("findUser", User.class)
+				.setParameter("id", userId);
+		return q.getSingleResult();
+	}
+
 	public List<User> findAllUsers(int page, int size) {
 		TypedQuery<User> q = em.createNamedQuery("findAllUsers", User.class)
 				.setFirstResult(page * size)
