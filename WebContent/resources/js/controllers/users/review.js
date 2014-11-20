@@ -27,11 +27,15 @@ myApp.controller('ReviewUserController', ['$scope', '$location', '$timeout', 'Us
 	$scope.createReview = function() {
 		$scope.newReview.to = $location.search().userId;
 		$scope.newReview.$save({}, function(data, header) {
-			console.log("Saved");
+			$scope.info = "Thank you for your review";
+			$scope.errors = [];
+			$scope.newReview = new PeerReviews();
+			$scope.newReview.point = 1;
 			$scope.refreshReviews();
 
 		}, function(data, header) {
-			console.log("Failed");
+			$scope.info = "";
+			$scope.errors = data.data;
 		});
 	};
 

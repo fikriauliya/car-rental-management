@@ -14,6 +14,15 @@
     <div class="row" ng-app="myApp" ng-controller="ReviewUserController">
       <div class="col col-md-4">
         <h4>Create new review for {{userId}}</h4>
+
+        <div class="alert alert-danger" ng-if="errors">
+          <ul>
+            <li ng-repeat="error in errors">{{error}}</li>
+          </ul>
+        </div>
+        <div class="alert alert-info" ng-if="info">
+          {{info}}
+        </div>
         <form class="form-horizontal">
           <div class="form-group">
             <label class="col-sm-3 control-label">Message</label>
