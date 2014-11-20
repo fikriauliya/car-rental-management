@@ -5,7 +5,7 @@
 	id="WebApp_ID" version="3.0">
 	<display-name>RosterManagement</display-name>
 	<welcome-file-list>
-		<welcome-file>admin/index.jsf</welcome-file>
+		<welcome-file>index.jsf</welcome-file>
 	</welcome-file-list>
 	<servlet>
 		<description>JAX-RS Tools Generated - Do not modify</description>
@@ -65,10 +65,12 @@
 		<web-resource-collection>
 			<web-resource-name>Secure Pages</web-resource-name>
 			<description />
-			<url-pattern>/admin/*</url-pattern>
+			<url-pattern>/users/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>admin</role-name>
+			<role-name>employee</role-name>
+			<role-name>hr</role-name>
 		</auth-constraint>
 	</security-constraint>
 
@@ -77,5 +79,8 @@
 	</security-role>
 	<security-role>
 		<role-name>employee</role-name>
+	</security-role>
+	<security-role>
+		<role-name>hr</role-name>
 	</security-role>
 </web-app>

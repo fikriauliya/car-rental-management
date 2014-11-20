@@ -3,6 +3,7 @@ package jp.co.worksap.roster.rest;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.DefaultValue;
@@ -26,6 +27,7 @@ public class TransferLogService {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin" ,"hr"})
 	public TransferLogsInfo index(@QueryParam("unitId") int unitId, @QueryParam("type") String type, @DefaultValue("0") @QueryParam("page") int page) {
 		TransferLogsInfo res = new TransferLogsInfo();
 		List<TransferLog> tl = new LinkedList<TransferLog>();

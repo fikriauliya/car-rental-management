@@ -2,6 +2,7 @@ package jp.co.worksap.roster.rest;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.GET;
@@ -21,6 +22,7 @@ public class RoleService {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin" ,"hr"})
 	public List<Role> index() {
 		return userEJB.findAllRoles();
 	}

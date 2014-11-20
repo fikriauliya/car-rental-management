@@ -3,6 +3,7 @@ package jp.co.worksap.roster.rest;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
@@ -34,6 +35,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 @Path("/users")
 @Stateless
+@RolesAllowed({"employee", "admin" ,"hr"})
 public class UserService {
 	private final int SIZE = 10;
 
@@ -65,6 +67,7 @@ public class UserService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin" ,"hr"})
 	public Response create(UserWithUnit userWithUnit) {
 		User u = new User();
 		u.setAttached(true);
@@ -82,6 +85,7 @@ public class UserService {
 
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin" ,"hr"})
 	public void updateUser(User user) {
 		userEJB.updateUser(user);
 	}
@@ -89,6 +93,7 @@ public class UserService {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}")
+	@RolesAllowed({"admin" ,"hr"})
 	public UserDetail detail(@PathParam("id") String userId){
 		List<UserRole> assignedRoles = userEJB.findAllAssignedRoles(userId);
 		List<Role> availableRoles = userEJB.findAllRoles();
@@ -111,12 +116,14 @@ public class UserService {
 
 	@PUT
 	@Path("/{id}")
+	@RolesAllowed({"admin" ,"hr"})
 	public void update(@PathParam("id") String id, String[] roles) {
 		userEJB.updateRoles(id, roles);
 	}
 
 	@DELETE
 	@Path("/{id}")
+	@RolesAllowed({"admin" ,"hr"})
 	public void delete(@PathParam("id") String id){
 		System.out.println("Delete");
 		System.out.println(id);

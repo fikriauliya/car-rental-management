@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.DELETE;
@@ -32,17 +33,20 @@ public class OrganizationService {
 	private OrganizationEJB organizationEJB;
 
 	@POST
+	@RolesAllowed({"admin" ,"hr"})
 	public void createOrganization(OrganizationUnitWithParent newOrg) {
 		organizationEJB.createOrganization(newOrg.toOrganizationUnit(), newOrg.getParentId());
 	}
 
 	@DELETE
+	@RolesAllowed({"admin" ,"hr"})
 	public void deleteOrganization(@QueryParam("id") int id) {
 		organizationEJB.deleteOrganization(id);
 	}
 
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin" ,"hr"})
 	public Response updateOrganization(OrganizationUnit org) {
 		organizationEJB.updateOrganization(org);
 		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();

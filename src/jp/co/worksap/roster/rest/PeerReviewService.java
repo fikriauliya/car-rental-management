@@ -3,6 +3,7 @@ package jp.co.worksap.roster.rest;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.GET;
@@ -37,12 +38,14 @@ public class PeerReviewService {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin" ,"hr"})
 	public List<PeerReview> index(@QueryParam("userId") String userId) {
 		List<PeerReview> res = peerReviewEJB.findAllPeerReview(userId);
 		return res;
 	}
 
 	@POST
+	@RolesAllowed({"admin" ,"hr", "employee"})
 	public void createPeerReview(PeerReviewView peerReview, @Context SecurityContext context) {
 		String from = context.getUserPrincipal().getName();
 
