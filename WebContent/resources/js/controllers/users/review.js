@@ -1,5 +1,4 @@
 myApp = angular.module('myApp');
-myApp.config(function($locationProvider) { $locationProvider.html5Mode(true); });
 myApp.controller('ReviewUserController', ['$scope', '$location', '$timeout', 'Users', 'PeerReviews', 'ngTableParams', '$filter',
   function($scope, $location, $timeout, Users, PeerReviews, ngTableParams, $filter) {
 	$scope.userId = $location.search().userId;

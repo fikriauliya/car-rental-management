@@ -1,5 +1,6 @@
 myApp = angular.module('myApp', ['userServices', 'organizationServices', 'peerReviewServices',
-                                 'angularBootstrapNavTree', 'transferLogsServices', 'angularSpinner', 'ngTable']);
+                                 'angularBootstrapNavTree', 'transferLogsServices', 'angularSpinner',
+                                 'ngTable', 'ui.calendar', 'ui.bootstrap.datetimepicker']);
 myApp.factory('myHttpInterceptor', ['$q', function($q) {
 	  return {
 	    'response': function(response) {
@@ -19,6 +20,7 @@ myApp.factory('myHttpInterceptor', ['$q', function($q) {
 	  };
 }]);
 
-myApp.config(function($provide, $httpProvider) {
+myApp.config(function($provide, $httpProvider, $locationProvider) {
 	$httpProvider.interceptors.push('myHttpInterceptor');
+	$locationProvider.html5Mode(true);
 });

@@ -117,7 +117,7 @@
                       <th>First name</th>
                       <th>Last name</th>
                       <th>Email</th>
-                      <th style="width:370px"></th>
+                      <th style="width:450px"></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -144,6 +144,10 @@
                           <button class="btn btn-primary btn-xs" ng-click="changeRoles(user)">Change roles</button>
                         </h:panelGroup>
                         <a ng-href="review.jsf?userId={{user.id}}" class="btn btn-default btn-xs">Review</a>
+                        <a ng-href="agenda.jsf?userId={{user.id}}" class="btn btn-default btn-xs">
+                          <span class="glyphicon glyphicon-calendar"/>
+                          Agenda
+                        </a>
                       </td>
                     </tr>
                   </tbody>
