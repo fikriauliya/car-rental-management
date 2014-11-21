@@ -38,3 +38,12 @@ peerReviewServices.factory("PeerReviews",
 	  });
    }
   ]);
+
+userAgendaServices = angular.module('userAgendaServices', ['ngResource']);
+userAgendaServices.factory("UserAgendas",
+  ["$resource",
+   function($resource) {
+	  return $resource(basePath + "/api/useragendas/:id", {}, {
+	  });
+   }
+  ]);

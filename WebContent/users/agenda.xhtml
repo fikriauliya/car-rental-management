@@ -16,6 +16,14 @@
     <div class="row" ng-app="myApp" ng-controller="AgendaUserController">
       <div class="col col-md-12">
         <h3>Agenda of {{userId}}</h3>
+        <div class="alert alert-danger" ng-if="errors">
+          <ul>
+            <li ng-repeat="error in errors">{{error}}</li>
+          </ul>
+        </div>
+        <div class="alert alert-info" ng-if="info">
+          {{info}}
+        </div>
         <hr/>
       </div>
 
@@ -31,7 +39,7 @@
               <td data-title="'Title'" sortable="'title'">{{event.title}}</td>
               <td data-title="'From'" sortable="'start'">{{event.start | date: 'medium'}}</td>
               <td data-title="'To'" sortable="'end'">{{event.end | date: 'medium'}}</td>
-              <td><button class="btn btn-danger btn-xs" ng-click="removeEvent($index)">Delete</button></td>
+              <td><button class="btn btn-danger btn-xs" ng-click="removeEvent(event)">Delete</button></td>
             </tr>
           </tbody>
         </table>
@@ -39,15 +47,6 @@
 
       <div class="col col-md-3">
         <h4>Add new agenda</h4>
-
-        <div class="alert alert-danger" ng-if="errors">
-          <ul>
-            <li ng-repeat="error in errors">{{error}}</li>
-          </ul>
-        </div>
-        <div class="alert alert-info" ng-if="info">
-          {{info}}
-        </div>
 
         <form class="form-horizontal">
           <div class="form-group">
