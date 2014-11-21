@@ -16,6 +16,7 @@ myApp.controller('AgendaUserController', ['$scope', '$location', '$timeout', 'Us
 
 	$scope.refreshEvents = function() {
 		UserAgendas.query({id: $scope.userId, start: $scope.curStart, end: $scope.curEnd}, function(d, h){
+        	$scope.events[0] = [];
         	$scope.events[0] = d;
         	$scope.tableParams.reload();
         }, function(d, h) {
@@ -79,12 +80,13 @@ myApp.controller('AgendaUserController', ['$scope', '$location', '$timeout', 'Us
         eventResize: $scope.alertOnResize,
         eventRender: $scope.eventRender,
         viewRender: function(view, element) {
-            $log.debug("View Changed: ", view.visStart, view.visEnd, view.start, view.end);
             var start = (new Date(view.start._d)).getTime();
             var end = (new Date(view.end._d)).getTime();
 
             $scope.curStart = start;
             $scope.curEnd = end;
+
+            $("#myCalendar").fullCalendar('removeEvents');
             $scope.refreshEvents();
         }
       }
