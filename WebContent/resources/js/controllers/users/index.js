@@ -180,6 +180,7 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	};
 
 	$scope.editUnit = function(status) {
+		$scope.clearNotification();
 		if (status == false) {
 			$scope.refreshUnits();
 		}
@@ -203,6 +204,10 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	};
 
 	$scope.editUser = function(user, status) {
+		$scope.clearNotification();
+		if (status == false) {
+			$scope.refreshUnitUsers();
+		}
 		user.inEditMode = status;
 	};
 
@@ -218,8 +223,6 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 				$scope.clearNotification();
 
 				$scope.errors = data.data;
-				$scope.editUser(user, false);
-				$scope.refreshUsers(0);
 			}
 		);
 	};
