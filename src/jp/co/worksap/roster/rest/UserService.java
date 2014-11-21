@@ -86,8 +86,9 @@ public class UserService {
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@RolesAllowed({"admin" ,"hr"})
-	public void updateUser(User user) {
+	public Response updateUser(User user) {
 		userEJB.updateUser(user);
+		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
 	}
 
 	@GET
@@ -117,18 +118,20 @@ public class UserService {
 	@PUT
 	@Path("/{id}")
 	@RolesAllowed({"admin" ,"hr"})
-	public void update(@PathParam("id") String id, String[] roles) {
+	public Response update(@PathParam("id") String id, String[] roles) {
 		userEJB.updateRoles(id, roles);
+		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
 	}
 
 	@DELETE
 	@Path("/{id}")
 	@RolesAllowed({"admin" ,"hr"})
-	public void delete(@PathParam("id") String id){
+	public Response delete(@PathParam("id") String id){
 		System.out.println("Delete");
 		System.out.println(id);
 		transferLogEJB.deleteTransferLogsByUser(id);
 		peerReviewEJB.deletePeerReviewByUser(id);
 		userEJB.deleteUser(id);
+		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
 	}
 }

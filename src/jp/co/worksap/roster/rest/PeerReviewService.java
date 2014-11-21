@@ -13,9 +13,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 
-import jp.co.worksap.roster.controller.UserSessionController;
 import jp.co.worksap.roster.ejb.PeerReviewEJB;
 import jp.co.worksap.roster.ejb.UserEJB;
 import jp.co.worksap.roster.entity.PeerReview;
@@ -25,16 +26,11 @@ import jp.co.worksap.roster.rest.modelview.PeerReviewView;
 @Path("/reviews")
 @Stateless
 public class PeerReviewService {
-	private final int SIZE = 10;
-
 	@EJB
 	PeerReviewEJB peerReviewEJB;
 
 	@EJB
 	UserEJB userEJB;
-
-	@EJB
-	private UserSessionController session;
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -46,7 +42,7 @@ public class PeerReviewService {
 
 	@POST
 	@RolesAllowed({"admin" ,"hr", "employee"})
-	public void createPeerReview(PeerReviewView peerReview, @Context SecurityContext context) {
+	public Response createPeerReview(PeerReviewView peerReview, @Context SecurityContext context) {
 		String from = context.getUserPrincipal().getName();
 
 		User fromUser = userEJB.findUser(from);
@@ -59,5 +55,7 @@ public class PeerReviewService {
 		pr.setTo(toUser);
 		pr.setTimestamp(new Date());
 		peerReviewEJB.createPeerReview(pr);
+
+		return Response.status(Status.CREATED).type(MediaType.APPLICATION_JSON).build();
 	}
 }

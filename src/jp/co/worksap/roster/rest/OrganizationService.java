@@ -34,14 +34,16 @@ public class OrganizationService {
 
 	@POST
 	@RolesAllowed({"admin" ,"hr"})
-	public void createOrganization(OrganizationUnitWithParent newOrg) {
+	public Response createOrganization(OrganizationUnitWithParent newOrg) {
 		organizationEJB.createOrganization(newOrg.toOrganizationUnit(), newOrg.getParentId());
+		return Response.status(Status.CREATED).type(MediaType.APPLICATION_JSON).build();
 	}
 
 	@DELETE
 	@RolesAllowed({"admin" ,"hr"})
-	public void deleteOrganization(@QueryParam("id") int id) {
+	public Response deleteOrganization(@QueryParam("id") int id) {
 		organizationEJB.deleteOrganization(id);
+		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
 	}
 
 	@PUT
