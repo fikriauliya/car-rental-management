@@ -19,17 +19,22 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	$scope.currentLeavePage = 0;
 	$scope.totalLeavePage = 1;
 
-	$scope.displayNewUserDialog = function() {
+	$scope.clearNotification = function() {
+		$scope.errors = [];
 		$scope.info = "";
-		$scope.errors = "";
+	};
+
+	$scope.displayNewUserDialog = function() {
+		$scope.clearNotification();
 		$('.new-employee-modal').modal('show');
-	}
+	};
 
 	$scope.createUser = function() {
 		$scope.newUser.unitId = $scope.selectedUnit.data.id;
 		$scope.newUser.$save({},
 			function(data, header) {
-				$scope.errors = "";
+				$scope.clearNotification();
+
 				$scope.info = "User " + $scope.newUser.id + " has been created";
 
 				$scope.refreshUsers(0);
@@ -38,8 +43,9 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 				$('.new-employee-modal').modal('hide');
 			},
 			function(data, header) {
+				$scope.clearNotification();
+
 				$scope.errors = data.data;
-				$scope.info = "";
 			}
 	   );
 	};
@@ -95,7 +101,8 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 			$scope.toBeTransferedUser.unit.id = branch.data.id;
 			Users.update({}, _.omit($scope.toBeTransferedUser, 'inEditMode'),
 				function(data, header) {
-					$scope.errors = "";
+					$scope.clearNotification();
+
 					$scope.info = "User " + $scope.toBeTransferedUser.id + " has been transfered";
 					$scope.selectedUnit = branch;
 
@@ -103,6 +110,8 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 					$scope.inTransferMode = false;
 				},
 				function(data, header) {
+					$scope.clearNotification();
+
 					$scope.errors = data.data;
 					$scope.selectedUnit = branch;
 
@@ -117,8 +126,8 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	};
 
 	$scope.displayNewUnitDialog = function() {
-		$scope.info = "";
-		$scope.errors = "";
+		$scope.clearNotification();
+
 		$('.new-unit-modal').modal('show');
 	};
 
@@ -130,7 +139,8 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 
 		$scope.newUnit.$save({},
 			function(data, header) {
-				$scope.errors = "";
+				$scope.clearNotification();
+
 				$scope.info = "Unit " + $scope.newUnit.name + " has been created";
 
 				$scope.refreshUnits();
@@ -139,8 +149,9 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 				$('.new-unit-modal').modal('hide');
 			},
 			function(data, header) {
+				$scope.clearNotification();
+
 				$scope.errors = data.data;
-				$scope.info = "";
 			}
 	   );
 	};
@@ -151,11 +162,15 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 			if ($scope.selectedUnit) {
 				Organizations.remove({id: $scope.selectedUnit.data.id},
 					function(data, header) {
+						$scope.clearNotification();
+
 						$scope.info = "Unit " + $scope.selectedUnit.label + " has been deleted";
 						$scope.refreshUnits();
 						$scope.loading--;
 					},
 					function(data, header) {
+						$scope.clearNotification();
+
 						$scope.errors = data.data;
 						$scope.loading--;
 					}
@@ -174,11 +189,14 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	$scope.updateUnit = function() {
 		Organizations.update({}, $scope.selectedUnit.data,
 			function(data, header) {
-				$scope.errors = "";
+				$scope.clearNotification();
+
 				$scope.selectedUnit.label = $scope.selectedUnit.data.name;
 				$scope.inEditMode = false;
 			},
 			function(data, header) {
+				$scope.clearNotification();
+
 				$scope.errors = data.data;
 			}
 		);
@@ -191,11 +209,14 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	$scope.updateUser = function(user) {
 		Users.update({}, _.omit(user, 'inEditMode'),
 			function(data, header) {
-				$scope.errors = "";
+				$scope.clearNotification();
+
 				$scope.info = "User " + user.id + " updated";
 				$scope.editUser(user, false);
 			},
 			function(data, header) {
+				$scope.clearNotification();
+
 				$scope.errors = data.data;
 				$scope.editUser(user, false);
 				$scope.refreshUsers(0);
@@ -208,11 +229,14 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 			user.attached = false;
 			Users.update({}, _.omit(user, 'inEditMode'),
 				function(data, header) {
-					$scope.errors = "";
+					$scope.clearNotification();
+
 					$scope.info = "User " + user.id + " has been set to 'leaved'";
 					$scope.refreshUnitUsers();
 				},
 				function(data, header) {
+					$scope.clearNotification();
+
 					$scope.errors = data.data;
 					$scope.refreshUnitUsers();
 				}
@@ -221,13 +245,16 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	};
 
 	$scope.deleteUser = function(user) {
-		console.log("Dete");
 		if (confirm("WARNING: deleting user will also delete all informations related to the user. Are you sure want to delete?")) {
 			console.log(user);
 			Users.remove({id: user.id}, function(data, header) {
+				$scope.clearNotification();
+
 				$scope.info = "User " + user.id + " has been deleted";
 				$scope.refreshUnitUsers();
 			}, function(data, header) {
+				$scope.clearNotification();
+
 				$scope.errors = data.data;
 				$scope.refreshUnitUsers();
 			});
@@ -244,15 +271,12 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	};
 
 	$scope.changeRoles = function(user) {
-		$scope.info = "";
-		$scope.errors = "";
+		$scope.clearNotification();
 
 		$scope.currentUserRoles = Users.query({id: user.id}, function(data, header) {
 			$scope.toBeRoleChangedUser = user;
 			$scope.availableRoles = data.availableRoles;
 			$scope.assignedRoles = data.assignedRoles;
-			console.log($scope.availableRoles);
-			console.log($scope.assignedRoles);
 			$('.change-role-modal').modal('show');
 		});
 	};
