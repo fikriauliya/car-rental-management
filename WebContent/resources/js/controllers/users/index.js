@@ -34,6 +34,8 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 
 				$scope.refreshUsers(0);
 				$scope.newUser = new Users();
+
+				$('.new-employee-modal').modal('hide');
 			},
 			function(data, header) {
 				$scope.errors = data.data;
