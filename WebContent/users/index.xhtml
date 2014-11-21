@@ -171,7 +171,7 @@
                     </thead>
                     <tbody>
                       <tr ng-repeat="log in transferInLogs">
-                        <td>{{log.user.id}}<br/>({{log.user.firstName}} {{log.user.lastName}})</td>
+                        <td>{{log.user.firstName}} {{log.user.lastName}}<br/>({{log.user.id}})</td>
                         <td>{{log.fromUnit.name}}</td>
                         <td>{{log.timestamp | date: 'mediumDate'}}</td>
                       </tr>
@@ -200,7 +200,7 @@
                     </thead>
                     <tbody>
                       <tr ng-repeat="log in transferOutLogs">
-                        <td>{{log.user.id}}<br/>({{log.user.firstName}} {{log.user.lastName}})</td>
+                        <td>{{log.user.firstName}} {{log.user.lastName}}<br/>({{log.user.id}})</td>
                         <td>{{log.toUnit.name}}</td>
                         <td>{{log.timestamp | date: 'mediumDate'}}</td>
                       </tr>
@@ -228,7 +228,7 @@
                     </thead>
                     <tbody>
                       <tr ng-repeat="log in leaveUsers">
-                        <td>{{log.id}}<br/>({{log.firstName}} {{log.lastName}})</td>
+                        <td>{{log.firstName}} {{log.lastName}}<br/>({{log.id}})</td>
                         <td>{{log.leaveTimestamp | date:'mediumDate'}}</td>
                       </tr>
                     </tbody>
