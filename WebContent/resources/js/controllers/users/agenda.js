@@ -69,7 +69,7 @@ myApp.controller('AgendaUserController', ['$scope', '$location', '$timeout', 'Us
     $scope.uiConfig = {
       calendar:{
         height: 450,
-        editable: true,
+        editable: false,
         header:{
           left: 'month agendaWeek agendaDay',
           center: 'title',
