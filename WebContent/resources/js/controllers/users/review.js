@@ -8,10 +8,17 @@ myApp.controller('ReviewUserController', ['$scope', '$location', '$timeout', 'Us
 	$scope.years = [];
 	$scope.averagePoint = 0;
 
+	$scope.clearNotification = function() {
+		$scope.errors = [];
+		$scope.info = "";
+	};
+
 	$scope.refreshReviews = function() {
 		if (isAdmin || isHR) {
 			ngProgress.start();
 			PeerReviews.query({userId: $scope.userId}, function(data, header) {
+				$scope.clearNotification();
+
 				$scope.groupedReviews = _.groupBy(data, function(d) {
 					var date = new Date(d.timestamp);
 					var year = date.getFullYear();
@@ -24,6 +31,9 @@ myApp.controller('ReviewUserController', ['$scope', '$location', '$timeout', 'Us
 				$scope.tableParams.reload();
 				ngProgress.complete();
 			}, function(data, header) {
+				$scope.clearNotification();
+				$scope.errors = data.data;
+
 				ngProgress.complete();
 			});
 		}
@@ -33,14 +43,16 @@ myApp.controller('ReviewUserController', ['$scope', '$location', '$timeout', 'Us
 		ngProgress.start();
 		$scope.newReview.to = $location.search().userId;
 		$scope.newReview.$save({}, function(data, header) {
+			$scope.clearNotification();
+
 			$scope.info = "Thank you for your review";
-			$scope.errors = [];
 			$scope.newReview = new PeerReviews();
 			$scope.newReview.point = 1;
 			$scope.refreshReviews();
 			ngProgress.complete();
 		}, function(data, header) {
-			$scope.info = "";
+			$scope.clearNotification();
+
 			$scope.errors = data.data;
 			ngProgress.complete();
 		});

@@ -23,6 +23,9 @@ myApp.controller('AgendaUserController', ['$scope', '$location', '$timeout', 'Us
 
         	ngProgress.complete();
         }, function(d, h) {
+        	$scope.clearNotification();
+			$scope.errors = d.data;
+
         	ngProgress.complete();
         });
 	}
