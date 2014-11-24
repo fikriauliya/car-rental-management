@@ -46,7 +46,7 @@
           </div>
         </form>
       </div>
-      <div class="col col-md-8">
+      <h:panelGroup class="col col-md-8" rendered="#{request.isUserInRole('admin') || request.isUserInRole('hr')}">
         <div class="col col-md-12">
           <h4>Peer review of {{userId}}</h4>
           <div ng-show="years.length == 0">
@@ -83,7 +83,7 @@
             </table>
           </div>
         </div>
-      </div>
+      </h:panelGroup>
     </div>
   </ui:define>
 </ui:composition>
