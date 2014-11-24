@@ -21,7 +21,7 @@ public class ValidationExceptionMapper implements
     public Response toResponse(ConstraintViolationException ex) {
 		List<String> res = new LinkedList<String>();
 		for (ConstraintViolation<?> error : ex.getConstraintViolations()) {
-			if (error.getPropertyPath() != null) {
+			if (error.getPropertyPath() != null && !error.getPropertyPath().toString().equals("")) {
 				res.add(error.getPropertyPath().toString() + ": " + error.getMessage());
 			} else {
 				res.add(error.getMessage());

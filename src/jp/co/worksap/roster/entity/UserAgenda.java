@@ -14,11 +14,14 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import jp.co.worksap.roster.entity.validator.FieldLessThan;
+
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @XmlRootElement
 @Entity
+@FieldLessThan(first="startTime", second="endTime", message="start time must be less than end time")
 @NamedQueries({
 	@NamedQuery(name="findUserAgendasByDate", query="SELECT u from UserAgenda u WHERE ((:startTime <= u.startTime AND :endTime >= u.startTime) " +
 			"OR (:startTime <= u.endTime AND :endTime >= u.endTime)" +
