@@ -61,6 +61,12 @@ public class UserEJB {
 		em.persist(user);
 	}
 
+	public int deleteAllAssignedRoles(String userId) {
+		TypedQuery<UserRole> q = em.createNamedQuery("deleteAllAssignedRoles", UserRole.class)
+				.setParameter("id", userId);
+		return q.executeUpdate();
+	}
+
 	public void updateUser(User user) {
 		TypedQuery<User> q = em.createNamedQuery("findUser", User.class);
 		q.setParameter("id", user.getId());
@@ -73,6 +79,7 @@ public class UserEJB {
 		if (o.isAttached() != user.isAttached()) {
 			if (!user.isAttached()){
 				o.setLeaveTimestamp(new Date());
+				deleteAllAssignedRoles(user.getId());
 			}
 		}
 		o.setAttached(user.isAttached());

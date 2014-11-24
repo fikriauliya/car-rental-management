@@ -13,7 +13,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "S_USERROLE")
 @IdClass(UserRoleId.class)
 @NamedQueries({
-	@NamedQuery(name="findAllAssignedRoles", query = "SELECT u from UserRole u WHERE u.id = :id")
+	@NamedQuery(name="findAllAssignedRoles", query = "SELECT u from UserRole u WHERE u.id = :id"),
+	@NamedQuery(name="deleteAllAssignedRoles", query = "DELETE from UserRole u WHERE u.id = :id")
 })
 public class UserRole {
 	@Id

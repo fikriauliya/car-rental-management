@@ -28,7 +28,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 			"OR (:startTime >= u.startTime AND :endTime <= u.endTime))" +
 			"AND :userId = u.user.id"),
 	@NamedQuery(name="deleteUserAgenda", query = "DELETE from UserAgenda u where u.id = :id"),
-	@NamedQuery(name="findUserAgenda", query = "SELECT u from UserAgenda u where u.id = :id")
+	@NamedQuery(name="findUserAgenda", query = "SELECT u from UserAgenda u where u.id = :id"),
+	@NamedQuery(name="deleteUserAgendaByUser", query = "DELETE from UserAgenda u where u.user.id = :userId OR u.assignedBy.id = :userId"),
 })
 @Table(name = "S_USER_AGENDA")
 public class UserAgenda {

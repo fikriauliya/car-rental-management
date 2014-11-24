@@ -23,6 +23,7 @@ import javax.ws.rs.core.Response.Status;
 import jp.co.worksap.roster.ejb.OrganizationEJB;
 import jp.co.worksap.roster.ejb.PeerReviewEJB;
 import jp.co.worksap.roster.ejb.TransferLogEJB;
+import jp.co.worksap.roster.ejb.UserAgendaEJB;
 import jp.co.worksap.roster.ejb.UserEJB;
 import jp.co.worksap.roster.entity.Role;
 import jp.co.worksap.roster.entity.User;
@@ -50,6 +51,9 @@ public class UserService {
 
 	@EJB
 	private TransferLogEJB transferLogEJB;
+
+	@EJB
+	private UserAgendaEJB userAgendaEJB;
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -127,11 +131,11 @@ public class UserService {
 	@Path("/{id}")
 	@RolesAllowed({"admin" ,"hr"})
 	public Response delete(@PathParam("id") String id){
-		System.out.println("Delete");
-		System.out.println(id);
 		transferLogEJB.deleteTransferLogsByUser(id);
 		peerReviewEJB.deletePeerReviewByUser(id);
+		userAgendaEJB.deleteUserAgendaByUser(id);
 		userEJB.deleteUser(id);
+
 		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
 	}
 }

@@ -33,6 +33,12 @@ public class UserAgendaEJB {
 		return q.executeUpdate();
 	}
 
+	public int deleteUserAgendaByUser(String userId) {
+		TypedQuery<UserAgenda> q = em.createNamedQuery("deleteUserAgendaByUser", UserAgenda.class)
+				.setParameter("userId", userId);
+		return q.executeUpdate();
+	}
+
 	public UserAgenda findUserAgenda(int id) {
 		TypedQuery<UserAgenda> q = em.createNamedQuery("findUserAgenda", UserAgenda.class)
 				.setParameter("id", id);
