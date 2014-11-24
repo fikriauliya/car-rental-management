@@ -41,7 +41,7 @@ public class PeerReview {
 	private int point;
 
 	@NotEmpty
-	@Length(min=100, max=2000)
+	@Length(min=10, max=2000)
 	private String message;
 
 	@NotNull

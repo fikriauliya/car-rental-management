@@ -1,6 +1,6 @@
 myApp = angular.module('myApp');
-myApp.controller('ReviewUserController', ['$scope', '$location', '$timeout', 'Users', 'PeerReviews', 'ngTableParams', '$filter',
-  function($scope, $location, $timeout, Users, PeerReviews, ngTableParams, $filter) {
+myApp.controller('ReviewUserController', ['$scope', '$location', '$timeout', 'Users', 'PeerReviews', 'ngTableParams', '$filter', 'ngProgress',
+  function($scope, $location, $timeout, Users, PeerReviews, ngTableParams, $filter, ngProgress) {
 	$scope.userId = $location.search().userId;
 	$scope.newReview = new PeerReviews();
 	$scope.newReview.point = 1;
@@ -9,6 +9,7 @@ myApp.controller('ReviewUserController', ['$scope', '$location', '$timeout', 'Us
 	$scope.averagePoint = 0;
 
 	$scope.refreshReviews = function() {
+		ngProgress.start();
 		PeerReviews.query({userId: $scope.userId}, function(data, header) {
 			$scope.groupedReviews = _.groupBy(data, function(d) {
 				var date = new Date(d.timestamp);
@@ -20,10 +21,14 @@ myApp.controller('ReviewUserController', ['$scope', '$location', '$timeout', 'Us
 				$scope.selectedYear = $scope.years[$scope.years.length - 1];
 
 			$scope.tableParams.reload();
+			ngProgress.complete();
+		}, function(data, header) {
+			ngProgress.complete();
 		});
 	};
 
 	$scope.createReview = function() {
+		ngProgress.start();
 		$scope.newReview.to = $location.search().userId;
 		$scope.newReview.$save({}, function(data, header) {
 			$scope.info = "Thank you for your review";
@@ -31,10 +36,11 @@ myApp.controller('ReviewUserController', ['$scope', '$location', '$timeout', 'Us
 			$scope.newReview = new PeerReviews();
 			$scope.newReview.point = 1;
 			$scope.refreshReviews();
-
+			ngProgress.complete();
 		}, function(data, header) {
 			$scope.info = "";
 			$scope.errors = data.data;
+			ngProgress.complete();
 		});
 	};
 
