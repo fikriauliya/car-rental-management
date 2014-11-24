@@ -1,6 +1,6 @@
 myApp = angular.module('myApp');
-myApp.controller('AgendaUserController', ['$scope', '$location', '$timeout', 'UserAgendas', '$filter', '$log', 'ngTableParams',
-  function($scope, $location, $timeout, UserAgendas, $filter, $log, ngTableParams) {
+myApp.controller('AgendaUserController', ['$scope', '$location', '$timeout', 'UserAgendas', '$filter', '$log', 'ngTableParams', 'ngProgress',
+  function($scope, $location, $timeout, UserAgendas, $filter, $log, ngTableParams, ngProgress) {
 	var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
@@ -15,11 +15,15 @@ myApp.controller('AgendaUserController', ['$scope', '$location', '$timeout', 'Us
 	};
 
 	$scope.refreshEvents = function() {
+		ngProgress.start();
 		UserAgendas.query({id: $scope.userId, start: $scope.curStart, end: $scope.curEnd}, function(d, h){
         	$scope.events[0] = [];
         	$scope.events[0] = d;
         	$scope.tableParams.reload();
+
+        	ngProgress.complete();
         }, function(d, h) {
+        	ngProgress.complete();
         });
 	}
 	$scope.initializeNewEvent = function() {
@@ -29,6 +33,7 @@ myApp.controller('AgendaUserController', ['$scope', '$location', '$timeout', 'Us
 	};
 
 	$scope.createEvent = function() {
+		ngProgress.start();
 		$scope.newEvent.$save({id: $scope.userId}, function(d, h){
 			$scope.clearNotification();
 
@@ -36,16 +41,22 @@ myApp.controller('AgendaUserController', ['$scope', '$location', '$timeout', 'Us
 
 			$scope.info = "Agenda " + $scope.newEvent.title + " created";
 			$scope.initializeNewEvent();
+
+			ngProgress.complete();
 		}, function(d, h) {
 			$scope.clearNotification();
 			$scope.errors = d.data;
+
+			ngProgress.complete();
 		})
 	};
 
 	$scope.removeEvent = function(event) {
+		ngProgress.start();
 		UserAgendas.remove({eventId: event.id}, function(d, h) {
 			$scope.info = "Agenda " + event.title + " removed";
 			$scope.refreshEvents();
+			ngProgress.complete();
 		});
 	}
 

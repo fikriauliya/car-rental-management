@@ -1,6 +1,6 @@
 myApp = angular.module('myApp', ['userServices', 'organizationServices', 'peerReviewServices', 'userAgendaServices',
                                  'angularBootstrapNavTree', 'transferLogsServices', 'angularSpinner',
-                                 'ngTable', 'ui.calendar', 'ui.bootstrap.datetimepicker']);
+                                 'ngTable', 'ui.calendar', 'ui.bootstrap.datetimepicker', 'ngProgress']);
 myApp.factory('myHttpInterceptor', ['$q', function($q) {
 	  return {
 	    'response': function(response) {
