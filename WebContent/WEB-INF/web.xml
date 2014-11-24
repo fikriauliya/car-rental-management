@@ -87,4 +87,9 @@
 	<session-config>
 		<session-timeout>120</session-timeout>
 	</session-config>
+
+	<error-page>
+	    <error-code>403</error-code>
+	    <location>/unauthorized.jsf</location>
+	</error-page>
 </web-app>
