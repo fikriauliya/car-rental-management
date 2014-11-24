@@ -13,11 +13,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title><h:outputText value="Roster Management" /></title>
+  <h:outputScript library="jquery" name="js/jquery-1.11.1.min.js" />
+
   <script>
     var basePath = '#{request.contextPath}';
+    var isAdmin = $.parseJSON("#{request.isUserInRole('admin')}");
+    var isHR = $.parseJSON("#{request.isUserInRole('hr')}");
+    var isEmployee = $.parseJSON("#{request.isUserInRole('employee')}");
   </script>
-
-  <h:outputScript library="jquery" name="js/jquery-1.11.1.min.js" />
   <h:outputStylesheet library="bootstrap" name="css/bootstrap.css"  />
   <h:outputStylesheet library="angularjs" name="css/abn_tree.css"  />
   <h:outputStylesheet library="angularjs" name="css/ng-table.min.css"  />

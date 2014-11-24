@@ -9,22 +9,24 @@ myApp.controller('ReviewUserController', ['$scope', '$location', '$timeout', 'Us
 	$scope.averagePoint = 0;
 
 	$scope.refreshReviews = function() {
-		ngProgress.start();
-		PeerReviews.query({userId: $scope.userId}, function(data, header) {
-			$scope.groupedReviews = _.groupBy(data, function(d) {
-				var date = new Date(d.timestamp);
-				var year = date.getFullYear();
-				return year;
-			});
-			$scope.years = _.keys($scope.groupedReviews);
-			if ($scope.years.length > 0)
-				$scope.selectedYear = $scope.years[$scope.years.length - 1];
+		if (isAdmin || isHR) {
+			ngProgress.start();
+			PeerReviews.query({userId: $scope.userId}, function(data, header) {
+				$scope.groupedReviews = _.groupBy(data, function(d) {
+					var date = new Date(d.timestamp);
+					var year = date.getFullYear();
+					return year;
+				});
+				$scope.years = _.keys($scope.groupedReviews);
+				if ($scope.years.length > 0)
+					$scope.selectedYear = $scope.years[$scope.years.length - 1];
 
-			$scope.tableParams.reload();
-			ngProgress.complete();
-		}, function(data, header) {
-			ngProgress.complete();
-		});
+				$scope.tableParams.reload();
+				ngProgress.complete();
+			}, function(data, header) {
+				ngProgress.complete();
+			});
+		}
 	};
 
 	$scope.createReview = function() {

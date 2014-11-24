@@ -302,15 +302,17 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	};
 
 	$scope.refreshTransferIns = function(page) {
-		$scope.loading++;
-		TransferLogs.query({unitId: $scope.selectedUnit.data.id, page: page, type: "in"}, function(data, header) {
-			$scope.transferInLogs = data.transferLogs;
-			$scope.currentTransferInPage = parseInt(data.currentPage);
-			$scope.totalTransferInPage = parseInt(data.totalPage);
-			$scope.loading--;
-		}, function(data, header) {
-			$scope.loading--;
-		});
+		if (isAdmin || isHR) {
+			$scope.loading++;
+			TransferLogs.query({unitId: $scope.selectedUnit.data.id, page: page, type: "in"}, function(data, header) {
+				$scope.transferInLogs = data.transferLogs;
+				$scope.currentTransferInPage = parseInt(data.currentPage);
+				$scope.totalTransferInPage = parseInt(data.totalPage);
+				$scope.loading--;
+			}, function(data, header) {
+				$scope.loading--;
+			});
+		}
 	};
 
 	$scope.nextTransferInPage = function() {
@@ -322,15 +324,17 @@ myApp.controller('IndexUserController', ['$scope', '$timeout', 'Users', 'Organiz
 	};
 
 	$scope.refreshTransferOuts = function(page) {
-		$scope.loading++;
-		TransferLogs.query({unitId: $scope.selectedUnit.data.id, page: page, type: "out"}, function(data, header) {
-			$scope.transferOutLogs = data.transferLogs;
-			$scope.currentTransferOutPage = parseInt(data.currentPage);
-			$scope.totalTransferOutPage = parseInt(data.totalPage);
-			$scope.loading--;
-		}, function(data, header) {
-			$scope.loading--;
-		});
+		if (isAdmin || isHR) {
+			$scope.loading++;
+			TransferLogs.query({unitId: $scope.selectedUnit.data.id, page: page, type: "out"}, function(data, header) {
+				$scope.transferOutLogs = data.transferLogs;
+				$scope.currentTransferOutPage = parseInt(data.currentPage);
+				$scope.totalTransferOutPage = parseInt(data.totalPage);
+				$scope.loading--;
+			}, function(data, header) {
+				$scope.loading--;
+			});
+		}
 	};
 
 	$scope.nextTransferOutPage = function() {
