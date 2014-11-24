@@ -53,10 +53,13 @@ public class UserAgendaService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{id}/")
 	public Response create(@PathParam("id") String userId, UserAgenda userAgenda, @Context SecurityContext context) {
-		String userStr = context.getUserPrincipal().getName();
+		String assignedByStr = context.getUserPrincipal().getName();
 
 		User user = userEJB.findUser(userId);
+		User assignedBy = userEJB.findUser(assignedByStr);
+
 		userAgenda.setUser(user);
+		userAgenda.setAssignedBy(assignedBy);
 		userAgendaEJB.createUserAgenda(userAgenda);
 		return Response.status(Status.CREATED).type(MediaType.APPLICATION_JSON).build();
 	}
@@ -64,8 +67,13 @@ public class UserAgendaService {
 	@DELETE
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response destroy(@QueryParam("eventId") int eventId) {
-		userAgendaEJB.deleteUserAgenda(eventId);
-		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
+	public Response destroy(@QueryParam("eventId") int eventId, @Context SecurityContext context) {
+		String currentUser = context.getUserPrincipal().getName();
+		UserAgenda ua = userAgendaEJB.findUserAgenda(eventId);
+		if (currentUser.equals(ua.getAssignedBy().getId())) {
+			userAgendaEJB.deleteUserAgenda(eventId);
+			return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
+		}
+		return Response.status(Status.UNAUTHORIZED).type(MediaType.APPLICATION_JSON).build();
 	}
 }

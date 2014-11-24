@@ -32,4 +32,10 @@ public class UserAgendaEJB {
 				.setParameter("id", id);
 		return q.executeUpdate();
 	}
+
+	public UserAgenda findUserAgenda(int id) {
+		TypedQuery<UserAgenda> q = em.createNamedQuery("findUserAgenda", UserAgenda.class)
+				.setParameter("id", id);
+		return q.getSingleResult();
+	}
 }

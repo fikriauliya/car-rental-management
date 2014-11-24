@@ -24,7 +24,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 			"OR (:startTime <= u.endTime AND :endTime >= u.endTime)" +
 			"OR (:startTime >= u.startTime AND :endTime <= u.endTime))" +
 			"AND :userId = u.user.id"),
-	@NamedQuery(name="deleteUserAgenda", query = "DELETE from UserAgenda u where u.id = :id")
+	@NamedQuery(name="deleteUserAgenda", query = "DELETE from UserAgenda u where u.id = :id"),
+	@NamedQuery(name="findUserAgenda", query = "SELECT u from UserAgenda u where u.id = :id")
 })
 @Table(name = "S_USER_AGENDA")
 public class UserAgenda {
@@ -33,6 +34,9 @@ public class UserAgenda {
 
 	@NotNull
 	private User user;
+
+	@NotNull
+	private User assignedBy;
 
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
@@ -86,6 +90,14 @@ public class UserAgenda {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public User getAssignedBy() {
+		return assignedBy;
+	}
+
+	public void setAssignedBy(User assignedBy) {
+		this.assignedBy = assignedBy;
 	}
 
 }
