@@ -70,7 +70,7 @@ public class UserAgendaService {
 	public Response destroy(@QueryParam("eventId") int eventId, @Context SecurityContext context) {
 		String currentUser = context.getUserPrincipal().getName();
 		UserAgenda ua = userAgendaEJB.findUserAgenda(eventId);
-		if (currentUser.equals(ua.getAssignedBy().getId())) {
+		if (currentUser.equals(ua.getAssignedBy().getId()) || currentUser.equals(ua.getUser().getId())) {
 			userAgendaEJB.deleteUserAgenda(eventId);
 			return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
 		}

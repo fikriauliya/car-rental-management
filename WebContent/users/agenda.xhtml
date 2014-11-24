@@ -41,7 +41,7 @@
               <td data-title="'To'" sortable="'end'">{{event.end | date: 'medium'}}</td>
               <td data-title="'Assigned by'" sortable="'assignedBy.id'">{{event.assignedBy.id }}</td>
               <td>
-                <button ng-show="event.assignedBy.id == '#{request.getRemoteUser()}'" class="btn btn-danger btn-xs" ng-click="removeEvent(event)">Delete</button>
+                <button ng-show="event.assignedBy.id == '#{request.getRemoteUser()}' || userId == '#{request.getRemoteUser()}'" class="btn btn-danger btn-xs" ng-click="removeEvent(event)">Delete</button>
               </td>
             </tr>
           </tbody>
