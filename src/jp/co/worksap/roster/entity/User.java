@@ -34,7 +34,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 })
 public class User {
 	@Id @NotEmpty
-	@Pattern(regexp="^[a-zA-Z0-9]+$", message="may not contain character other than letters and numbers")
+	@Pattern(regexp="^[a-zA-Z0-9]*$", message="may not contain character other than letters and numbers")
 	@Length(min=2, max=200)
 	private String id;
 
@@ -49,6 +49,11 @@ public class User {
 	@Email @NotEmpty
 	@Length(min=5, max=200)
 	private String email;
+
+	@NotEmpty
+	@Length(min=4, max=30)
+	@Pattern(regexp="^[0-9\\*\\+#]*$", message="may not contain character other than numbers and *, +, #")
+	private String phone;
 
 	@NotNull
 	private OrganizationUnit unit;
@@ -127,6 +132,14 @@ public class User {
 		this.leaveTimestamp = leaveTimestamp;
 	}
 
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 
 	@Override
 	public String toString() {

@@ -75,6 +75,7 @@ public class UserEJB {
 		o.setEmail(user.getEmail());
 		o.setFirstName(user.getFirstName());
 		o.setLastName(user.getLastName());
+		o.setPhone(user.getPhone());
 
 		if (o.isAttached() != user.isAttached()) {
 			if (!user.isAttached()){

@@ -117,6 +117,7 @@
                       <th>First name</th>
                       <th>Last name</th>
                       <th>Email</th>
+                      <th>Phone</th>
                       <th style="width:450px"></th>
                     </tr>
                   </thead>
@@ -126,6 +127,7 @@
                       <td ng-switch-when="true"><input ng-model="user.firstName"/></td>
                       <td ng-switch-when="true"><input ng-model="user.lastName"/></td>
                       <td ng-switch-when="true"><input ng-model="user.email"/></td>
+                      <td ng-switch-when="true"><input ng-model="user.phone"/></td>
                       <td ng-switch-when="true">
                         <button class="btn btn-primary btn-xs" ng-click="updateUser(user)">Save</button>
                         <button class="btn btn-danger btn-xs" ng-click="editUser(user, false)">Cancel</button>
@@ -135,6 +137,7 @@
                       <td ng-switch-default="true">{{user.firstName}}</td>
                       <td ng-switch-default="true">{{user.lastName}}</td>
                       <td ng-switch-default="true">{{user.email}}</td>
+                      <td ng-switch-default="true">{{user.phone}}</td>
                       <td ng-switch-default="true">
                         <h:panelGroup rendered="#{request.isUserInRole('admin') || request.isUserInRole('hr')}">
                           <button class="btn btn-primary btn-xs" ng-click="editUser(user, true)">Edit</button>
@@ -289,9 +292,15 @@
                   </div>
                 </div>
                 <div class="form-group">
+                  <label class="col-sm-3 control-label">Phone</label>
+                  <div class="col-sm-9">
+                    <input class="form-control" id="phone" ng-model="newUser.phone"/>
+                  </div>
+                </div>
+                <div class="form-group">
                   <label class="col-sm-3 control-label">Password</label>
                   <div class="col-sm-9">
-                    <input type="password" class="form-control" id="email" ng-model="newUser.password"/>
+                    <input type="password" class="form-control" id="password" ng-model="newUser.password"/>
                   </div>
                 </div>
                 <div class="form-group">

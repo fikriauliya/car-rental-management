@@ -82,6 +82,7 @@ public class UserService {
 			u.setPassword(DigestUtils.md5Hex(userWithUnit.getPassword()));
 		u.setId(userWithUnit.getId());
 		u.setUnit(orgEJB.getOrganizationUnit(userWithUnit.getUnitId()));
+		u.setPhone(userWithUnit.getPhone());
 
 		userEJB.createUser(u);
 		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();

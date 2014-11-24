@@ -6,6 +6,7 @@ public class UserWithUnit {
 	private String firstName;
 	private String lastName;
 	private String email;
+	private String phone;
 	private int unitId;
 	private boolean isAttached;
 	private String password;
@@ -53,6 +54,12 @@ public class UserWithUnit {
 		this.id = id;
 	}
 
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 	@Override
 	public String toString() {
 		return "UserWithUnit [id=" + id + ", firstName=" + firstName
