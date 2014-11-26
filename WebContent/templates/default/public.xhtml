@@ -6,13 +6,15 @@
   xmlns:h="http://java.sun.com/jsf/html"
   xmlns:f="http://java.sun.com/jsf/core">
 
-<ui:composition template="/templates/default/public.xhtml">
+<ui:composition template="/templates/default/main.xhtml">
+  <ui:define name="navbar-header">
+    <a class="navbar-brand" href="#{request.contextPath}">A+ Car Rental</a>
+  </ui:define>
   <ui:define name="header">
+    <ui:insert name="header" />
   </ui:define>
   <ui:define name="content">
-    <h4>Book system</h4>
-    <hr/>
-    <h4>Select your flight</h4>
+    <ui:insert name="content" />
   </ui:define>
 </ui:composition>
 </html>

@@ -7,21 +7,17 @@
   xmlns:f="http://java.sun.com/jsf/core">
 
 <ui:composition template="/templates/default/main.xhtml">
+  <ui:define name="navbar-header">
+    <a class="navbar-brand" href="#{request.contextPath}/internal-index.jsf">CRMS+</a>
+  </ui:define>
+  <ui:define name="navbar">
+    <li><a href="#{request.contextPath}/users/index.jsf">Employee System</a></li>
+  </ui:define>
   <ui:define name="header">
+    <ui:insert name="header" />
   </ui:define>
   <ui:define name="content">
-    <div class="row">
-      <div class="col col-md-12">
-        <h4>Administrator Control Panel</h4>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col col-md-12">
-        <h:link value="Employee management system" outcome="users/index.jsf" class="btn btn-primary"/>
-        <br/><br/>
-        <h:link value="Structure management system" outcome="users/index.jsf" class="btn btn-info"/>
-      </div>
-    </div>
+    <ui:insert name="content" />
   </ui:define>
 </ui:composition>
 </html>
