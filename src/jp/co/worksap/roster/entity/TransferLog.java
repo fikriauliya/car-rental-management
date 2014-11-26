@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @Entity
-@Table(name = "S_TRANSFER_LOG")
+@Table(name = "T_TRANSFER_LOG")
 @NamedQueries({
 	@NamedQuery(name="findAllTransferIns", query = "SELECT u from TransferLog u WHERE u.toUnit.id = :unitId ORDER BY u.timestamp DESC"),
 	@NamedQuery(name="findAllTransferOuts", query = "SELECT u from TransferLog u WHERE u.fromUnit.id = :unitId ORDER BY u.timestamp DESC"),

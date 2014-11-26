@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @Entity
-@Table(name = "S_USERROLE")
+@Table(name = "T_USERROLE")
 @IdClass(UserRoleId.class)
 @NamedQueries({
 	@NamedQuery(name="findAllAssignedRoles", query = "SELECT u from UserRole u WHERE u.id = :id"),

@@ -6,7 +6,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-@Table(name="S_ROLE")
+@Table(name="T_ROLE")
 @Entity
 @NamedQueries({
 	@NamedQuery(name="findAllRoles", query = "SELECT u from Role u")

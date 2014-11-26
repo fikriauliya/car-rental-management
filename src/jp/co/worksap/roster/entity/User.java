@@ -21,7 +21,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 @XmlRootElement
 @Entity
-@Table(name = "S_USERS")
+@Table(name = "T_USERS")
 @NamedQueries({
 	@NamedQuery(name="findAllUsers", query = "SELECT u from User u ORDER BY u.id"),
 	@NamedQuery(name="findAllUsersInUnitByIsAttachedOrderByLeaveTimestamp", query = "SELECT u from User u WHERE u.unit.id = :unitId AND u.isAttached = :isAttached ORDER BY u.leaveTimestamp"),

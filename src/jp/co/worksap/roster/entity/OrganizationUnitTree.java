@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 @Entity
-@Table(name = "S_ORGANIZATION_UNIT_TREE")
+@Table(name = "T_ORGANIZATION_UNIT_TREE")
 
 @NamedQueries({
 	@NamedQuery(name="findOrganiaztionUnitTreeAncestors", query = "SELECT u from OrganizationUnitTree u where (u.descendant.id = :descendant_id) AND (u.isDeleted = FALSE)"),

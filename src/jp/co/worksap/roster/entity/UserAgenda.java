@@ -31,7 +31,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 	@NamedQuery(name="findUserAgenda", query = "SELECT u from UserAgenda u where u.id = :id"),
 	@NamedQuery(name="deleteUserAgendaByUser", query = "DELETE from UserAgenda u where u.user.id = :userId OR u.assignedBy.id = :userId"),
 })
-@Table(name = "S_USER_AGENDA")
+@Table(name = "T_USER_AGENDA")
 public class UserAgenda {
 	@Id @GeneratedValue
 	private int id;

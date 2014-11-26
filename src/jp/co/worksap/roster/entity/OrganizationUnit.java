@@ -14,7 +14,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 @XmlRootElement
 @Entity
-@Table(name="S_ORGANIZATION_UNIT")
+@Table(name="T_ORGANIZATION_UNIT")
 @NamedQueries({
 	@NamedQuery(name="findOrganizationUnit", query = "SELECT u from OrganizationUnit u where u.id = :id"),
 })

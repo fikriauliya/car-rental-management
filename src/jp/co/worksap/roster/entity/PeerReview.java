@@ -20,7 +20,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
 @XmlRootElement
-@Table(name="S_PEER_REVIEW")
+@Table(name="T_PEER_REVIEW")
 @Entity
 @NamedQueries({
 	@NamedQuery(name="findAllPeerReviews", query="SELECT u FROM PeerReview u WHERE u.to.id = :userId"),
