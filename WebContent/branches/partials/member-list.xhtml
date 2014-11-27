@@ -33,6 +33,8 @@
             <td data-title="'Id'" sortable="'id'">{{user.id}}</td>
             <td data-title="'First Name'" sortable="'firstName'">{{user.firstName}}</td>
             <td data-title="'Last Name'" sortable="'lastName'">{{user.lastName}}</td>
+            <td data-title="'Email'" sortable="'email'">{{user.email}}</td>
+            <td data-title="'Phone'" sortable="'email'">{{user.phone}}</td>
             <td style="width:80px">
               <button class="btn btn-danger btn-xs" ng-click="unassignEmployee(user)">
                 <span class="glyphicon glyphicon-trash"/>
@@ -55,9 +57,9 @@
         <div class="modal-body">
           <form class="form-horizontal">
             <div class="form-group">
-              <label class="col-sm-3 control-label">Id/Firstname/Lastname</label>
+              <label class="col-sm-3 control-label">Search</label>
               <div class="col-sm-9">
-                <input class="form-control" id="id" ng-model="searchText"/>
+                <input class="form-control" id="id" ng-model="searchText" placeholder="Id/first name/last name/email/phone"/>
               </div>
             </div>
             <div class="form-group">
@@ -73,6 +75,7 @@
                 <td data-title="'First Name'">{{user.firstName}}</td>
                 <td data-title="'Last Name'">{{user.lastName}}</td>
                 <td data-title="'Email'">{{user.email}}</td>
+                <td data-title="'Phone'">{{user.phone}}</td>
                 <td style="width:80px">
                   <button class="btn btn-primary btn-xs" ng-click="assignEmployee(user)" ng-if="!isAssigned(user)">
                     <span class="glyphicon glyphicon-plus"/>
