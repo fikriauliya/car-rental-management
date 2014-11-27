@@ -22,7 +22,7 @@ branchManagementApp.controller('IndexBranchController', ['$scope', '$state', 'Br
 		$scope.newBranch.$save(
 			function(d, h) {
 				$scope.clearNotification();
-				$scope.info = "New branch (" + $scope.newBranch.name + ") has been created";
+				$scope.info = "New branch " + $scope.newBranch.name + " has been created";
 				$scope.newBranch = new Branches();
 
 				$('.branch-modal').modal('hide');
@@ -38,7 +38,7 @@ branchManagementApp.controller('IndexBranchController', ['$scope', '$state', 'Br
 		Branches.update({id: $scope.selectedBranch.id, branch: $scope.selectedBranch}, $scope.selectedBranch,
 			function(d, h) {
 				$scope.clearNotification();
-				$scope.info = "Branch (" + $scope.selectedBranch.name + ") has been updated";
+				$scope.info = "Branch " + $scope.selectedBranch.name + " has been updated";
 
 				$('.branch-modal').modal('hide');
 				$scope.refreshBranches();
