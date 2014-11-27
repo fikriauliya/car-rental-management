@@ -47,3 +47,13 @@ userAgendaServices.factory("UserAgendas",
 	  });
    }
   ]);
+
+branchServices = angular.module('branchServices', ['ngResource']);
+branchServices.factory("Branches",
+  ["$resource",
+   function($resource) {
+	  return $resource(basePath + "/api/branches/:id", {}, {
+		  'update': { method:'PUT' }
+	  });
+   }
+  ]);

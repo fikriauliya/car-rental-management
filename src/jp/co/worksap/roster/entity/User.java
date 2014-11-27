@@ -1,9 +1,11 @@
 package jp.co.worksap.roster.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -14,7 +16,6 @@ import javax.validation.constraints.Pattern;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -66,6 +67,9 @@ public class User {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date leaveTimestamp;
+
+	@ManyToMany(mappedBy = "users")
+	private List<Branch> branches;
 
 	public String getId() {
 		return id;
@@ -139,6 +143,14 @@ public class User {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public List<Branch> getBranches() {
+		return branches;
+	}
+
+	public void setBranches(List<Branch> branches) {
+		this.branches = branches;
 	}
 
 	@Override
