@@ -2,6 +2,7 @@ package jp.co.worksap.roster.rest;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
@@ -24,7 +25,7 @@ import jp.co.worksap.roster.entity.User;
 
 @Path("/branches")
 @Stateless
-//@RolesAllowed({"employee", "admin" ,"hr"})
+@RolesAllowed({"admin" ,"hr"})
 public class BranchServices {
 	@EJB
 	private BranchEJB branchEJB;
