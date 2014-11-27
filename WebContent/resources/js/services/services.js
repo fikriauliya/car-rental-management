@@ -57,3 +57,17 @@ branchServices.factory("Branches",
 	  });
    }
   ]);
+branchServices.factory("BranchUsers",
+  ["$resource",
+   function($resource) {
+	  return $resource(basePath + "/api/branches/:id/users");
+   }
+  ]);
+
+searchServices = angular.module('searchServices', ['ngResource']);
+searchServices.factory("Search",
+  ["$resource",
+   function($resource) {
+	  return $resource(basePath + "/api/search/:entity/");
+   }
+  ]);

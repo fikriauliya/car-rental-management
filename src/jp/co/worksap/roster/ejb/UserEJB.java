@@ -10,6 +10,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import jp.co.worksap.roster.entity.OrganizationUnit;
 import jp.co.worksap.roster.entity.Role;
 import jp.co.worksap.roster.entity.TransferLog;
@@ -43,6 +45,16 @@ public class UserEJB {
 				.setFirstResult(page * size)
 				.setMaxResults(size);
 		return q.getResultList();
+	}
+
+	public Pair<List<User>, Long> findAllUsers(String token, int page, int size) {
+		TypedQuery<User> q = em.createNamedQuery("findAllUsersByIdNameAndEmail", User.class)
+				.setParameter("token", "%" + token.toLowerCase() + "%")
+				.setFirstResult(page * size)
+				.setMaxResults(size);
+		TypedQuery<Long> q1 = em.createNamedQuery("countAllUsersByIdNameAndEmail", Long.class)
+				.setParameter("token", "%" + token.toLowerCase() + "%");
+		return Pair.of(q.getResultList(), q1.getSingleResult());
 	}
 
 	public long countAllUsers(int unitId, boolean isAttached) {

@@ -28,7 +28,7 @@ myApp.config(function($provide, $httpProvider, $locationProvider) {
 });
 
 
-var branchManagementApp = angular.module('branchManagementApp', ['branchServices', 'ngTable', 'ui.calendar', 'ngProgress', 'ui.router']);
+var branchManagementApp = angular.module('branchManagementApp', ['branchServices', 'searchServices', 'ngTable', 'ui.calendar', 'ngProgress', 'ui.router']);
 branchManagementApp.factory('myHttpInterceptor', ['$q', httpInterceptor]);
 
 branchManagementApp.config(function($provide, $httpProvider, $locationProvider) {
@@ -59,7 +59,10 @@ branchManagementApp.config(['$stateProvider', '$urlRouterProvider', function($st
 		.state('branch.members', {
 			url: '/members/:id',
 			views: {
-				"default": {templateUrl: 'partials/member-list.xhtml'}
+				"default": {
+					templateUrl: 'partials/member-list.xhtml',
+					controller: 'IndexBranchMemberController'
+				}
 			}
 		})
 }]);
