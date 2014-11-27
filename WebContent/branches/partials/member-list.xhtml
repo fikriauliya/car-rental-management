@@ -74,7 +74,7 @@
                 <td data-title="'Last Name'">{{user.lastName}}</td>
                 <td data-title="'Email'">{{user.email}}</td>
                 <td style="width:80px">
-                  <button class="btn btn-primary btn-xs" ng-click="assignEmployee(user)">
+                  <button class="btn btn-primary btn-xs" ng-click="assignEmployee(user)" ng-if="!isAssigned(user)">
                     <span class="glyphicon glyphicon-plus"/>
                     Add
                   </button>

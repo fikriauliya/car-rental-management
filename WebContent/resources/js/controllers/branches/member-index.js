@@ -51,6 +51,14 @@ branchManagementApp.controller('IndexBranchMemberController', ['$scope', '$state
 			}
 		});
 
+    $scope.isAssigned = function(user) {
+//    	console.log($scope.branch.users);
+//    	console.log(user);
+    	var o = _.find($scope.branch.users, function(u) { return u.id == user.id });
+    	console.log(o);
+    	return ! _.isUndefined(o);
+    }
+
     $scope.searchEmployee = function() {
     	$scope.employeeTableParams.filter().token = $scope.searchText;
     	$scope.employeeTableParams.reload();
@@ -61,7 +69,6 @@ branchManagementApp.controller('IndexBranchMemberController', ['$scope', '$state
     	b.$save({id: $scope.selectedBranch.id, userId: user.id},
     		function(d, h) {
     			$scope.refreshMembers();
-    			$('.branch-member-modal').modal('hide');
 
     			$scope.clearNotification();
     			$scope.$parent.info = "Employee " + user.id + " has been assigned to this branch";
