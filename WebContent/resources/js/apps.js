@@ -62,6 +62,14 @@ branchManagementApp.config(['$stateProvider', '$urlRouterProvider', function($st
 				"default": {
 					templateUrl: 'partials/member-list.xhtml',
 					controller: 'IndexBranchMemberController'
+				},
+				"createBranch": {
+					templateUrl: 'partials/branch-create.xhtml',
+					controller: 'CreateBranchController'
+				}
+			}
+		})
+}]);
 				}
 			}
 		})
