@@ -1,6 +1,4 @@
-branchManagementApp = angular.module('branchManagementApp');
-branchManagementApp.controller('IndexBranchController', ['$scope', '$state', 'Branches', 'ngProgress',
-  function($scope, $state, Branches, ngProgress) {
+var IndexBranchController = function($scope, $state, Branches, ngProgress) {
 	$scope.errors = [];
 	$scope.info = "";
 	$scope.progress = 0;
@@ -123,4 +121,6 @@ branchManagementApp.controller('IndexBranchController', ['$scope', '$state', 'Br
 
 	$scope.refreshBranches();
   }
-]);
+
+angular.module('branchManagementApp').controller('IndexBranchController', ['$scope', '$state', 'Branches', 'ngProgress', IndexBranchController]);
+angular.module('inventoryManagementApp').controller('IndexBranchController', ['$scope', '$state', 'Branches', 'ngProgress', IndexBranchController]);

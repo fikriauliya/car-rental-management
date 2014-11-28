@@ -1,35 +1,48 @@
 package jp.co.worksap.roster.entity;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 @Entity
+@Table(name="T_INVENTORY")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Inventory {
 	@Id @GeneratedValue
 	private int id;
 
 	@NotNull
+	@Column(nullable=false)
 	private String name;
 
 	@NotNull
+	@OneToOne
 	private Branch owner;
 
 	@NotNull
+	@Column(nullable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdAt;
 
 	@NotNull
+	@Column(nullable=false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date updatedAt;
 
@@ -37,7 +50,10 @@ public abstract class Inventory {
 	private Timestamp version;
 
 	@NotNull
+	@Column(nullable=false)
 	private InventoryStatus status;
+
+	private BigDecimal price;
 
 	public int getId() {
 		return id;
@@ -93,5 +109,17 @@ public abstract class Inventory {
 
 	public void setStatus(InventoryStatus status) {
 		this.status = status;
+	}
+
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
+
+	public static enum InventoryType {
+		CAR, BABY_SEAT, GPS
 	}
 }

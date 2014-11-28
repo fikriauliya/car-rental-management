@@ -2,9 +2,18 @@ package jp.co.worksap.roster.entity;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @DiscriminatorValue("C")
 @Entity
+@Table(name="T_CAR_INVENTORY")
+@XmlRootElement
+@NamedQueries({
+	@NamedQuery(name="findCarInventories", query="SELECT u FROM CarInventory u ORDER BY u.name")
+})
 public class CarInventory extends Inventory {
 	private int length;
 	private int width;

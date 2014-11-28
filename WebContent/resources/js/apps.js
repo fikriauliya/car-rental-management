@@ -70,7 +70,42 @@ branchManagementApp.config(['$stateProvider', '$urlRouterProvider', function($st
 			}
 		})
 }]);
+
+var inventoryManagementApp = angular.module('inventoryManagementApp', ['branchServices', 'inventoryServices', 'ngTable', 'ui.calendar', 'ngProgress', 'ui.router']);
+inventoryManagementApp.factory('myHttpInterceptor', ['$q', httpInterceptor]);
+
+inventoryManagementApp.config(function($provide, $httpProvider, $locationProvider) {
+	$httpProvider.interceptors.push('myHttpInterceptor');
+	$locationProvider.html5Mode(false);
+});
+
+inventoryManagementApp.run(['$rootScope', '$log', function($rootScope, $log) {
+	$rootScope.$on('$stateChangeStart',
+		function(event, toState, toParams, fromState, fromParams){
+			$log.log(fromState, " -> ", toState);
+		}
+	);
+}]);
+
+inventoryManagementApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+	$urlRouterProvider.otherwise("");
+	$stateProvider
+		.state('branch', {
+			url: "",
+			views: {
+				"default": {
+					templateUrl: '../branches/partials/branch-list.xhtml',
+					controller: 'IndexBranchController'
 				}
+			}
+		})
+		.state('branch.members', {
+			url: '/members/:id',
+			views: {
+				"default": {
+					templateUrl: 'partials/inventory-list.xhtml',
+					controller: 'IndexInventoryController'
+				},
 			}
 		})
 }]);

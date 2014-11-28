@@ -71,3 +71,11 @@ searchServices.factory("Search",
 	  return $resource(basePath + "/api/search/:entity/");
    }
   ]);
+
+inventoryServices = angular.module('inventoryServices', ['ngResource']);
+inventoryServices.factory("Inventories",
+  ["$resource",
+   function($resource) {
+	  return $resource(basePath + "/api/inventories/:branchId/:entity/");
+   }
+  ]);
