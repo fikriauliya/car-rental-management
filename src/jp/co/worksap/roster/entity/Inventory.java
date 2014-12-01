@@ -17,18 +17,25 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Range;
 
 @XmlRootElement
 @Entity
 @Table(name="T_INVENTORY")
+@NamedQueries({
+	@NamedQuery(name="findInventory", query="SELECT u FROM Inventory u WHERE u.id = :id"),
+})
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Inventory {
 	@Id @GeneratedValue
 	private int id;
 
-	@NotNull
+	@NotEmpty
 	@Column(nullable=false)
 	private String name;
 
@@ -53,6 +60,7 @@ public abstract class Inventory {
 	@Column(nullable=false)
 	private InventoryStatus status;
 
+	@Min(value=0)
 	private BigDecimal price;
 
 	public int getId() {

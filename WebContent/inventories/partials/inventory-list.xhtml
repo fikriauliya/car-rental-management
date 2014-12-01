@@ -5,22 +5,85 @@
       <span class="glyphicon glyphicon-plus"/>
       Create new inventory
     </button>
+    <hr/>
   </div>
-  <div class="col col-md-12" style="margin-top:20px">
-    <div ng-if="inventories.length == 0">
+  <div class="col col-md-6">
+    <h4>Cars</h4>
+    <div ng-if="carInventories.length == 0">
       No inventory is currently assigned to this branch
     </div>
 
-    <div ng-if="inventories.length > 0">
-      <table class="table table-striped table-condensed" ng-table="inventoryTableParams">
+    <div ng-if="carInventories.length > 0">
+      <table class="table table-striped table-condensed" ng-table="carInventoryTableParams">
         <tbody>
           <tr ng-repeat="data in $data">
             <td data-title="'Name'" sortable="'name'">{{data.name}}</td>
-            <td style="width:80px">
-              <button class="btn btn-danger btn-xs" ng-click="unassignEmployee(data)">
-                <span class="glyphicon glyphicon-trash"/>
-                Delete
-              </button>
+            <td data-title="'Price'" sortable="'price'">{{data.price}}</td>
+            <td data-title="'Status'" sortable="'status'">{{data.status}}</td>
+            <td data-title="'Created'" sortable="'createdAt'">{{data.createdAt | date:'mediumDate'}}</td>
+            <td style="width:90px">
+              <button type="button" class="btn btn-danger btn-sm" ng-click="deleteInventory(data)">
+                <span aria-hidden="true" class="glyphicon glyphicon-trash"/>
+              </button type="button">
+              <button type="button" class="btn btn-warning btn-sm">
+                <span aria-hidden="true" class="glyphicon glyphicon-edit" ng-click="displayInventoryDialog(true, data)"/>
+              </button type="button">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="col col-md-6">
+    <h4>Baby Seats</h4>
+    <div ng-if="babySeatInventories.length == 0">
+      No inventory is currently assigned to this branch
+    </div>
+
+    <div ng-if="babySeatInventories.length > 0">
+      <table class="table table-striped table-condensed" ng-table="babySeatInventoryTableParams">
+        <tbody>
+          <tr ng-repeat="data in $data">
+            <td data-title="'Name'" sortable="'name'">{{data.name}}</td>
+            <td data-title="'Price'" sortable="'price'">{{data.price}}</td>
+            <td data-title="'Status'" sortable="'status'">{{data.status}}</td>
+            <td data-title="'Created'" sortable="'createdAt'">{{data.createdAt | date:'mediumDate'}}</td>
+            <td style="width:90px">
+              <button type="button" class="btn btn-danger btn-sm" ng-click="deleteInventory(data)">
+                <span aria-hidden="true" class="glyphicon glyphicon-trash"/>
+              </button type="button">
+              <button type="button" class="btn btn-warning btn-sm">
+                <span aria-hidden="true" class="glyphicon glyphicon-edit" ng-click="displayInventoryDialog(true, data)"/>
+              </button type="button">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+   <div class="col col-md-6">
+    <h4>GPS</h4>
+    <div ng-if="gpsInventories.length == 0">
+      No inventory is currently assigned to this branch
+    </div>
+
+    <div ng-if="gpsInventories.length > 0">
+      <table class="table table-striped table-condensed" ng-table="gpsInventoryTableParams">
+        <tbody>
+          <tr ng-repeat="data in $data">
+            <td data-title="'Name'" sortable="'name'">{{data.name}}</td>
+            <td data-title="'Price'" sortable="'price'">{{data.price}}</td>
+            <td data-title="'Status'" sortable="'status'">{{data.status}}</td>
+            <td data-title="'Created'" sortable="'createdAt'">{{data.createdAt | date:'mediumDate'}}</td>
+            <td style="width:90px">
+              <button type="button" class="btn btn-danger btn-sm" ng-click="deleteInventory(data)">
+                <span aria-hidden="true" class="glyphicon glyphicon-trash"/>
+              </button type="button">
+              <button type="button" class="btn btn-warning btn-sm">
+                <span aria-hidden="true" class="glyphicon glyphicon-edit" ng-click="displayInventoryDialog(true, data)"/>
+              </button type="button">
             </td>
           </tr>
         </tbody>
@@ -36,6 +99,14 @@
           <h4 class="modal-title" id="myModalLabel">Inventory</h4>
         </div>
         <div class="modal-body">
+          <div class="alert alert-danger" ng-if="errors">
+            <ul>
+              <li ng-repeat="error in errors">{{error}}</li>
+            </ul>
+          </div>
+          <div class="alert alert-info" ng-if="info">
+            {{info}}
+          </div>
           <form class="form-horizontal">
             <div class="form-group">
               <label class="col-sm-5 control-label">Name</label>
@@ -54,35 +125,36 @@
             <div class="form-group">
               <label class="col-sm-5 control-label">Type</label>
               <div class="col-sm-3">
-                <select class="form-control" ng-model="newInventory.type" ng-options="i.name for i in inventoryTypes track by i.id"></select>
+                <select class="form-control" ng-model="newInventory.type" ng-options="i.name for i in inventoryTypes track by i.id" ng-if="!inEditMode"></select>
+                <select ng-disabled="true" class="form-control" ng-model="selectedInventory.type" ng-options="i.name for i in inventoryTypes track by i.id" ng-if="inEditMode"></select>
               </div>
             </div>
 
             <!-- Baby Seat -->
-            <div ng-if="newInventory.type.id == 'baby_seat'">
+            <div ng-if="(!inEditMode && (newInventory.type.id == 'baby_seat')) || (inEditMode && (selectedInventory.type.id == 'baby_seat'))">
               <div class="form-group">
                 <label class="col-sm-5 control-label">Minimum weight (kg)</label>
                 <div class="col-sm-2">
-                  <input class="form-control" ng-model="newInventory.minWeight" ng-if="!inEditMode"/>
-                  <input class="form-control" ng-model="selectedInventory.minWeight" ng-if="inEditMode"/>
+                  <input type="number" class="form-control" ng-model="newInventory.minWeight" ng-if="!inEditMode"/>
+                  <input type="number" class="form-control" ng-model="selectedInventory.minWeight" ng-if="inEditMode"/>
                 </div>
               </div>
               <div class="form-group">
                 <label class="col-sm-5 control-label">Maximum weight (kg)</label>
                 <div class="col-sm-2">
-                  <input class="form-control" ng-model="newInventory.maxWeight" ng-if="!inEditMode"/>
-                  <input class="form-control" ng-model="selectedInventory.maxWeight" ng-if="inEditMode"/>
+                  <input type="number" class="form-control" ng-model="newInventory.maxWeight" ng-if="!inEditMode"/>
+                  <input type="number" class="form-control" ng-model="selectedInventory.maxWeight" ng-if="inEditMode"/>
                 </div>
               </div>
             </div>
 
             <!-- GPS  -->
-            <div ng-if="newInventory.type.id == 'gps'">
+            <div ng-if="(!inEditMode && (newInventory.type.id == 'gps')) || (inEditMode && (selectedInventory.type.id == 'gps'))">
               <div class="form-group">
                 <label class="col-sm-5 control-label">Number of way points</label>
                 <div class="col-sm-2">
-                  <input class="form-control" ng-model="newInventory.numOfWayPoints" ng-if="!inEditMode"/>
-                  <input class="form-control" ng-model="selectedInventory.numOfWayPoints" ng-if="inEditMode"/>
+                  <input type="number" class="form-control" type="number" ng-model="newInventory.numOfWayPoints" ng-if="!inEditMode"/>
+                  <input type="number" class="form-control" type="number"ng-model="selectedInventory.numOfWayPoints" ng-if="inEditMode"/>
                 </div>
               </div>
               <div class="form-group">
@@ -130,51 +202,51 @@
               <div class="form-group">
                 <label class="col-sm-5 control-label">Screen size (mm)</label>
                 <div class="col-sm-2">
-                  <input class="form-control" ng-model="newInventory.screenSize" ng-if="!inEditMode"/>
-                  <input class="form-control" ng-model="selectedInventory.screenSize" ng-if="inEditMode"/>
+                  <input type="number" class="form-control" ng-model="newInventory.screenSize" ng-if="!inEditMode"/>
+                  <input type="number" class="form-control" ng-model="selectedInventory.screenSize" ng-if="inEditMode"/>
                 </div>
               </div>
             </div>
 
             <!-- Car -->
-            <div ng-if="newInventory.type.id == 'car'">
+            <div ng-if="(!inEditMode && (newInventory.type.id == 'car')) || (inEditMode && (selectedInventory.type.id == 'car'))">
               <div class="form-group">
                 <label class="col-sm-5 control-label">Weight (kg)</label>
                 <div class="col-sm-2">
-                  <input class="form-control" ng-model="newInventory.weight" ng-if="!inEditMode"/>
-                  <input class="form-control" ng-model="selectedInventory.weight" ng-if="inEditMode"/>
+                  <input type="number" class="form-control" ng-model="newInventory.weight" ng-if="!inEditMode"/>
+                  <input type="number" class="form-control" ng-model="selectedInventory.weight" ng-if="inEditMode"/>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-sm-5 control-label">Width (mm)</label>
                 <div class="col-sm-2">
-                  <input class="form-control" ng-model="newInventory.width" ng-if="!inEditMode"/>
-                  <input class="form-control" ng-model="selectedInventory.width" ng-if="inEditMode"/>
+                  <input type="number" class="form-control" ng-model="newInventory.width" ng-if="!inEditMode"/>
+                  <input type="number" class="form-control" ng-model="selectedInventory.width" ng-if="inEditMode"/>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-sm-5 control-label">Height (mm)</label>
                 <div class="col-sm-2">
-                  <input class="form-control" ng-model="newInventory.height" ng-if="!inEditMode"/>
-                  <input class="form-control" ng-model="selectedInventory.height" ng-if="inEditMode"/>
+                  <input type="number" class="form-control" ng-model="newInventory.height" ng-if="!inEditMode"/>
+                  <input type="number" class="form-control" ng-model="selectedInventory.height" ng-if="inEditMode"/>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-sm-5 control-label">Length (mm)</label>
                 <div class="col-sm-2">
-                  <input class="form-control" ng-model="newInventory.length" ng-if="!inEditMode"/>
-                  <input class="form-control" ng-model="selectedInventory.length" ng-if="inEditMode"/>
+                  <input type="number" class="form-control" ng-model="newInventory.length" ng-if="!inEditMode"/>
+                  <input type="number" class="form-control" ng-model="selectedInventory.length" ng-if="inEditMode"/>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-sm-5 control-label">Wheel base (mm)</label>
                 <div class="col-sm-2">
-                  <input class="form-control" ng-model="newInventory.wheelBase" ng-if="!inEditMode"/>
-                  <input class="form-control" ng-model="selectedInventory.wheelBase" ng-if="inEditMode"/>
+                  <input type="number" class="form-control" ng-model="newInventory.wheelBase" ng-if="!inEditMode"/>
+                  <input type="number" class="form-control" ng-model="selectedInventory.wheelBase" ng-if="inEditMode"/>
                 </div>
               </div>
 
@@ -182,39 +254,39 @@
                 <label class="col-sm-5 control-label">Driver on right side?</label>
                 <div class="col-sm-7">
                   <input type="checkbox" ng-model="newInventory.rightSideDriver" ng-if="!inEditMode"/>
-                  <input type="checkbox" class="form-control" ng-model="selectedInventory.rightSideDriver" ng-if="inEditMode"/>
+                  <input type="checkbox" ng-model="selectedInventory.rightSideDriver" ng-if="inEditMode"/>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-sm-5 control-label">Fuel capacity (cc)</label>
                 <div class="col-sm-2">
-                  <input class="form-control" ng-model="newInventory.fuelCapacity" ng-if="!inEditMode"/>
-                  <input class="form-control" ng-model="selectedInventory.fuelCapacity" ng-if="inEditMode"/>
+                  <input type="number" class="form-control" ng-model="newInventory.fuelCapacity" ng-if="!inEditMode"/>
+                  <input type="number" class="form-control" ng-model="selectedInventory.fuelCapacity" ng-if="inEditMode"/>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-sm-5 control-label">Year of production</label>
                 <div class="col-sm-2">
-                  <input class="form-control" ng-model="newInventory.yearOfProduction" ng-if="!inEditMode"/>
-                  <input class="form-control" ng-model="selectedInventory.yearOfProduction" ng-if="inEditMode"/>
+                  <input type="number" class="form-control" ng-model="newInventory.yearOfProduction" ng-if="!inEditMode"/>
+                  <input type="number" class="form-control" ng-model="selectedInventory.yearOfProduction" ng-if="inEditMode"/>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-sm-5 control-label">Number of seat</label>
                 <div class="col-sm-2">
-                  <input class="form-control" ng-model="newInventory.numOfSeat" ng-if="!inEditMode"/>
-                  <input class="form-control" ng-model="selectedInventory.numOfSeat" ng-if="inEditMode"/>
+                  <input type="number" class="form-control" ng-model="newInventory.numOfSeat" ng-if="!inEditMode"/>
+                  <input type="number" class="form-control" ng-model="selectedInventory.numOfSeat" ng-if="inEditMode"/>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-sm-5 control-label">Number of door</label>
                 <div class="col-sm-2">
-                  <input class="form-control" ng-model="newInventory.numOfDoor" ng-if="!inEditMode"/>
-                  <input class="form-control" ng-model="selectedInventory.numOfDoor" ng-if="inEditMode"/>
+                  <input type="number" class="form-control" ng-model="newInventory.numOfDoor" ng-if="!inEditMode"/>
+                  <input type="number" class="form-control" ng-model="selectedInventory.numOfDoor" ng-if="inEditMode"/>
                 </div>
               </div>
 
@@ -229,31 +301,32 @@
               <div class="form-group">
                 <label class="col-sm-5 control-label">0-100 km/h time (s)</label>
                 <div class="col-sm-2">
-                  <input class="form-control" ng-model="newInventory.zeroToHundredKmPerHrTime" ng-if="!inEditMode"/>
-                  <input class="form-control" ng-model="selectedInventory.zeroToHundredKmPerHrTime" ng-if="inEditMode"/>
+                  <input type="number" class="form-control" ng-model="newInventory.zeroToHundredKmPerHrTime" ng-if="!inEditMode"/>
+                  <input type="number" class="form-control" ng-model="selectedInventory.zeroToHundredKmPerHrTime" ng-if="inEditMode"/>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-sm-5 control-label">Fuel type</label>
                 <div class="col-sm-5">
-                  <select class="form-control" ng-model="newInventory.fuelType" ng-options="i.name for i in inventoryFuelTypes track by i.id"></select>
+                  <select class="form-control" ng-model="newInventory.fuelType" ng-options="i.name for i in inventoryFuelTypes track by i.id" ng-if="!inEditMode"></select>
+                  <select class="form-control" ng-model="selectedInventory.fuelType" ng-options="i.name for i in inventoryFuelTypes track by i.id" ng-if="inEditMode"></select>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-sm-5 control-label">Maximum speed (km/h)</label>
                 <div class="col-sm-2">
-                  <input class="form-control" ng-model="newInventory.maxSpeed" ng-if="!inEditMode"/>
-                  <input class="form-control" ng-model="selectedInventory.maxSpeed" ng-if="inEditMode"/>
+                  <input type="number" class="form-control" ng-model="newInventory.maxSpeed" ng-if="!inEditMode"/>
+                  <input type="number" class="form-control" ng-model="selectedInventory.maxSpeed" ng-if="inEditMode"/>
                 </div>
               </div>
 
               <div class="form-group">
                 <label class="col-sm-5 control-label">Power (hp)</label>
                 <div class="col-sm-2">
-                  <input class="form-control" ng-model="newInventory.power" ng-if="!inEditMode"/>
-                  <input class="form-control" ng-model="selectedInventory.power" ng-if="inEditMode"/>
+                  <input type="number" class="form-control" ng-model="newInventory.power" ng-if="!inEditMode"/>
+                  <input type="number" class="form-control" ng-model="selectedInventory.power" ng-if="inEditMode"/>
                 </div>
               </div>
             </div>

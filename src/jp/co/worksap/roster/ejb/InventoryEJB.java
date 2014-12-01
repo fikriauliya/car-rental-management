@@ -8,6 +8,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
+
+import sun.reflect.misc.FieldUtil;
+
 import jp.co.worksap.roster.entity.BabySeatInventory;
 import jp.co.worksap.roster.entity.Branch;
 import jp.co.worksap.roster.entity.CarInventory;
@@ -39,7 +43,16 @@ public class InventoryEJB {
 		Inventory b = findInventory(id);
 		b.setName(inventory.getName());
 		b.setStatus(inventory.getStatus());
+		b.setPrice(inventory.getPrice());
 		b.setUpdatedAt(new Date());
+
+		if (inventory instanceof CarInventory) {
+			((CarInventory) b).copyPropertiesFrom((CarInventory)inventory);
+		} else if (inventory instanceof BabySeatInventory) {
+			((BabySeatInventory) b).copyPropertiesFrom((BabySeatInventory)inventory);
+		} else if (inventory instanceof GpsInventory) {
+			((GpsInventory) b).copyPropertiesFrom((GpsInventory)inventory);
+		}
 		em.persist(b);
 	}
 
@@ -49,7 +62,7 @@ public class InventoryEJB {
 		return res.getSingleResult();
 	}
 
-	public List<Inventory> findInventories(Inventory.InventoryType type) {
+	public List<Inventory> findInventories(Inventory.InventoryType type, int branchId) {
 		TypedQuery<Inventory> res = null;
 		switch (type) {
 			case CAR:
@@ -62,6 +75,7 @@ public class InventoryEJB {
 				res = em.createNamedQuery("findGpsInventories", Inventory.class);
 				break;
 		}
+		res.setParameter("ownerId", branchId);
 		return res.getResultList();
 	}
 

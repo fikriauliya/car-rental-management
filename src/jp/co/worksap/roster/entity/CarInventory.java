@@ -5,31 +5,95 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.hibernate.validator.constraints.Length;
 
 @DiscriminatorValue("C")
 @Entity
 @Table(name="T_CAR_INVENTORY")
 @XmlRootElement
 @NamedQueries({
-	@NamedQuery(name="findCarInventories", query="SELECT u FROM CarInventory u ORDER BY u.name")
+	@NamedQuery(name="findCarInventories", query="SELECT u FROM CarInventory u WHERE u.owner.id = :ownerId ORDER BY u.name")
 })
 public class CarInventory extends Inventory {
+	@Min(value=0)
+	@Max(value=10000)
 	private int length;
+
+	@Min(value=0)
+	@Max(value=10000)
 	private int width;
+
+	@Min(value=0)
+	@Max(value=10000)
 	private int height;
+
+	@Min(value=0)
+	@Max(value=10000)
 	private int weight;
+
+	@Min(value=0)
+	@Max(value=10000)
 	private int fuelCapacity;
+
+	@Min(value=0)
+	@Max(value=3000)
 	private int yearOfProduction;
+
+	@Length(max=100)
 	private String transmission;
+
+	@Min(value=0)
+	@Max(value=10000)
 	private float maxSpeed;
+
+	@Min(value=0)
+	@Max(value=10000)
 	private float zeroToHundredKmPerHrTime;
+
+	@Min(value=0)
+	@Max(value=10000)
 	private float power;
+
+	@Min(value=0)
+	@Max(value=10000)
 	private int wheelBase;
+
+	@Min(value=0)
+	@Max(value=20)
 	private int numOfSeat;
+
+	@Min(value=0)
+	@Max(value=20)
 	private int numOfDoor;
+
+	@NotNull
 	private boolean isRightSideDriver;
+
+	@NotNull
 	private FuelType fuelType;
+
+	public void copyPropertiesFrom(CarInventory ci) {
+		setLength(ci.getLength());
+		setWidth(ci.getWidth());
+		setHeight(ci.getHeight());
+		setWeight(ci.getWeight());
+		setFuelCapacity(ci.getFuelCapacity());
+		setYearOfProduction(ci.getYearOfProduction());
+		setTransmission(ci.getTransmission());
+		setMaxSpeed(ci.getMaxSpeed());
+		setZeroToHundredKmPerHrTime(ci.getZeroToHundredKmPerHrTime());
+		setPower(ci.getPower());
+		setWheelBase(ci.getWheelBase());
+		setNumOfSeat(ci.getNumOfSeat());
+		setNumOfDoor(ci.getNumOfDoor());
+		setRightSideDriver(ci.isRightSideDriver());
+		setFuelType(ci.getFuelType());
+	}
 
 	public int getLength() {
 		return length;
@@ -67,6 +131,19 @@ public class CarInventory extends Inventory {
 	public void setYearOfProduction(int yearOfProduction) {
 		this.yearOfProduction = yearOfProduction;
 	}
+	@Override
+	public String toString() {
+		return "CarInventory [length=" + length + ", width=" + width
+				+ ", height=" + height + ", weight=" + weight
+				+ ", fuelCapacity=" + fuelCapacity + ", yearOfProduction="
+				+ yearOfProduction + ", transmission=" + transmission
+				+ ", maxSpeed=" + maxSpeed + ", zeroToHundredKmPerHrTime="
+				+ zeroToHundredKmPerHrTime + ", power=" + power
+				+ ", wheelBase=" + wheelBase + ", numOfSeat=" + numOfSeat
+				+ ", numOfDoor=" + numOfDoor + ", isRightSideDriver="
+				+ isRightSideDriver + ", fuelType=" + fuelType + "]";
+	}
+
 	public String getTransmission() {
 		return transmission;
 	}

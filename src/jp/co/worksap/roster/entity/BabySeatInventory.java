@@ -5,22 +5,33 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import jp.co.worksap.roster.entity.validator.FieldLessThan;
 
 @DiscriminatorValue("B")
 @Entity
 @Table(name="T_BABY_SEAT_INVENTORY")
 @XmlRootElement
 @NamedQueries({
-	@NamedQuery(name="findBabySeatInventories", query="SELECT u FROM BabySeatInventory u ORDER BY u.name")
+	@NamedQuery(name="findBabySeatInventories", query="SELECT u FROM BabySeatInventory u WHERE u.owner.id = :ownerId ORDER BY u.name")
 })
+@FieldLessThan(first="minWeight", second="maxWeight", message="Minimum weight must be less than maximum weight")
 public class BabySeatInventory extends Inventory {
 	@NotNull
+	@Min(value=0)
 	private int minWeight;
 
 	@NotNull
+	@Min(value=0)
 	private int maxWeight;
+
+	public void copyPropertiesFrom(BabySeatInventory bsi) {
+		setMinWeight(bsi.getMinWeight());
+		setMaxWeight(bsi.getMaxWeight());
+	}
 
 	public int getMinWeight() {
 		return minWeight;
@@ -33,5 +44,11 @@ public class BabySeatInventory extends Inventory {
 	}
 	public void setMaxWeight(int maxWeight) {
 		this.maxWeight = maxWeight;
+	}
+
+	@Override
+	public String toString() {
+		return "BabySeatInventory [minWeight=" + minWeight + ", maxWeight="
+				+ maxWeight + "]";
 	}
 }

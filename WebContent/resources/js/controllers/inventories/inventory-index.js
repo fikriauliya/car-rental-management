@@ -1,32 +1,72 @@
 var IndexInventoryController = function($scope, $state, $stateParams, $filter, $timeout, Inventories, ngTableParams) {
-	$scope.newInventory = new Inventories();
+	$scope.initializeNewInventory = function() {
+		$scope.newInventory = new Inventories();
+		$scope.newInventory.type = {id: 'car'};
+		$scope.newInventory.fuelType = {id: 'COMPRESSED_NATURAL_GAS'};
+	}
+
+	$scope.initializeNewInventory();
+	$scope.selectedInventory = {};
+
+	$scope.carInventories = [];
+	$scope.gpsInventories = [];
+	$scope.babySeatInventories = [];
 	$scope.inventoryTypes = [
 	   {id: 'car', name: 'Car'},
 	   {id: 'baby_seat', name: 'Baby seat'},
 	   {id: 'gps', name: 'GPS'},
     ];
 	$scope.inventoryFuelTypes = [
-		{id: 'compressed_natural_gas', name: 'Compressed natural gas'},
-		{id: 'diesel', name: 'Diesel'},
-		{id: 'all_electric', name: 'All electric'},
-     	{id: 'flex_fuel', name: 'Flex fuel'},
-     	{id: 'hybrid', name: 'Hybrid'},
-     	{id: 'plug_in_hybrid', name: 'Plug-in hybrid'}
+		{id: 'COMPRESSED_NATURAL_GAS', name: 'Compressed natural gas'},
+		{id: 'DIESEL', name: 'Diesel'},
+		{id: 'ALL_ELECTRIC', name: 'All electric'},
+     	{id: 'FLEX_FUEL', name: 'Flex fuel'},
+     	{id: 'HYBRID', name: 'Hybrid'},
+     	{id: 'PLUG_IN_HYBRID', name: 'Plug-in hybrid'}
     ];
 
-	$scope.displayInventoryDialog = function(editMode) {
+	$scope.displayInventoryDialog = function(editMode, selectedInventory) {
 		$scope.clearNotification();
 		$scope.inEditMode = editMode;
+		$scope.selectedInventory = selectedInventory;
+
+		console.log($scope.selectedInventory);
 
 		$('.inventory-modal').modal('show');
 	};
 
 	$scope.refreshInventories = function() {
 		$scope.startProgress();
-		Inventories.get({entity: 'car', branchId: $scope.selectedBranch.id},
+		Inventories.query({entity: 'car', branchId: $stateParams.id},
 			function(d, h){
-				$scope.inventories = d;
-				$timeout(function(){ $scope.inventoryTableParams.reload(); $scope.endProgress();});
+				$scope.carInventories = d;
+				_.each($scope.carInventories, function(d) { d.type = {id: 'car'}});
+				_.each($scope.carInventories, function(d) { d.fuelType = {id: d.fuelType}});
+				$timeout(function(){ $scope.carInventoryTableParams.reload(); $scope.endProgress();});
+			},
+			function(d, h) {
+				$scope.endProgress();
+			}
+		);
+
+		$scope.startProgress();
+		Inventories.query({entity: 'gps', branchId: $stateParams.id},
+			function(d, h){
+				$scope.gpsInventories = d;
+				_.each($scope.gpsInventories, function(d) { d.type = {id: 'gps'}});
+				$timeout(function(){ $scope.gpsInventoryTableParams.reload(); $scope.endProgress();});
+			},
+			function(d, h) {
+				$scope.endProgress();
+			}
+		);
+
+		$scope.startProgress();
+		Inventories.query({entity: 'baby_seat', branchId: $stateParams.id},
+			function(d, h){
+				$scope.babySeatInventories = d;
+				_.each($scope.babySeatInventories, function(d) { d.type = {id: 'baby_seat'}});
+				$timeout(function(){ $scope.babySeatInventoryTableParams.reload(); $scope.endProgress();});
 			},
 			function(d, h) {
 				$scope.endProgress();
@@ -34,18 +74,26 @@ var IndexInventoryController = function($scope, $state, $stateParams, $filter, $
 		);
 	};
 
+	var cleanUpData = function(inventory) {
+		var entity = inventory.type.id;
+		var res = _.omit(inventory, 'type');
+		if (entity == "car") {
+			res.fuelType = inventory.fuelType.id;
+		}
+		return res;
+	}
+
 	$scope.createInventory = function() {
 		$scope.startProgress();
 
 		var entity = $scope.newInventory.type.id;
-		console.log(entity);
-		$scope.newInventory = _.omit($scope.newInventory, 'type');
+		var d = cleanUpData($scope.newInventory);
 
-		$scope.newInventory.$save({entity: entity, branchId: $scope.selectedBranch.id},
+		d.$save({entity: entity, branchId: $stateParams.id},
 			function(d, h) {
 				$scope.clearNotification();
 				$scope.$parent.info = "New inventory " + $scope.newInventory.name + " has been created";
-				$scope.newInventory = new Inventories();
+				$scope.initializeNewInventory();
 
 				$('.inventory-modal').modal('hide');
 				$scope.refreshInventories();
@@ -60,13 +108,92 @@ var IndexInventoryController = function($scope, $state, $stateParams, $filter, $
 		);
 	};
 
-	$scope.inventoryTableParams = new ngTableParams(
+	$scope.updateInventory = function() {
+		$scope.startProgress();
+
+		var entity = $scope.selectedInventory.type.id;
+		var d = cleanUpData($scope.selectedInventory);
+
+		Inventories.update({entity: entity, branchId: $stateParams.id, id: $scope.selectedInventory.id}, d,
+			function(d, h) {
+				$scope.clearNotification();
+				$scope.$parent.info = "Inventory" + $scope.selectedInventory.name + " has been updated";
+
+				$('.inventory-modal').modal('hide');
+				$scope.refreshInventories();
+
+				$scope.endProgress();
+			},
+			function(d, h) {
+				$scope.clearNotification();
+				$scope.$parent.errors = d.data;
+
+				$scope.endProgress();
+			}
+		);
+	};
+
+	$scope.deleteInventory = function(data) {
+		$scope.startProgress();
+
+		Inventories.remove({id: data.id},
+			function(d, h) {
+				$scope.clearNotification();
+
+				$scope.$parent.info = "A branch has been deleted";
+				$scope.refreshBranches();
+
+				$scope.endProgress();
+			},
+			function(d, h) {
+				$scope.clearNotification();
+
+				$scope.$parent.errors = d.data;
+
+				$scope.endProgress();
+			}
+		);
+	}
+
+	$scope.carInventoryTableParams = new ngTableParams(
 		{ page: 1, count: 10, sorting: { id: 'asc' }},
 		{
 		    total: 0,
 		    getData: function($defer, params) {
-		    	if ($scope.inventories.length > 0) {
-			        var orderedData = params.sorting() ? $filter('orderBy')($scope.inventories, params.orderBy()) : $scope.inventories;
+		    	if ($scope.carInventories.length > 0) {
+			        var orderedData = params.sorting() ? $filter('orderBy')($scope.carInventories, params.orderBy()) : $scope.carInventories;
+
+			        params.total(orderedData.length);
+			        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+		    	} else {
+		    		$defer.reject();
+		    	}
+		    }
+		});
+
+	$scope.babySeatInventoryTableParams = new ngTableParams(
+		{ page: 1, count: 10, sorting: { id: 'asc' }},
+		{
+		    total: 0,
+		    getData: function($defer, params) {
+		    	if ($scope.babySeatInventories.length > 0) {
+			        var orderedData = params.sorting() ? $filter('orderBy')($scope.babySeatInventories, params.orderBy()) : $scope.babySeatInventories;
+
+			        params.total(orderedData.length);
+			        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+		    	} else {
+		    		$defer.reject();
+		    	}
+		    }
+		});
+
+	$scope.gpsInventoryTableParams = new ngTableParams(
+		{ page: 1, count: 10, sorting: { id: 'asc' }},
+		{
+		    total: 0,
+		    getData: function($defer, params) {
+		    	if ($scope.gpsInventories.length > 0) {
+			        var orderedData = params.sorting() ? $filter('orderBy')($scope.gpsInventories, params.orderBy()) : $scope.gpsInventories;
 
 			        params.total(orderedData.length);
 			        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));

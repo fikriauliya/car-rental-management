@@ -69,22 +69,22 @@ public class InventoryServices {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/car")
-	public List<Inventory> indexCar() {
-		return inventoryEJB.findInventories(InventoryType.CAR);
+	public List<Inventory> indexCar(@PathParam("branchId") int branchId) {
+		return inventoryEJB.findInventories(InventoryType.CAR, branchId);
 	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/baby_seat")
-	public List<Inventory> indexBabySeat() {
-		return inventoryEJB.findInventories(InventoryType.BABY_SEAT);
+	public List<Inventory> indexBabySeat(@PathParam("branchId") int branchId) {
+		return inventoryEJB.findInventories(InventoryType.BABY_SEAT, branchId);
 	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/gps")
-	public List<Inventory> indexGps() {
-		return inventoryEJB.findInventories(InventoryType.GPS);
+	public List<Inventory> indexGps(@PathParam("branchId") int branchId) {
+		return inventoryEJB.findInventories(InventoryType.GPS, branchId);
 	}
 
 	@DELETE
@@ -96,9 +96,28 @@ public class InventoryServices {
 	}
 
 	@PUT
-	@Path("/{id}")
+	@Path("car/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response update(@PathParam("id") int id, Inventory inventory) {
+	public Response update(@PathParam("id") int id, CarInventory inventory) {
+		System.out.println(inventory);
+		inventoryEJB.updateInventory(id, inventory);
+		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
+	}
+
+	@PUT
+	@Path("baby_seat/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response update(@PathParam("id") int id, BabySeatInventory inventory) {
+		System.out.println(inventory);
+		inventoryEJB.updateInventory(id, inventory);
+		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
+	}
+
+	@PUT
+	@Path("gps/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response update(@PathParam("id") int id, GpsInventory inventory) {
+		System.out.println(inventory);
 		inventoryEJB.updateInventory(id, inventory);
 		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
 	}

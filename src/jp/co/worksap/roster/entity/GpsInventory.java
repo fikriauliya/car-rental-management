@@ -5,9 +5,11 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
 @DiscriminatorValue("G")
@@ -15,11 +17,12 @@ import org.hibernate.validator.constraints.Range;
 @Table(name="T_GPS_INVENTORY")
 @XmlRootElement
 @NamedQueries({
-	@NamedQuery(name="findGpsInventories", query="SELECT u FROM GpsInventory u ORDER BY u.name")
+	@NamedQuery(name="findGpsInventories", query="SELECT u FROM GpsInventory u WHERE u.owner.id = :ownerId ORDER BY u.name")
 })
 public class GpsInventory extends Inventory {
+	@Range(min=0, max=10000000)
 	@NotNull
-	private int numOfWayPoints;
+	private Integer numOfWayPoints;
 
 	@NotNull
 	private boolean hasTextToSpeech;
@@ -39,13 +42,25 @@ public class GpsInventory extends Inventory {
 	@NotNull
 	private boolean hasColourDisplay;
 
+	@Range(min=0, max=1000)
 	@NotNull
-	private int screenSize;
+	private Integer screenSize;
 
-	public int getNumOfWayPoints() {
+	public void copyPropertiesFrom(GpsInventory gi) {
+		setNumOfWayPoints(gi.getNumOfWayPoints());
+		setHasTextToSpeech(gi.isHasTextToSpeech());
+		setWaasEnabled(gi.isWaasEnabled());
+		setHasDownloadCapability(gi.isHasDownloadCapability());
+		setHasBuiltInBaseMap(gi.isHasBuiltInBaseMap());
+		setHasVoicePrompts(gi.isHasVoicePrompts());
+		setHasColourDisplay(gi.isHasColourDisplay());
+		setScreenSize(gi.getScreenSize());
+	}
+
+	public Integer getNumOfWayPoints() {
 		return numOfWayPoints;
 	}
-	public void setNumOfWayPoints(int numOfWayPoints) {
+	public void setNumOfWayPoints(Integer numOfWayPoints) {
 		this.numOfWayPoints = numOfWayPoints;
 	}
 	public boolean isHasTextToSpeech() {
@@ -78,10 +93,10 @@ public class GpsInventory extends Inventory {
 	public void setHasColourDisplay(boolean hasColourDisplay) {
 		this.hasColourDisplay = hasColourDisplay;
 	}
-	public int getScreenSize() {
+	public Integer getScreenSize() {
 		return screenSize;
 	}
-	public void setScreenSize(int screenSize) {
+	public void setScreenSize(Integer screenSize) {
 		this.screenSize = screenSize;
 	}
 	public boolean isWaasEnabled() {
@@ -89,5 +104,16 @@ public class GpsInventory extends Inventory {
 	}
 	public void setWaasEnabled(boolean isWaasEnabled) {
 		this.isWaasEnabled = isWaasEnabled;
+	}
+
+	@Override
+	public String toString() {
+		return "GpsInventory [numOfWayPoints=" + numOfWayPoints
+				+ ", hasTextToSpeech=" + hasTextToSpeech + ", isWaasEnabled="
+				+ isWaasEnabled + ", hasDownloadCapability="
+				+ hasDownloadCapability + ", hasBuiltInBaseMap="
+				+ hasBuiltInBaseMap + ", hasVoicePrompts=" + hasVoicePrompts
+				+ ", hasColourDisplay=" + hasColourDisplay + ", screenSize="
+				+ screenSize + "]";
 	}
 }

@@ -115,8 +115,8 @@ var IndexBranchController = function($scope, $state, Branches, ngProgress) {
 	};
 
 	$scope.changeBranch = function(branch) {
-		$state.go('branch.members', {id: branch.id});
 		$scope.selectedBranch = branch;
+		$state.go('branch.members', {id: branch.id});
 	};
 
 	$scope.refreshBranches();

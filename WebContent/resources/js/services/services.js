@@ -76,6 +76,8 @@ inventoryServices = angular.module('inventoryServices', ['ngResource']);
 inventoryServices.factory("Inventories",
   ["$resource",
    function($resource) {
-	  return $resource(basePath + "/api/inventories/:branchId/:entity/");
+	  return $resource(basePath + "/api/inventories/:branchId/:entity/:id", {}, {
+		  'update': { method:'PUT' }
+	  });
    }
   ]);
