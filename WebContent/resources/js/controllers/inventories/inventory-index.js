@@ -117,7 +117,7 @@ var IndexInventoryController = function($scope, $state, $stateParams, $filter, $
 		Inventories.update({entity: entity, branchId: $stateParams.id, id: $scope.selectedInventory.id}, d,
 			function(d, h) {
 				$scope.clearNotification();
-				$scope.$parent.info = "Inventory" + $scope.selectedInventory.name + " has been updated";
+				$scope.$parent.info = "Inventory " + $scope.selectedInventory.name + " has been updated";
 
 				$('.inventory-modal').modal('hide');
 				$scope.refreshInventories();
@@ -134,25 +134,27 @@ var IndexInventoryController = function($scope, $state, $stateParams, $filter, $
 	};
 
 	$scope.deleteInventory = function(data) {
-		$scope.startProgress();
+		if (confirm("Are you sure want to delete this inventory?")) {
+			$scope.startProgress();
 
-		Inventories.remove({id: data.id},
-			function(d, h) {
-				$scope.clearNotification();
+			Inventories.remove({branchId: $stateParams.id, id: data.id},
+				function(d, h) {
+					$scope.clearNotification();
 
-				$scope.$parent.info = "A branch has been deleted";
-				$scope.refreshBranches();
+					$scope.$parent.info = "Inventory " + data.name + " has been deleted";
+					$scope.refreshInventories();
 
-				$scope.endProgress();
-			},
-			function(d, h) {
-				$scope.clearNotification();
+					$scope.endProgress();
+				},
+				function(d, h) {
+					$scope.clearNotification();
 
-				$scope.$parent.errors = d.data;
+					$scope.$parent.errors = d.data;
 
-				$scope.endProgress();
-			}
-		);
+					$scope.endProgress();
+				}
+			);
+		}
 	}
 
 	$scope.carInventoryTableParams = new ngTableParams(

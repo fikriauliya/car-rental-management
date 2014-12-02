@@ -79,9 +79,9 @@ public class InventoryEJB {
 		return res.getResultList();
 	}
 
-	public int deleteInventory(int id) {
-		TypedQuery<Inventory> res = em.createNamedQuery("deleteInventory", Inventory.class)
-				.setParameter("id", id);
-		return res.executeUpdate();
+	public void deleteInventory(int id) {
+		Inventory i = findInventory(id);
+		i.setStatus(InventoryStatus.DELETED);
+		em.persist(i);
 	}
 }
