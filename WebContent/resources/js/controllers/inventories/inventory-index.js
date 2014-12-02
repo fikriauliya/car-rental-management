@@ -79,6 +79,8 @@ var IndexInventoryController = function($scope, $state, $stateParams, $filter, $
 		var res = _.omit(inventory, 'type');
 		if (entity == "car") {
 			res.fuelType = inventory.fuelType.id;
+		} else {
+			res = _.omit(res, 'fuelType');
 		}
 		return res;
 	}

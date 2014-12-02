@@ -5,6 +5,8 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -14,6 +16,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name="T_CUSTOMER")
+@NamedQueries({
+	@NamedQuery(name="findCustomer", query="SELECT u FROM Customer u WHERE u.id = :id"),
+	@NamedQuery(name="findCustomerByUserId", query="SELECT u FROM Customer u WHERE u.user.id = :userId"),
+})
 public class Customer {
 	@Id @GeneratedValue
 	private int id;

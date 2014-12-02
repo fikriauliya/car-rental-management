@@ -50,6 +50,6 @@ reservationManagementApp.controller('CreateCustomerController', ['$scope', '$tim
 	};
 
 	if (isLoggedIn) {
-		window.location = "confirmation.jsf";
+		window.location = "addonselection.jsf";
 	}
 }]);

@@ -1,4 +1,4 @@
-var IndexCarController = function($scope, $state, $stateParams, $filter, $timeout, Inventories, ngTableParams) {
+var IndexCarController = function($scope, $state, $stateParams, $filter, $timeout, Inventories, ngTableParams, $cookieStore) {
 	$scope.inventoryFuelTypes = [
  		{id: 'COMPRESSED_NATURAL_GAS', name: 'Compressed natural gas'},
  		{id: 'DIESEL', name: 'Diesel'},
@@ -34,9 +34,17 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 
 	$scope.isLoggedIn = isLoggedIn;
 
+	$scope.reserve = function(car) {
+		$cookieStore.put('selectedCar', car);
+		if (!isLoggedIn) {
+			window.location="customers/registration.jsf"
+		} else {
+			window.location="customers/addonselection.jsf"
+		}
+	}
 
 	$scope.refreshInventories();
 }
 angular.module('reservationManagementApp').controller('IndexCarController',
 		['$scope', '$state', '$stateParams', '$filter',  '$timeout',
-		 'Inventories', 'ngTableParams', IndexCarController]);
+		 'Inventories', 'ngTableParams', '$cookieStore', IndexCarController]);
