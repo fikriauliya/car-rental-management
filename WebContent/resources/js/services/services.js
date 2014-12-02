@@ -81,3 +81,11 @@ inventoryServices.factory("Inventories",
 	  });
    }
   ]);
+
+customerServices = angular.module('customerServices', ['ngResource']);
+customerServices.factory("Customers",
+  ["$resource",
+   function($resource) {
+	  return $resource(basePath + "/api/customers/:id");
+   }
+  ]);

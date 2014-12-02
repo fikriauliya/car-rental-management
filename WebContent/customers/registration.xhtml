@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/templates/default/public.xhtml">
+  <ui:define name="header">
+      <h:outputScript name="js/controllers/branches/branch-index.js" />
+      <h:outputScript name="js/controllers/reservations/car-index.js" />
+      <h:outputScript name="js/controllers/reservations/register.js" />
+  </ui:define>
+  <ui:define name="content">
+    <div ng-app="reservationManagementApp" ng-controller="CreateCustomerController">
+      <div class="row">
+        <div class="col-md-4">
+          <h3>New customer</h3>
+          <hr/>
+          <div class="alert alert-danger" ng-if="errors">
+            <ul>
+              <li ng-repeat="error in errors">{{error}}</li>
+            </ul>
+          </div>
+          <div class="alert alert-info" ng-if="info">
+            {{info}}
+          </div>
+          <form class="form-horizontal">
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Username</label>
+              <div class="col-sm-9">
+                <input class="form-control" id="id" ng-model="newCustomer.id"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">First name</label>
+              <div class="col-sm-9">
+                <input class="form-control" id="firstName" ng-model="newCustomer.firstName"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Last name</label>
+              <div class="col-sm-9">
+                <input class="form-control" id="lastName" ng-model="newCustomer.lastName"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Email</label>
+              <div class="col-sm-9">
+                <input class="form-control" id="email" ng-model="newCustomer.email"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Phone</label>
+              <div class="col-sm-9">
+                <input class="form-control" id="phone" ng-model="newCustomer.phone"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Password</label>
+              <div class="col-sm-9">
+                <input type="password" class="form-control" id="password" ng-model="newCustomer.password"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Address</label>
+              <div class="col-sm-9">
+                <input class="form-control" id="phone" ng-model="newCustomer.address"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Postal Code</label>
+              <div class="col-sm-9">
+                <input class="form-control" id="phone" ng-model="newCustomer.postalCode"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Country</label>
+              <div class="col-sm-9">
+                <input class="form-control" id="phone" ng-model="newCustomer.country"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Birth date</label>
+              <div class="col-sm-9">
+                <div class="dropdown control-label" style="text-align:left">
+                  <a  class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown" data-target="#" href="#">{{newCustomer.birthDate | date:'mediumDate'}}</a>
+                  <ul class="dropdown-menu" role="menu">
+                      <datetimepicker data-ng-model="newCustomer.birthDate"
+                        data-datetimepicker-config="{ dropdownSelector: '#dropdown1', minView: 'day' }"/>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-3 col-sm-4">
+                <button class="btn btn-primary btn-sm" ng-click="createCustomer()">Register</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col col-md-8">
+          <h3>Existing customer</h3>
+          <hr/>
+          <form method="post" name="loginform" action="j_security_check" role="form"
+            class="form-horizontal">
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Username:</label>
+              <div class="col-sm-4">
+                <h:inputText id="j_username" autocomplete="off" size="20" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Password:</label>
+              <div class="col-sm-4">
+                <h:inputSecret id="j_password" autocomplete="off" size="20" class="form-control" />
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <h:commandButton type="submit" value="Submit" class="btn btn-primary"/>&nbsp;
+                <h:commandButton type="reset" value="Reset" class="btn btn-warning"/>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </ui:define>
+</ui:composition>
+</html>

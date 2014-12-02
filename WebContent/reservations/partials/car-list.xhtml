@@ -72,10 +72,15 @@
   <div class="col col-md-1">
     <h1><span class="label label-success">{{car.price}}</span></h1>
     <br/>
-    <button class="btn btn-primary btn-md">
+    <a ng-if="!isLoggedIn" href="customers/registration.jsf" class="btn btn-primary btn-md">
       <span class="glyphicon glyphicon-shopping-cart"/>
       Reserve
-    </button>
+    </a>
+
+    <a ng-if="isLoggedIn" href="customers/confirmation.jsf" class="btn btn-primary btn-md">
+      <span class="glyphicon glyphicon-shopping-cart"/>
+      Reserve
+    </a>
   </div>
   <div class="col col-md-12">
     <hr/>

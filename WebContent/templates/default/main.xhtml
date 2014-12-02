@@ -20,6 +20,7 @@
     var isAdmin = $.parseJSON("#{request.isUserInRole('admin')}");
     var isHR = $.parseJSON("#{request.isUserInRole('hr')}");
     var isEmployee = $.parseJSON("#{request.isUserInRole('employee')}");
+    var isLoggedIn = $.parseJSON("#{userSessionController.isUserLoggedIn()}");
   </script>
   <h:outputStylesheet library="bootstrap" name="css/bootstrap.css"  />
   <h:outputStylesheet library="angularjs" name="css/abn_tree.css"  />
