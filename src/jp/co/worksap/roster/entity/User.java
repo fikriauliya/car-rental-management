@@ -60,7 +60,6 @@ public class User {
 	@Pattern(regexp="^[0-9\\*\\+#]*$", message="may not contain character other than numbers and *, +, #")
 	private String phone;
 
-	@NotNull
 	private OrganizationUnit unit;
 
 	private boolean isAttached;
