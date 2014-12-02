@@ -28,7 +28,6 @@ import jp.co.worksap.roster.entity.Inventory.InventoryType;
 
 @Path("/inventories/{branchId}")
 @Stateless
-@RolesAllowed({"admin" ,"hr"})
 public class InventoryServices {
 	@EJB
 	private InventoryEJB inventoryEJB;
@@ -40,6 +39,7 @@ public class InventoryServices {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/car")
+	@RolesAllowed({"admin" ,"hr"})
 	public Response create(CarInventory inventory, @PathParam("branchId") int branchId) {
 		Branch branch = branchEJB.findBranch(branchId);
 		inventoryEJB.createInventory(inventory, branch);
@@ -50,6 +50,7 @@ public class InventoryServices {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/baby_seat")
+	@RolesAllowed({"admin" ,"hr"})
 	public Response create(BabySeatInventory inventory, @PathParam("branchId") int branchId) {
 		Branch branch = branchEJB.findBranch(branchId);
 		inventoryEJB.createInventory(inventory, branch);
@@ -60,6 +61,7 @@ public class InventoryServices {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/gps")
+	@RolesAllowed({"admin" ,"hr"})
 	public Response create(GpsInventory inventory, @PathParam("branchId") int branchId) {
 		Branch branch = branchEJB.findBranch(branchId);
 		inventoryEJB.createInventory(inventory, branch);
@@ -90,6 +92,7 @@ public class InventoryServices {
 	@DELETE
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin" ,"hr"})
 	public Response destroy(@PathParam("id") int id) {
 		inventoryEJB.deleteInventory(id);
 		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
@@ -98,6 +101,7 @@ public class InventoryServices {
 	@PUT
 	@Path("car/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin" ,"hr"})
 	public Response update(@PathParam("id") int id, CarInventory inventory) {
 		System.out.println(inventory);
 		inventoryEJB.updateInventory(id, inventory);
@@ -107,6 +111,7 @@ public class InventoryServices {
 	@PUT
 	@Path("baby_seat/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin" ,"hr"})
 	public Response update(@PathParam("id") int id, BabySeatInventory inventory) {
 		System.out.println(inventory);
 		inventoryEJB.updateInventory(id, inventory);
@@ -116,6 +121,7 @@ public class InventoryServices {
 	@PUT
 	@Path("gps/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
+	@RolesAllowed({"admin" ,"hr"})
 	public Response update(@PathParam("id") int id, GpsInventory inventory) {
 		System.out.println(inventory);
 		inventoryEJB.updateInventory(id, inventory);
