@@ -8,11 +8,19 @@
 
 <ui:composition template="/templates/default/public.xhtml">
   <ui:define name="header">
+    <h:outputScript name="js/controllers/branches/branch-index.js" />
+    <h:outputScript name="js/controllers/reservations/car-index.js" />
   </ui:define>
   <ui:define name="content">
-    <h4>Book system</h4>
-    <hr/>
-    <h4>Select your flight</h4>
+    <div class="row">
+      <div class="col col-md-12">
+        <h3>Car rental reservation system</h3>
+        <hr/>
+      </div>
+    </div>
+    <div ng-app="reservationManagementApp">
+      <div ui-view="default"/>
+    </div>
   </ui:define>
 </ui:composition>
 </html>

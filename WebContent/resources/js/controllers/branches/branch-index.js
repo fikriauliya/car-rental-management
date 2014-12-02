@@ -124,3 +124,4 @@ var IndexBranchController = function($scope, $state, Branches, ngProgress) {
 
 angular.module('branchManagementApp').controller('IndexBranchController', ['$scope', '$state', 'Branches', 'ngProgress', IndexBranchController]);
 angular.module('inventoryManagementApp').controller('IndexBranchController', ['$scope', '$state', 'Branches', 'ngProgress', IndexBranchController]);
+angular.module('reservationManagementApp').controller('IndexBranchController', ['$scope', '$state', 'Branches', 'ngProgress', IndexBranchController]);

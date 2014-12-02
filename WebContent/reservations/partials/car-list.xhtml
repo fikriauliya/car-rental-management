@@ -1,0 +1,83 @@
+<div class="row" ng-repeat="car in carInventories">
+  <div class="col col-md-3">
+    <img src="http://www.nandhnicarrentals.com/car_image/fiesta.jpg" style="width:100%"/>
+  </div>
+  <div class="col col-md-8">
+    <div class="col col-md-12"><h3>{{car.name}}</h4><br/></div>
+    <div class="col col-md-6">
+      <div class="row">
+        <div class="col col-md-6"><b>Weight (kg)</b></div>
+        <div class="col col-md-6">{{car.weight}}</div>
+      </div>
+      <div class="row">
+        <div class="col col-md-6"><b>Width (mm)</b></div>
+        <div class="col col-md-6">{{car.width}}</div>
+      </div>
+      <div class="row">
+        <div class="col col-md-6"><b>Height (mm)</b></div>
+        <div class="col col-md-6">{{car.height}}</div>
+      </div>
+      <div class="row">
+        <div class="col col-md-6"><b>Length (mm)</b></div>
+        <div class="col col-md-6">{{car.length}}</div>
+      </div>
+      <div class="row">
+        <div class="col col-md-6"><b>Wheel base (mm)</b></div>
+        <div class="col col-md-6">{{car.wheelBase}}</div>
+      </div>
+      <div class="row">
+        <div class="col col-md-6"><b>Driver on right side?</b></div>
+        <div class="col col-md-6">{{car.rightSideDriver ? "Yes" : "No"}}</div>
+      </div>
+      <div class="row">
+        <div class="col col-md-6"><b>Fuel capacity (cc)</b></div>
+        <div class="col col-md-6">{{car.fuelCapacity}}</div>
+      </div>
+      <div class="row">
+        <div class="col col-md-6"><b>Year of production</b></div>
+        <div class="col col-md-6">{{car.yearOfProduction}}</div>
+      </div>
+    </div>
+    <div class="col col-md-6">
+      <div class="row">
+        <div class="col col-md-6"><b>Number of seat</b></div>
+        <div class="col col-md-6">{{car.numOfSeat}}</div>
+      </div>
+      <div class="row">
+        <div class="col col-md-6"><b>Number of door</b></div>
+        <div class="col col-md-6">{{car.numOfDoor}}</div>
+      </div>
+      <div class="row">
+        <div class="col col-md-6"><b>Transmission type</b></div>
+        <div class="col col-md-6">{{car.transmission}}</div>
+      </div>
+      <div class="row">
+        <div class="col col-md-6"><b>0-100 km/h time (s)</b></div>
+        <div class="col col-md-6">{{car.zeroToHundredKmPerHrTime}}</div>
+      </div>
+      <div class="row">
+        <div class="col col-md-6"><b>Fuel type</b></div>
+        <div class="col col-md-6">{{car.fuelType.name}}</div>
+      </div>
+      <div class="row">
+        <div class="col col-md-6"><b>Maximum speed (km/h)</b></div>
+        <div class="col col-md-6">{{car.maxSpeed}}</div>
+      </div>
+      <div class="row">
+        <div class="col col-md-6"><b>Power</b></div>
+        <div class="col col-md-6">{{car.power}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col col-md-1">
+    <h1><span class="label label-success">{{car.price}}</span></h1>
+    <br/>
+    <button class="btn btn-primary btn-md">
+      <span class="glyphicon glyphicon-shopping-cart"/>
+      Reserve
+    </button>
+  </div>
+  <div class="col col-md-12">
+    <hr/>
+  </div>
+</div>
