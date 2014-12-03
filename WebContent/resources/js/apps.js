@@ -144,7 +144,7 @@ reservationManagementApp.config(['$stateProvider', '$urlRouterProvider', functio
 			url: '/members/:id',
 			views: {
 				"default": {
-					templateUrl: 'reservations/partials/car-list.xhtml',
+					templateUrl: 'customers/partials/car-list.xhtml',
 					controller: 'IndexCarController'
 				},
 			}
