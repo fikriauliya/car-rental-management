@@ -15,10 +15,12 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 
 import jp.co.worksap.roster.ejb.CustomerEJB;
+import jp.co.worksap.roster.ejb.InventoryAgendaEJB;
 import jp.co.worksap.roster.ejb.InventoryEJB;
 import jp.co.worksap.roster.ejb.ReservationEJB;
 import jp.co.worksap.roster.entity.Customer;
 import jp.co.worksap.roster.entity.Inventory;
+import jp.co.worksap.roster.entity.InventoryAgenda;
 import jp.co.worksap.roster.entity.Reservation;
 import jp.co.worksap.roster.rest.modelview.ReservationInfo;
 
@@ -30,6 +32,9 @@ public class ReservationService {
 
 	@EJB
 	ReservationEJB reservationEJB;
+
+	@EJB
+	InventoryAgendaEJB inventoryAgendaEJB;
 
 	@EJB
 	CustomerEJB customerEJB;
@@ -58,6 +63,14 @@ public class ReservationService {
 			reservation.setCustomer(customer);
 
 			reservationEJB.createReservation(reservation);
+
+			InventoryAgenda inventoryAgenda = new InventoryAgenda();
+			inventoryAgenda.setStartTime(reservationInfo.getStartTime());
+			inventoryAgenda.setEndTime(reservationInfo.getEndTime());
+			inventoryAgenda.setInventory(inventory);
+			inventoryAgenda.setReservation(reservation);
+
+			inventoryAgendaEJB.createInventoryAgenda(inventoryAgenda);
 		}
 
 		return Response.status(Status.CREATED).type(MediaType.APPLICATION_JSON).build();

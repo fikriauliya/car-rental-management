@@ -1,5 +1,7 @@
 package jp.co.worksap.roster.rest;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
@@ -13,6 +15,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -71,22 +74,29 @@ public class InventoryServices {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/car")
-	public List<Inventory> indexCar(@PathParam("branchId") int branchId) {
-		return inventoryEJB.findInventories(InventoryType.CAR, branchId);
+	public List<Inventory> indexCar(@PathParam("branchId") int branchId,
+			@QueryParam("startTime") long startTime, @QueryParam("endTime") long endTime) {
+		return inventoryEJB.findInventories(InventoryType.CAR, branchId, timestampToDate(startTime), timestampToDate(endTime));
 	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/baby_seat")
-	public List<Inventory> indexBabySeat(@PathParam("branchId") int branchId) {
-		return inventoryEJB.findInventories(InventoryType.BABY_SEAT, branchId);
+	public List<Inventory> indexBabySeat(@PathParam("branchId") int branchId,
+			@QueryParam("startTime") long startTime, @QueryParam("endTime") long endTime) {
+		return inventoryEJB.findInventories(InventoryType.BABY_SEAT, branchId, timestampToDate(startTime), timestampToDate(endTime));
 	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/gps")
-	public List<Inventory> indexGps(@PathParam("branchId") int branchId) {
-		return inventoryEJB.findInventories(InventoryType.GPS, branchId);
+	public List<Inventory> indexGps(@PathParam("branchId") int branchId,
+			@QueryParam("startTime") long startTime, @QueryParam("endTime") long endTime) {
+		return inventoryEJB.findInventories(InventoryType.GPS, branchId, timestampToDate(startTime), timestampToDate(endTime));
+	}
+
+	private Date timestampToDate(long timestamp) {
+		return new Date(new Timestamp(timestamp).getTime());
 	}
 
 	@DELETE

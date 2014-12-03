@@ -23,6 +23,9 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 	};
 
 	$scope.selectedCar = $cookieStore.get('selectedCar');
+	$scope.startTime = new Date($cookieStore.get('startTime'));
+	$scope.endTime = new Date($cookieStore.get('endTime'));
+
 	$scope.selectedInventories = [];
 
 	$scope.babySeatInventories = [];
@@ -30,7 +33,8 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 
 	$scope.refreshInventories = function() {
 		$scope.startProgress();
-		Inventories.query({entity: 'gps', branchId: $scope.selectedCar.owner.id},
+		Inventories.query({entity: 'gps', branchId: $scope.selectedCar.owner.id, startTime: $scope.startTime.getTime(),
+			endTime: $scope.endTime.getTime()},
 			function(d, h){
 				$scope.gpsInventories = d;
 				_.each($scope.gpsInventories, function(d) { d.type = {id: 'gps'}});
@@ -42,7 +46,8 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 		);
 
 		$scope.startProgress();
-		Inventories.query({entity: 'baby_seat', branchId: $scope.selectedCar.owner.id},
+		Inventories.query({entity: 'baby_seat', branchId: $scope.selectedCar.owner.id, startTime: $scope.startTime.getTime(),
+			endTime: $scope.endTime.getTime()},
 			function(d, h){
 				$scope.babySeatInventories = d;
 				_.each($scope.babySeatInventories, function(d) { d.type = {id: 'baby_seat'}});
@@ -78,12 +83,14 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 		$scope.newReservation.inventoryIds.push($scope.selectedCar.id);
 		$scope.newReservation.inventoryIds = _.union($scope.newReservation.inventoryIds,
 			_.map($scope.selectedInventories, function(d) { return d.id }));;
+		$scope.newReservation.startTime = $scope.startTime;
+		$scope.newReservation.endTime = $scope.endTime;
 
 		console.log($scope.newReservation);
 		$scope.newReservation.$save(
 			function(d, h) {
 				$scope.clearNotification();
-				$scope.info = "New reservation " + $scope.newReservation.name + " has been created";
+				$scope.info = "New reservation has been created";
 
 				$scope.endProgress();
 			}, function(d, h) {

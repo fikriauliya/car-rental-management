@@ -167,8 +167,13 @@
           <h4>Selected car</h4>
           Name: <b>{{selectedCar.name}}</b><br/>
           Price: <b>{{selectedCar.price}}</b>
-
           <hr/>
+
+          <h4>Itenary</h4>
+          From: <b>{{startTime | date: 'mediumDate'}}</b><br/>
+          To: <b>{{endTime | date: 'mediumDate'}}</b>
+          <hr/>
+
           <h4>Selected add ons</h4>
           <ol ng-if = "selectedInventories.length > 0">
             <li ng-repeat="inventory in selectedInventories track by inventory.id">

@@ -8,6 +8,8 @@ public class ReservationInfo {
 	private String cardNumber;
 	private String cardCIV;
 	private Date cardExpiryDate;
+	private Date startTime;
+	private Date endTime;
 
 	public int[] getInventoryIds() {
 		return inventoryIds;
@@ -38,6 +40,18 @@ public class ReservationInfo {
 	}
 	public void setCardExpiryDate(Date cardExpiryDate) {
 		this.cardExpiryDate = cardExpiryDate;
+	}
+	public Date getStartTime() {
+		return startTime;
+	}
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+	public Date getEndTime() {
+		return endTime;
+	}
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
 	}
 
 }

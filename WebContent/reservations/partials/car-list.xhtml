@@ -1,4 +1,55 @@
-<div class="row" ng-repeat="car in carInventories">
+<div class="row">
+  <div class="col col-md-12">
+    <form class="form-horizontal">
+      <div class="row">
+        <div class="col col-md-4">
+          <div class="form-group">
+            <label class="col-sm-4 control-label">From</label>
+            <div class="col-sm-8">
+              <div class="dropdown control-label" style="text-align:left">
+                <a  class="dropdown-toggle" id="dropdown1" role="button"
+                  data-toggle="dropdown" data-target="#" href="">{{search.startTime | date:'mediumDate'}}</a>
+                <ul class="dropdown-menu" role="menu">
+                    <datetimepicker data-ng-model="search.startTime"
+                      data-datetimepicker-config="{ dropdownSelector: '#dropdown1', minView: 'day' }"/>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-4 control-label">To</label>
+            <div class="col-sm-8">
+              <div class="dropdown control-label" style="text-align:left">
+                <a  class="dropdown-toggle" id="dropdown2" role="button"
+                  data-toggle="dropdown" data-target="#" href="">{{search.endTime| date:'mediumDate'}}</a>
+                <ul class="dropdown-menu" role="menu">
+                    <datetimepicker data-ng-model="search.endTime"
+                      data-datetimepicker-config="{ dropdownSelector: '#dropdown2', minView: 'day' }"/>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col col-md-2">
+          <button class="btn btn-primary" ng-click="refreshInventories()">
+            <span class="glyphicon glyphicon-search"/>
+            Search
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col col-md-12">
+    <hr/>
+  </div>
+</div>
+
+<div class="row" ng-if="carInventories.length == 0 && carLoaded">
+  <div class="col col-md-12">
+    <b>No car is available for the selected period.</b>
+  </div>
+</div>
+<div class="row" ng-repeat="car in carInventories" ng-if="carInventories.length > 0">
   <div class="col col-md-3">
     <img src="http://www.nandhnicarrentals.com/car_image/fiesta.jpg" style="width:100%"/>
   </div>

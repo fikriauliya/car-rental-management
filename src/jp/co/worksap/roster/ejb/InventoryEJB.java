@@ -1,16 +1,15 @@
 package jp.co.worksap.roster.ejb;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-
-import org.apache.commons.lang3.reflect.FieldUtils;
-
-import sun.reflect.misc.FieldUtil;
 
 import jp.co.worksap.roster.entity.BabySeatInventory;
 import jp.co.worksap.roster.entity.Branch;
@@ -62,21 +61,39 @@ public class InventoryEJB {
 		return res.getSingleResult();
 	}
 
-	public List<Inventory> findInventories(Inventory.InventoryType type, int branchId) {
-		TypedQuery<Inventory> res = null;
+	public List<Inventory> findInventories(Inventory.InventoryType type, int branchId, Date startTime, Date endTime) {
+		TypedQuery<Inventory> q1 = null;
 		switch (type) {
 			case CAR:
-				res = em.createNamedQuery("findCarInventories", Inventory.class);
+				q1 = em.createNamedQuery("findCarInventories", Inventory.class);
 				break;
 			case BABY_SEAT:
-				res = em.createNamedQuery("findBabySeatInventories", Inventory.class);
+				q1 = em.createNamedQuery("findBabySeatInventories", Inventory.class);
 				break;
 			case GPS:
-				res = em.createNamedQuery("findGpsInventories", Inventory.class);
+				q1 = em.createNamedQuery("findGpsInventories", Inventory.class);
 				break;
 		}
-		res.setParameter("ownerId", branchId);
-		return res.getResultList();
+
+		q1.setParameter("ownerId", branchId);
+		List<Inventory> inventories = q1.getResultList();
+
+		TypedQuery<Integer> q2 = em.createNamedQuery("findReservedInventoriesByDate", Integer.class)
+				.setParameter("startTime", startTime)
+				.setParameter("endTime", endTime)
+				.setParameter("branchId", branchId);
+
+		Set<Integer> reservedInventoryIds = new HashSet<Integer>(q2.getResultList());
+
+		List<Inventory> res = new LinkedList<Inventory>();
+
+		for (Inventory inventory : inventories) {
+			if (!reservedInventoryIds.contains(inventory.getId())) {
+				res.add(inventory);
+			}
+		}
+
+		return res;
 	}
 
 	public void deleteInventory(int id) {
