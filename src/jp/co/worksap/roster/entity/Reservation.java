@@ -6,17 +6,34 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlElement;
+
+import jp.co.worksap.roster.entity.validator.FieldLessThan;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name="T_RESERVATION")
+@FieldLessThan(first="startTime", second="endTime", message="start time must be less than end time")
+@NamedQueries({
+	@NamedQuery(name="findReservationsByDate", query="SELECT u from Reservation u WHERE ((:startTime <= u.startTime AND :endTime >= u.startTime) " +
+			"OR (:startTime <= u.endTime AND :endTime >= u.endTime) " +
+			"OR (:startTime >= u.startTime AND :endTime <= u.endTime)) " +
+			"AND :inventoryId = u.inventory.id"),
+	@NamedQuery(name="findReservedInventoriesByDate", query="SELECT DISTINCT(u.inventory.id) " +
+			"FROM Reservation u " +
+			"WHERE ((:startTime <= u.startTime AND :endTime >= u.startTime) " +
+			"OR (:startTime <= u.endTime AND :endTime >= u.endTime) " +
+			"OR (:startTime >= u.startTime AND :endTime <= u.endTime)) " +
+			"AND (u.inventory.owner.id = :branchId)"),
+})
 public class Reservation {
 	@GeneratedValue @Id
 	private int id;
@@ -48,6 +65,16 @@ public class Reservation {
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date cardExpiryDate;
+
+	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	@XmlElement(name="start")
+	private Date startTime;
+
+	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	@XmlElement(name="end")
+	private Date endTime;
 
 	public int getId() {
 		return id;
@@ -119,6 +146,22 @@ public class Reservation {
 
 	public void setGroupId(long groupId) {
 		this.groupId = groupId;
+	}
+
+	public Date getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
 	}
 
 
