@@ -3,3 +3,8 @@
 }
 
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+.myCalendar h2 {
+	font-size: 16px !important;
+	font-weight: bold;
+}

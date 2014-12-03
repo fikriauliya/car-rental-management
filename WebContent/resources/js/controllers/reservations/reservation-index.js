@@ -19,7 +19,6 @@ var IndexReservationController = function($scope, $state, $stateParams, $filter,
         		res.push(newRes);
         	});
 
-        	console.log(res);
         	$scope.reservations[0] = res;
         	$scope.tableParams.reload();
 
@@ -56,6 +55,7 @@ var IndexReservationController = function($scope, $state, $stateParams, $filter,
           center: 'title',
           right: 'today prev,next'
         },
+        timezone: 'local',
         eventClick: $scope.alertOnEventClick,
         eventDrop: $scope.alertOnDrop,
         eventResize: $scope.alertOnResize,
