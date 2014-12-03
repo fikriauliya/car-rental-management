@@ -23,12 +23,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name="T_RESERVATION")
 @FieldLessThan(first="startTime", second="endTime", message="start time must be less than end time")
 @NamedQueries({
-	@NamedQuery(name="findReservationsByDate", query="SELECT u from Reservation u WHERE ((:startTime <= u.startTime AND :endTime >= u.startTime) " +
+	@NamedQuery(name="findReservationsByDate", query="SELECT u from Reservation u " +
+			"WHERE ((:startTime <= u.startTime AND :endTime >= u.startTime) " +
 			"OR (:startTime <= u.endTime AND :endTime >= u.endTime) " +
 			"OR (:startTime >= u.startTime AND :endTime <= u.endTime)) " +
-			"AND :inventoryId = u.inventory.id"),
-	@NamedQuery(name="findReservedInventoriesByDate", query="SELECT DISTINCT(u.inventory.id) " +
-			"FROM Reservation u " +
+			"AND (u.inventory.owner.id = :branchId)"),
+	@NamedQuery(name="findReservedInventoriesByDate", query="SELECT DISTINCT(u.inventory.id) FROM Reservation u " +
 			"WHERE ((:startTime <= u.startTime AND :endTime >= u.startTime) " +
 			"OR (:startTime <= u.endTime AND :endTime >= u.endTime) " +
 			"OR (:startTime >= u.startTime AND :endTime <= u.endTime)) " +

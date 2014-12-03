@@ -24,7 +24,7 @@ public class ReservationEJB {
 	}
 
 	public List<Reservation> findReservations(int branchId, Date startTime, Date endTime) {
-		TypedQuery<Reservation> q = em.createNamedQuery("findReservations", Reservation.class)
+		TypedQuery<Reservation> q = em.createNamedQuery("findReservationsByDate", Reservation.class)
 				.setParameter("startTime", startTime)
 				.setParameter("endTime", endTime)
 				.setParameter("branchId", branchId);

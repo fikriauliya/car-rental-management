@@ -150,3 +150,45 @@ reservationManagementApp.config(['$stateProvider', '$urlRouterProvider', functio
 			}
 		})
 }]);
+
+
+var adminReservationManagementApp = angular.module('adminReservationManagementApp', ['customerServices', 'branchServices',
+                                                                           'inventoryServices', 'ui.bootstrap', 'ngTable', 'ui.calendar', 'ngProgress', 'ui.router',
+                                                                           'ui.bootstrap.datetimepicker', 'ngCookies', 'reservationServices']);
+adminReservationManagementApp.factory('myHttpInterceptor', ['$q', httpInterceptor]);
+
+adminReservationManagementApp.config(function($provide, $httpProvider, $locationProvider) {
+	$httpProvider.interceptors.push('myHttpInterceptor');
+	$locationProvider.html5Mode(false);
+});
+
+adminReservationManagementApp.run(['$rootScope', '$log', function($rootScope, $log) {
+	$rootScope.$on('$stateChangeStart',
+		function(event, toState, toParams, fromState, fromParams){
+			$log.log(fromState, " -> ", toState);
+		}
+	);
+}]);
+
+adminReservationManagementApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+	$urlRouterProvider.otherwise("");
+	$stateProvider
+		.state('branch', {
+			url: "",
+			views: {
+				"default": {
+					templateUrl: '../branches/partials/branch-list.xhtml',
+					controller: 'IndexBranchController'
+				}
+			}
+		})
+		.state('branch.members', {
+			url: '/members/:id',
+			views: {
+				"default": {
+					templateUrl: 'partials/reservation-list.xhtml',
+					controller: 'IndexReservationController'
+				},
+			}
+		})
+}]);

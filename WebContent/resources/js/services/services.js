@@ -94,6 +94,6 @@ reservationServices = angular.module('reservationServices', ['ngResource']);
 reservationServices.factory("Reservations",
   ["$resource",
    function($resource) {
-	  return $resource(basePath + "/api/reservations/:id");
+	  return $resource(basePath + "/api/reservations/:branchId/");
    }
   ]);
