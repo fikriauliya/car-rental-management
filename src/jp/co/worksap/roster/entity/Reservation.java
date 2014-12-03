@@ -9,6 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name="T_RESERVATION")
@@ -16,20 +21,31 @@ public class Reservation {
 	@GeneratedValue @Id
 	private int id;
 
+	@NotNull
 	private long groupId;
 
+	@NotNull
 	private Customer customer;
 
+	@NotNull
 	private Inventory inventory;
 
+	@NotNull
 	private Timestamp inventoryVersion;
 
+	@NotEmpty
+	@Length(max=50)
 	private String cardName;
 
+	@NotEmpty
+	@Length(max=20)
 	private String cardNumber;
 
+	@NotEmpty
+	@Length(max=10)
 	private String cardCIV;
 
+	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date cardExpiryDate;
 

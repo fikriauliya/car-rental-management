@@ -113,6 +113,14 @@
 
           <hr/>
           <h3>Payment information</h3>
+          <div class="alert alert-danger" ng-if="errors">
+            <ul>
+              <li ng-repeat="error in errors">{{error}}</li>
+            </ul>
+          </div>
+          <div class="alert alert-info" ng-if="info">
+            {{info}}
+          </div>
           <form class="form-horizontal">
             <div class="form-group">
               <label class="col-sm-4 control-label">Card name</label>
