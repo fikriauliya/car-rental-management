@@ -41,7 +41,7 @@ public class CustomerService {
 		u.setId(c.getId());
 		u.setPhone(c.getPhone());
 
-		userEJB.createUser(u);
+		userEJB.createUser(u, false);
 
 		Customer cust = new Customer();
 		cust.setAddress(c.getAddress());

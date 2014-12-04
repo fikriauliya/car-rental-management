@@ -84,7 +84,7 @@ public class UserService {
 		u.setUnit(orgEJB.getOrganizationUnit(userWithUnit.getUnitId()));
 		u.setPhone(userWithUnit.getPhone());
 
-		userEJB.createUser(u);
+		userEJB.createUser(u, true);
 		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
 	}
 

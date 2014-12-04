@@ -64,12 +64,14 @@ public class UserEJB {
 		return q.getSingleResult();
 	}
 
-	public void createUser(User user) {
-		// assign as employee by default
-		UserRole ur = new UserRole();
-		ur.setId(user.getId());
-		ur.setRoleName("employee");
-		em.persist(ur);
+	public void createUser(User user, boolean isEmployee) {
+		if (isEmployee) {
+			UserRole ur = new UserRole();
+			ur.setId(user.getId());
+			ur.setRoleName("employee");
+			em.persist(ur);
+		}
+
 		em.persist(user);
 	}
 
