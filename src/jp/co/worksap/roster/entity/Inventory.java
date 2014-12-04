@@ -63,6 +63,8 @@ public abstract class Inventory {
 	@Min(value=0)
 	private BigDecimal price;
 
+	private int primaryImageId;
+
 	public int getId() {
 		return id;
 	}
@@ -125,6 +127,14 @@ public abstract class Inventory {
 
 	public void setPrice(BigDecimal price) {
 		this.price = price;
+	}
+
+	public int getPrimaryImageId() {
+		return primaryImageId;
+	}
+
+	public void setPrimaryImageId(int primaryImageId) {
+		this.primaryImageId = primaryImageId;
 	}
 
 	public static enum InventoryType {

@@ -102,7 +102,9 @@ imageServices = angular.module('imageServices', ['ngResource']);
 imageServices.factory("Images",
   ["$resource",
    function($resource) {
-	  return $resource(basePath + "/api/images/");
+	  return $resource(basePath + "/api/images/", {}, {
+		  'update': { method:'PUT' }
+	  });
    }
   ]);
 

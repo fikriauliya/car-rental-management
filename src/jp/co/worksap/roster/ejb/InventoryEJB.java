@@ -55,6 +55,12 @@ public class InventoryEJB {
 		em.persist(b);
 	}
 
+	public void updatePrimaryImage(int id, int newImageId) {
+		Inventory b = findInventory(id);
+		b.setPrimaryImageId(newImageId);
+		em.persist(b);
+	}
+
 	public Inventory findInventory(int id) {
 		TypedQuery<Inventory> res = em.createNamedQuery("findInventory", Inventory.class)
 				.setParameter("id", id);
