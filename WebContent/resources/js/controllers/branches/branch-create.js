@@ -1,6 +1,6 @@
 branchManagementApp = angular.module('branchManagementApp');
 branchManagementApp.controller('CreateBranchController', ['$scope', '$state', 'Branches', 'ngProgress',
-  function($scope, $state, Branches, ngProgress) {
+  function($scope, $state, Branches, Timezones, ngProgress) {
 	$scope.newBranch = new Branches();
 
 	$scope.createBranch = function() {

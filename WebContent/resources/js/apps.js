@@ -28,7 +28,7 @@ myApp.config(function($provide, $httpProvider, $locationProvider) {
 });
 
 
-var branchManagementApp = angular.module('branchManagementApp', ['branchServices', 'searchServices', 'ngTable', 'ui.calendar', 'ngProgress', 'ui.router']);
+var branchManagementApp = angular.module('branchManagementApp', ['branchServices', 'searchServices', 'timezoneServices', 'ngTable', 'ui.calendar', 'ngProgress', 'ui.router']);
 branchManagementApp.factory('myHttpInterceptor', ['$q', httpInterceptor]);
 
 branchManagementApp.config(function($provide, $httpProvider, $locationProvider) {
@@ -71,7 +71,7 @@ branchManagementApp.config(['$stateProvider', '$urlRouterProvider', function($st
 		})
 }]);
 
-var inventoryManagementApp = angular.module('inventoryManagementApp', ['branchServices', 'inventoryServices', 'ngTable', 'ui.calendar', 'ngProgress', 'ui.router']);
+var inventoryManagementApp = angular.module('inventoryManagementApp', ['branchServices', 'timezoneServices', 'inventoryServices', 'ngTable', 'ui.calendar', 'ngProgress', 'ui.router']);
 inventoryManagementApp.factory('myHttpInterceptor', ['$q', httpInterceptor]);
 
 inventoryManagementApp.config(function($provide, $httpProvider, $locationProvider) {
@@ -110,7 +110,7 @@ inventoryManagementApp.config(['$stateProvider', '$urlRouterProvider', function(
 		})
 }]);
 
-var reservationManagementApp = angular.module('reservationManagementApp', ['customerServices', 'branchServices',
+var reservationManagementApp = angular.module('reservationManagementApp', ['customerServices', 'branchServices', 'timezoneServices',
                                'inventoryServices', 'ui.bootstrap', 'ngTable', 'ui.calendar', 'ngProgress', 'ui.router',
                                'ui.bootstrap.datetimepicker', 'ngCookies', 'reservationServices']);
 reservationManagementApp.factory('myHttpInterceptor', ['$q', httpInterceptor]);
@@ -152,7 +152,7 @@ reservationManagementApp.config(['$stateProvider', '$urlRouterProvider', functio
 }]);
 
 
-var adminReservationManagementApp = angular.module('adminReservationManagementApp', ['customerServices', 'branchServices',
+var adminReservationManagementApp = angular.module('adminReservationManagementApp', ['customerServices', 'branchServices', 'timezoneServices',
                                                                            'inventoryServices', 'ui.bootstrap', 'ngTable', 'ui.calendar', 'ngProgress', 'ui.router',
                                                                            'ui.bootstrap.datetimepicker', 'ngCookies', 'reservationServices']);
 adminReservationManagementApp.factory('myHttpInterceptor', ['$q', httpInterceptor]);

@@ -25,6 +25,7 @@ public class BranchEJB {
 		b.setLatitude(branch.getLatitude());
 		b.setLongitude(branch.getLongitude());
 		b.setName(branch.getName());
+		b.setTimezone(branch.getTimezone());
 		em.persist(b);
 	}
 

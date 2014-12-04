@@ -38,8 +38,15 @@
               <div class="form-group">
                 <label class="col-sm-3 control-label">Address</label>
                 <div class="col-sm-9">
-                  <input class="form-control" id="firstName" ng-model="newBranch.address" ng-if="!inEditMode"/>
-                  <input class="form-control" id="firstName" ng-model="selectedBranch.address" ng-if="inEditMode"/>
+                  <input class="form-control" id="address" ng-model="newBranch.address" ng-if="!inEditMode"/>
+                  <input class="form-control" id="address" ng-model="selectedBranch.address" ng-if="inEditMode"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Timezone</label>
+                <div class="col-sm-9">
+                  <select class="form-control" ng-model="newBranch.timezone" ng-options="i for i in allTimezones" ng-if="!inEditMode"></select>
+                  <select class="form-control" ng-model="selectedBranch.timezone" ng-options="i for i in allTimezones" ng-if="inEditMode"></select>
                 </div>
               </div>
               <div class="form-group">

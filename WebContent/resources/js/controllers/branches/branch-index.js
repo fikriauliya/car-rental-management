@@ -1,9 +1,11 @@
-var IndexBranchController = function($scope, $state, Branches, ngProgress) {
+var IndexBranchController = function($scope, $state, Branches, Timezones, ngProgress) {
 	$scope.errors = [];
 	$scope.info = "";
 	$scope.progress = 0;
 
 	$scope.newBranch = new Branches();
+	$scope.allTimezones = Timezones.query();
+	$scope.selectedBranch = {};
 
 	$scope.clearNotification = function() {
 		$scope.errors = [];
@@ -122,6 +124,6 @@ var IndexBranchController = function($scope, $state, Branches, ngProgress) {
 	$scope.refreshBranches();
   }
 
-angular.module('branchManagementApp').controller('IndexBranchController', ['$scope', '$state', 'Branches', 'ngProgress', IndexBranchController]);
-angular.module('inventoryManagementApp').controller('IndexBranchController', ['$scope', '$state', 'Branches', 'ngProgress', IndexBranchController]);
-angular.module('reservationManagementApp').controller('IndexBranchController', ['$scope', '$state', 'Branches', 'ngProgress', IndexBranchController]);
+angular.module('branchManagementApp').controller('IndexBranchController', ['$scope', '$state', 'Branches', 'Timezones', 'ngProgress', IndexBranchController]);
+angular.module('inventoryManagementApp').controller('IndexBranchController', ['$scope', '$state', 'Branches', 'Timezones', 'ngProgress', IndexBranchController]);
+angular.module('reservationManagementApp').controller('IndexBranchController', ['$scope', '$state', 'Branches', 'Timezones', 'ngProgress', IndexBranchController]);

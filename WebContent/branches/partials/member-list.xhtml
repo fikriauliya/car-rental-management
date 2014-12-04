@@ -1,7 +1,8 @@
 <div class="row">
   <div class="col col-md-12">
     <h4>{{selectedBranch.name}}</h4>
-    {{selectedBranch.address}}
+    <b>Address:</b> {{selectedBranch.address}}<br/>
+    <b>Timezone:</b> {{selectedBranch.timezone}}
     <br/><br/>
     <button class="btn btn-xs btn-danger" style="margin-left:5px" ng-click="deleteBranch()">
       <span class="glyphicon glyphicon-trash"/>

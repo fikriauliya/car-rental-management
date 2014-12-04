@@ -97,3 +97,11 @@ reservationServices.factory("Reservations",
 	  return $resource(basePath + "/api/reservations/:branchId/");
    }
   ]);
+
+timezoneServices = angular.module('timezoneServices', ['ngResource']);
+timezoneServices.factory("Timezones",
+  ["$resource",
+   function($resource) {
+	  return $resource(basePath + "/api/timezones/");
+   }
+  ]);

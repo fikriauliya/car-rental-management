@@ -1,6 +1,7 @@
 package jp.co.worksap.roster.entity;
 
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,6 +39,9 @@ public class Branch {
 	private Float latitude;
 
 	private Float longitude;
+
+	@NotEmpty
+	private String timezone;
 
 	@ManyToMany
 	@JoinTable(name = "T_BRANCH_USER")
@@ -89,5 +93,13 @@ public class Branch {
 
 	public void setUsers(List<User> users) {
 		this.users = users;
+	}
+
+	public String getTimezone() {
+		return timezone;
+	}
+
+	public void setTimezone(String timezone) {
+		this.timezone = timezone;
 	}
 }
