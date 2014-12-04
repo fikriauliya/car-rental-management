@@ -71,7 +71,7 @@ branchManagementApp.config(['$stateProvider', '$urlRouterProvider', function($st
 		})
 }]);
 
-var inventoryManagementApp = angular.module('inventoryManagementApp', ['branchServices', 'timezoneServices', 'inventoryServices', 'ngTable', 'ui.calendar', 'ngProgress', 'ui.router']);
+var inventoryManagementApp = angular.module('inventoryManagementApp', ['imageServices', 'branchServices', 'timezoneServices', 'inventoryServices', 'ngTable', 'ui.calendar', 'ngProgress', 'ui.router']);
 inventoryManagementApp.factory('myHttpInterceptor', ['$q', httpInterceptor]);
 
 inventoryManagementApp.config(function($provide, $httpProvider, $locationProvider) {
@@ -105,6 +105,15 @@ inventoryManagementApp.config(['$stateProvider', '$urlRouterProvider', function(
 				"default": {
 					templateUrl: 'partials/inventory-list.xhtml',
 					controller: 'IndexInventoryController'
+				},
+			}
+		})
+		.state('branch.images', {
+			url: '/members/:branchId/inventories/:id/images',
+			views: {
+				"default": {
+					templateUrl: 'partials/image-list.xhtml',
+					controller: 'InventoryImagesController'
 				},
 			}
 		})

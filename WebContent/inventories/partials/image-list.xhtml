@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col col-md-8">
+    <h4>Images</h4>
+    <div ng-repeat="image in images">
+      {{image}}
+    </div>
+  </div>
+
+  <div class="col col-md-4">
+    <h4>File Upload</h4>
+    <form method="post" action="../UploadServlet" enctype="multipart/form-data">
+      Select file to upload:
+      <input type="file" name="file" size="60" /><br />
+      <input type="hidden" name="inventoryId" value="1" />
+      <input class="btn btn-primary" type="submit" value="Upload" />
+    </form>
+  </div>
+</div>

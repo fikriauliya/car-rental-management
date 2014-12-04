@@ -98,6 +98,14 @@ reservationServices.factory("Reservations",
    }
   ]);
 
+imageServices = angular.module('imageServices', ['ngResource']);
+imageServices.factory("Images",
+  ["$resource",
+   function($resource) {
+	  return $resource(basePath + "/api/images/");
+   }
+  ]);
+
 timezoneServices = angular.module('timezoneServices', ['ngResource']);
 timezoneServices.factory("Timezones",
   ["$resource",
