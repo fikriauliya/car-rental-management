@@ -3,37 +3,39 @@ var IndexReservationController = function($scope, $state, $stateParams, $filter,
 	$scope.detailedReservations = [];
 
 	$scope.refreshReservations = function() {
-		Reservations.query({branchId: $stateParams.id, startTime: $scope.curStart, endTime: $scope.curEnd}, function(d, h){
-        	$scope.reservations[0] = [];
+		$scope.$parent.branchResolved.promise.then(function(b) {
+			Reservations.query({branchId: $stateParams.id, startTime: $scope.curStart, endTime: $scope.curEnd}, function(d, h){
+	        	$scope.reservations[0] = [];
 
-        	_.each(d, function(dd) {
-        		dd.startTime = TimezoneConverter.convertToLocalTimeZoneTime(dd.start, $scope.selectedBranch.timezone);
-        		dd.start = TimezoneConverter.convertToLocalTimeZoneTime(dd.start, $scope.selectedBranch.timezone);
+	        	_.each(d, function(dd) {
+	        		dd.startTime = TimezoneConverter.convertToLocalTimeZoneTime(dd.start, $scope.selectedBranch.timezone);
+	        		dd.start = TimezoneConverter.convertToLocalTimeZoneTime(dd.start, $scope.selectedBranch.timezone);
 
-        		dd.endTime = TimezoneConverter.convertToLocalTimeZoneTime(dd.end, $scope.selectedBranch.timezone);
-        		dd.end = TimezoneConverter.convertToLocalTimeZoneTime(dd.end, $scope.selectedBranch.timezone);
-    		});
+	        		dd.endTime = TimezoneConverter.convertToLocalTimeZoneTime(dd.end, $scope.selectedBranch.timezone);
+	        		dd.end = TimezoneConverter.convertToLocalTimeZoneTime(dd.end, $scope.selectedBranch.timezone);
+	    		});
 
-        	$scope.detailedReservations = d;
+	        	$scope.detailedReservations = d;
 
-        	var d2 = _.groupBy(d, 'groupId');
-        	var res = [];
+	        	var d2 = _.groupBy(d, 'groupId');
+	        	var res = [];
 
-        	_.each(d2, function(d) {
-        		var newRes = {};
-        		newRes.title = d[0].customer.user.firstName + " " + d[0].customer.user.lastName;
-        		newRes.start = d[0].startTime;
-        		newRes.end = d[0].endTime;
-        		res.push(newRes);
-        	});
+	        	_.each(d2, function(d) {
+	        		var newRes = {};
+	        		newRes.title = d[0].customer.user.firstName + " " + d[0].customer.user.lastName;
+	        		newRes.start = d[0].startTime;
+	        		newRes.end = d[0].endTime;
+	        		res.push(newRes);
+	        	});
 
-        	$scope.reservations[0] = res;
-        	$scope.tableParams.reload();
+	        	$scope.reservations[0] = res;
+	        	$scope.tableParams.reload();
 
-        }, function(d, h) {
-        	$scope.clearNotification();
-			$scope.errors = d.data;
-        });
+	        }, function(d, h) {
+	        	$scope.clearNotification();
+				$scope.errors = d.data;
+	        });
+		});
 	};
 
 	$scope.tableParams = new ngTableParams(

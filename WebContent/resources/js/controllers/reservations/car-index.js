@@ -39,26 +39,30 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 	$scope.refreshInventories = function() {
 		$scope.startProgress();
 
-		Inventories.query({entity: 'car', branchId: $stateParams.id,
-			startTime: TimezoneConverter.convertToTargetTimeZoneTime($scope.search.startTime, $scope.selectedBranch.timezone),
-			endTime: TimezoneConverter.convertToTargetTimeZoneTime($scope.search.endTime, $scope.selectedBranch.timezone)},
-			function(d, h){
-				$scope.carInventories = d;
-				_.each($scope.carInventories, function(d) { d.type = {id: 'car'}});
-				_.each($scope.carInventories, function(d) {
-					d.fuelType = _.find($scope.inventoryFuelTypes,
-							function(d1){
-								return d1.id == d.fuelType;
-							})
-				});
-				$scope.carLoaded = true;
-				$scope.endProgress();
-			},
-			function(d, h) {
-				$scope.carLoaded = true;
-				$scope.endProgress();
-			}
-		);
+		$scope.$parent.branchResolved.promise.then(function(b) {
+			Inventories.query({entity: 'car', branchId: $stateParams.id,
+				startTime: TimezoneConverter.convertToTargetTimeZoneTime($scope.search.startTime, $scope.selectedBranch.timezone),
+				endTime: TimezoneConverter.convertToTargetTimeZoneTime($scope.search.endTime, $scope.selectedBranch.timezone)},
+				function(d, h){
+					$scope.carInventories = d;
+					_.each($scope.carInventories, function(d) { d.type = {id: 'car'}});
+					_.each($scope.carInventories, function(d) {
+						d.fuelType = _.find($scope.inventoryFuelTypes,
+								function(d1){
+									return d1.id == d.fuelType;
+								})
+					});
+					$scope.carLoaded = true;
+					$scope.endProgress();
+				},
+				function(d, h) {
+					$scope.carLoaded = true;
+					$scope.endProgress();
+				}
+			);
+		}, function() {
+			$scope.endProgress();
+		});
 	};
 
 	$scope.isLoggedIn = isLoggedIn;

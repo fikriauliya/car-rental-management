@@ -73,7 +73,7 @@ branchManagementApp.controller('IndexBranchMemberController', ['$scope', '$state
     	$scope.startProgress();
 
     	var b = new BranchUsers();
-    	b.$save({id: $scope.selectedBranch.id, userId: user.id},
+    	b.$save({id: $stateParams.id, userId: user.id},
     		function(d, h) {
     			$scope.refreshMembers();
 
@@ -94,7 +94,7 @@ branchManagementApp.controller('IndexBranchMemberController', ['$scope', '$state
     	$scope.startProgress();
 
     	var b = new BranchUsers();
-    	BranchUsers.remove({id: $scope.selectedBranch.id, userId: user.id},
+    	BranchUsers.remove({id: $stateParams.id, userId: user.id},
     		function(d, h) {
     			$scope.refreshMembers();
 

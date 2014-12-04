@@ -1,4 +1,4 @@
-var IndexBranchController = function($scope, $state, Branches, Timezones, ngProgress) {
+var IndexBranchController = function($scope, $state, Branches, Timezones, ngProgress, $q) {
 	$scope.errors = [];
 	$scope.info = "";
 	$scope.progress = 0;
@@ -6,6 +6,8 @@ var IndexBranchController = function($scope, $state, Branches, Timezones, ngProg
 	$scope.newBranch = new Branches();
 	$scope.allTimezones = Timezones.query();
 	$scope.selectedBranch = {};
+
+	$scope.branchResolved = $q.defer();
 
 	$scope.clearNotification = function() {
 		$scope.errors = [];
@@ -108,6 +110,9 @@ var IndexBranchController = function($scope, $state, Branches, Timezones, ngProg
 			$scope.branches = d;
 			if ($scope.branches != null && $scope.branches.length > 0) {
 				$scope.changeBranch($scope.branches[0]);
+				$scope.branchResolved.resolve($scope.selectedBranch);
+			} else {
+				$scope.branchResolved.reject();
 			}
 
 			$scope.endProgress();
@@ -124,6 +129,6 @@ var IndexBranchController = function($scope, $state, Branches, Timezones, ngProg
 	$scope.refreshBranches();
   }
 
-angular.module('branchManagementApp').controller('IndexBranchController', ['$scope', '$state', 'Branches', 'Timezones', 'ngProgress', IndexBranchController]);
-angular.module('inventoryManagementApp').controller('IndexBranchController', ['$scope', '$state', 'Branches', 'Timezones', 'ngProgress', IndexBranchController]);
-angular.module('reservationManagementApp').controller('IndexBranchController', ['$scope', '$state', 'Branches', 'Timezones', 'ngProgress', IndexBranchController]);
+angular.module('branchManagementApp').controller('IndexBranchController', ['$scope', '$state', 'Branches', 'Timezones', 'ngProgress', '$q', IndexBranchController]);
+angular.module('inventoryManagementApp').controller('IndexBranchController', ['$scope', '$state', 'Branches', 'Timezones', 'ngProgress', '$q', IndexBranchController]);
+angular.module('reservationManagementApp').controller('IndexBranchController', ['$scope', '$state', 'Branches', 'Timezones', 'ngProgress', '$q', IndexBranchController]);
