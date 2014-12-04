@@ -31,8 +31,8 @@
           <td data-title="'Firstname'" sortable="'customer.user.firstName'">{{event.customer.user.firstName}}</td>
           <td data-title="'Lastname'" sortable="'customer.user.lastName'">{{event.customer.user.lastName}}</td>
 
-          <td data-title="'From'" sortable="'start'">{{event.start | date: 'medium'}}</td>
-          <td data-title="'To'" sortable="'end'">{{event.end | date: 'medium'}}</td>
+          <td data-title="'From'" sortable="'start'">{{event.start | date:'medium'}}</td>
+          <td data-title="'To'" sortable="'end'">{{event.end | date:'medium'}}</td>
 
           <td>
             <button ng-show="event.assignedBy.id == '#{request.getRemoteUser()}' || userId == '#{request.getRemoteUser()}'" class="btn btn-danger btn-xs" ng-click="removeEvent(event)">Delete</button>
