@@ -1,4 +1,4 @@
-var IndexCarController = function($scope, $state, $stateParams, $filter, $timeout, Inventories, ngTableParams, $cookieStore) {
+var IndexCarController = function($scope, $state, $stateParams, $filter, $timeout, Inventories, TimezoneConverter, ngTableParams, $cookieStore) {
 	$scope.inventoryFuelTypes = [
  		{id: 'COMPRESSED_NATURAL_GAS', name: 'Compressed natural gas'},
  		{id: 'DIESEL', name: 'Diesel'},
@@ -24,12 +24,24 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 		startTime: tomorrow,
 		endTime: tomorrowNight
 	};
+
 	$scope.carLoaded = false;
+
+	$scope.$watch('search.endTime', function(newVal, oldVal){
+		if (newVal.getMinutes() == 0) {
+			newVal.setHours(23);
+			newVal.setMinutes(59);
+			newVal.setSeconds(59);
+			newVal.setMilliseconds(999);
+		}
+	});
 
 	$scope.refreshInventories = function() {
 		$scope.startProgress();
-		Inventories.query({entity: 'car', branchId: $stateParams.id, startTime: $scope.search.startTime.getTime(),
-			endTime: $scope.search.endTime.getTime()},
+
+		Inventories.query({entity: 'car', branchId: $stateParams.id,
+			startTime: TimezoneConverter.convertToTargetTimeZoneTime($scope.search.startTime, $scope.selectedBranch.timezone),
+			endTime: TimezoneConverter.convertToTargetTimeZoneTime($scope.search.endTime, $scope.selectedBranch.timezone)},
 			function(d, h){
 				$scope.carInventories = d;
 				_.each($scope.carInventories, function(d) { d.type = {id: 'car'}});
@@ -53,12 +65,15 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 
 	$scope.reserve = function(car) {
 		$cookieStore.put('selectedCar', car);
-		$cookieStore.put('startTime', $scope.search.startTime);
-		$cookieStore.put('endTime', $scope.search.endTime);
+
+		$cookieStore.put('timezone', $scope.selectedBranch.timezone);
+		$cookieStore.put('startTime', TimezoneConverter.convertToTargetTimeZoneTime($scope.search.startTime, $scope.selectedBranch.timezone));
+		$cookieStore.put('endTime', TimezoneConverter.convertToTargetTimeZoneTime($scope.search.endTime, $scope.selectedBranch.timezone));
+
 		if (!isLoggedIn) {
-			window.location="customers/registration.jsf"
+			window.location="customers/registration.jsf";
 		} else {
-			window.location="customers/addonselection.jsf"
+			window.location="customers/addonselection.jsf";
 		}
 	}
 
@@ -66,4 +81,4 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 }
 angular.module('reservationManagementApp').controller('IndexCarController',
 		['$scope', '$state', '$stateParams', '$filter',  '$timeout',
-		 'Inventories', 'ngTableParams', '$cookieStore', IndexCarController]);
+		 'Inventories', 'TimezoneConverter', 'ngTableParams', '$cookieStore', IndexCarController]);

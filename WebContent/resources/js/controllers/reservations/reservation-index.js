@@ -1,11 +1,19 @@
-var IndexReservationController = function($scope, $state, $stateParams, $filter, $timeout, Reservations, ngTableParams) {
+var IndexReservationController = function($scope, $state, $stateParams, $filter, $timeout, Reservations, Branches, TimezoneConverter, ngTableParams) {
 	$scope.reservations = [[]];
 	$scope.detailedReservations = [];
 
 	$scope.refreshReservations = function() {
 		Reservations.query({branchId: $stateParams.id, startTime: $scope.curStart, endTime: $scope.curEnd}, function(d, h){
         	$scope.reservations[0] = [];
-        	console.log(d);
+
+        	_.each(d, function(dd) {
+        		dd.startTime = TimezoneConverter.convertToLocalTimeZoneTime(dd.start, $scope.selectedBranch.timezone);
+        		dd.start = TimezoneConverter.convertToLocalTimeZoneTime(dd.start, $scope.selectedBranch.timezone);
+
+        		dd.endTime = TimezoneConverter.convertToLocalTimeZoneTime(dd.end, $scope.selectedBranch.timezone);
+        		dd.end = TimezoneConverter.convertToLocalTimeZoneTime(dd.end, $scope.selectedBranch.timezone);
+    		});
+
         	$scope.detailedReservations = d;
 
         	var d2 = _.groupBy(d, 'groupId');
@@ -55,7 +63,7 @@ var IndexReservationController = function($scope, $state, $stateParams, $filter,
           center: 'title',
           right: 'today prev,next'
         },
-        timezone: 'local',
+        timezone: false,
         eventClick: $scope.alertOnEventClick,
         eventDrop: $scope.alertOnDrop,
         eventResize: $scope.alertOnResize,
@@ -75,4 +83,4 @@ var IndexReservationController = function($scope, $state, $stateParams, $filter,
 }
 angular.module('adminReservationManagementApp').controller('IndexInventoryController',
 		['$scope', '$state', '$stateParams', '$filter',  '$timeout',
-		 'Reservations', 'ngTableParams', IndexReservationController]);
+		 'Reservations', 'Branches', 'TimezoneConverter', 'ngTableParams', IndexReservationController]);

@@ -1,6 +1,6 @@
 reservationManagementApp = angular.module('reservationManagementApp');
-reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'Customers', 'ngProgress', '$cookieStore', 'Inventories', 'Reservations',
-  function($scope, $timeout, Customers, ngProgress, $cookieStore, Inventories, Reservations) {
+reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'Customers', 'TimezoneConverter', 'ngProgress', '$cookieStore', 'Inventories', 'Reservations',
+  function($scope, $timeout, Customers, TimezoneConverter, ngProgress, $cookieStore, Inventories, Reservations) {
 	$scope.errors = [];
 	$scope.info = "";
 	$scope.progress = 0;
@@ -23,8 +23,9 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 	};
 
 	$scope.selectedCar = $cookieStore.get('selectedCar');
-	$scope.startTime = new Date($cookieStore.get('startTime'));
-	$scope.endTime = new Date($cookieStore.get('endTime'));
+	$scope.timezone = $cookieStore.get('timezone');
+	$scope.startTime = TimezoneConverter.convertToLocalTimeZoneTime($cookieStore.get('startTime'), $scope.timezone);
+	$scope.endTime = TimezoneConverter.convertToLocalTimeZoneTime($cookieStore.get('endTime'), $scope.timezone);
 
 	$scope.selectedInventories = [];
 
@@ -83,8 +84,8 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 		$scope.newReservation.inventoryIds.push($scope.selectedCar.id);
 		$scope.newReservation.inventoryIds = _.union($scope.newReservation.inventoryIds,
 			_.map($scope.selectedInventories, function(d) { return d.id }));;
-		$scope.newReservation.startTime = $scope.startTime;
-		$scope.newReservation.endTime = $scope.endTime;
+		$scope.newReservation.startTime = TimezoneConverter.convertToTargetTimeZoneTime($scope.startTime, $scope.timezone);
+		$scope.newReservation.endTime = TimezoneConverter.convertToTargetTimeZoneTime($scope.endTime, $scope.timezone);
 
 		console.log($scope.newReservation);
 		$scope.newReservation.$save(

@@ -105,3 +105,18 @@ timezoneServices.factory("Timezones",
 	  return $resource(basePath + "/api/timezones/");
    }
   ]);
+
+timezoneServices.factory("TimezoneConverter", [
+    function() {
+    	return {
+    		convertToTargetTimeZoneTime: function(date, targetTimezone) {
+	    			s = moment(date).format("MMM DD, YYYY h:mm:ss.SSS A");
+	    			return moment.tz(s, "MMM DD, YYYY h:mm:ss.SSS A", targetTimezone).valueOf();
+	    		},
+    		convertToLocalTimeZoneTime: function(timestamp, targetTimezone) {
+	    			s = moment(timestamp).tz(targetTimezone).format("MMM DD, YYYY h:mm:ss.SSS A");
+	    			return new Date(moment(s, "MMM DD, YYYY h:mm:ss.SSS A").valueOf());
+    			}
+    	};
+    }
+]);
