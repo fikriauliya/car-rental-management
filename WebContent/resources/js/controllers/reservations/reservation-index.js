@@ -1,8 +1,20 @@
-var IndexReservationController = function($scope, $state, $stateParams, $filter, $timeout, Reservations, Branches, TimezoneConverter, ngTableParams) {
+var IndexReservationController = function($scope, $state, $stateParams, $filter, $timeout, Reservations, Branches, TimezoneConverter, ngTableParams, ngProgress) {
 	$scope.reservations = [[]];
 	$scope.detailedReservations = [];
+	$scope.progress = 0;
+
+	$scope.startProgress = function() {
+		if ($scope.progress == 0) ngProgress.start();
+		$scope.progress++;
+	};
+
+	$scope.endProgress = function() {
+		$scope.progress--;
+		if ($scope.progress == 0) ngProgress.complete();
+	};
 
 	$scope.refreshReservations = function() {
+		$scope.startProgress();
 		$scope.$parent.branchResolved.promise.then(function(b) {
 			Reservations.query({branchId: $stateParams.id, startTime: $scope.curStart, endTime: $scope.curEnd}, function(d, h){
 	        	$scope.reservations[0] = [];
@@ -31,10 +43,12 @@ var IndexReservationController = function($scope, $state, $stateParams, $filter,
 	        	$scope.reservations[0] = res;
 	        	$scope.tableParams.reload();
 
+	        	$scope.endProgress();
 	        }, function(d, h) {
-	        	$scope.clearNotification();
-				$scope.errors = d.data;
+	        	$scope.endProgress();
 	        });
+		}, function() {
+			$scope.endProgress();
 		});
 	};
 
@@ -85,4 +99,4 @@ var IndexReservationController = function($scope, $state, $stateParams, $filter,
 }
 angular.module('adminReservationManagementApp').controller('IndexInventoryController',
 		['$scope', '$state', '$stateParams', '$filter',  '$timeout',
-		 'Reservations', 'Branches', 'TimezoneConverter', 'ngTableParams', IndexReservationController]);
+		 'Reservations', 'Branches', 'TimezoneConverter', 'ngTableParams', 'ngProgress', IndexReservationController]);
