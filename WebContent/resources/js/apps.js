@@ -100,7 +100,7 @@ inventoryManagementApp.config(['$stateProvider', '$urlRouterProvider', function(
 			}
 		})
 		.state('branch.members', {
-			url: '/members/:id',
+			url: '/members/:id?highlightInventoryId',
 			views: {
 				"default": {
 					templateUrl: 'partials/inventory-list.xhtml',
@@ -197,6 +197,15 @@ adminReservationManagementApp.config(['$stateProvider', '$urlRouterProvider', fu
 				"default": {
 					templateUrl: 'partials/reservation-list.xhtml',
 					controller: 'IndexReservationController'
+				},
+			}
+		})
+		.state('branch.details', {
+			url: '/members/:branchId/reservations/:groupId',
+			views: {
+				"default": {
+					templateUrl: 'partials/reservation-detail.xhtml',
+					controller: 'ReservationDetailController'
 				},
 			}
 		})

@@ -33,6 +33,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 			"OR (:startTime <= u.endTime AND :endTime >= u.endTime) " +
 			"OR (:startTime >= u.startTime AND :endTime <= u.endTime)) " +
 			"AND (u.inventory.owner.id = :branchId)"),
+	@NamedQuery(name="findReservationsByGroupId", query="SELECT u from Reservation u " +
+			"WHERE u.groupId = :groupId")
 })
 public class Reservation {
 	@GeneratedValue @Id

@@ -4,6 +4,7 @@ var IndexInventoryController = function($scope, $state, $stateParams, $filter, $
 		$scope.newInventory.type = {id: 'car'};
 		$scope.newInventory.fuelType = {id: 'COMPRESSED_NATURAL_GAS'};
 	}
+	$scope.highlightInventoryId = $stateParams.highlightInventoryId;
 
 	$scope.initializeNewInventory();
 	$scope.selectedInventory = {};

@@ -37,16 +37,14 @@
                 <td>{{group.data[0].customer.user.lastName}}</td>
                 <td>{{group.data[0].start | date:'medium'}}</td>
                 <td>{{group.data[0].end | date:'medium'}}</td>
-                <td><button style="margin-left:10px" class="btn btn-xs btn-info">Detail</button></td>
+                <td><button style="margin-left:10px" class="btn btn-xs btn-info" ui-sref="branch.details({branchId: selectedBranch.id, groupId: group.value})">Detail</button></td>
             </tr>
             <tr ng-hide="group.$hideRows" ng-repeat="event in group.data">
               <td data-title="'Inventory'" sortable="'inventory.name'">{{event.inventory.name}}</td>
               <td data-title="'Firstname'" sortable="'customer.user.firstName'"></td>
               <td data-title="'Lastname'" sortable="'customer.user.lastName'"></td>
-
               <td data-title="'From'" sortable="'start'"></td>
               <td data-title="'To'" sortable="'end'"></td>
-
               <td></td>
             </tr>
           </tbody>

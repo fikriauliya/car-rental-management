@@ -41,6 +41,14 @@ public class ReservationService {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/{branchId}/{groupId}")
+	public List<Reservation> show(@PathParam("branchId") int branchId, @PathParam("groupId") long groupId) {
+		System.out.println("show");
+		return reservationEJB.findReservations(groupId);
+	}
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{branchId}")
 	public List<Reservation> index(@PathParam("branchId") int branchId,
 			@QueryParam("startTime") long startTime, @QueryParam("endTime") long endTime) {
