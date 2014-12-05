@@ -1,4 +1,4 @@
-var IndexCarController = function($scope, $state, $stateParams, $filter, $timeout, Inventories, TimezoneConverter, ngTableParams, $cookieStore) {
+var IndexCarController = function($scope, $state, $stateParams, $filter, $timeout, Inventories, Images, TimezoneConverter, ngTableParams, $cookieStore) {
 	$scope.inventoryFuelTypes = [
  		{id: 'COMPRESSED_NATURAL_GAS', name: 'Compressed natural gas'},
  		{id: 'DIESEL', name: 'Diesel'},
@@ -52,6 +52,25 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 									return d1.id == d.fuelType;
 								})
 					});
+					_.each($scope.carInventories, function(d) {
+						d.slides = [];
+						d.slides.push({
+							image: "http://localhost:9090/" + basePath + "/images/" + d.id + "/" + [d.primaryImageId]
+						});
+
+						Images.query({inventoryId: d.id}, function(images, h) {
+							_.each(images, function(curImage)  {
+								if (curImage != d.primaryImageId.toString()) {
+									d.slides.push({
+										image: "http://localhost:9090/" + basePath + "/images/" + d.id + "/" + curImage
+									});
+								}
+							});
+							console.log(d.slides);
+						});
+
+						console.log(d.slides);
+					});
 					$scope.carLoaded = true;
 					$scope.endProgress();
 				},
@@ -85,4 +104,4 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 }
 angular.module('reservationManagementApp').controller('IndexCarController',
 		['$scope', '$state', '$stateParams', '$filter',  '$timeout',
-		 'Inventories', 'TimezoneConverter', 'ngTableParams', '$cookieStore', IndexCarController]);
+		 'Inventories', 'Images', 'TimezoneConverter', 'ngTableParams', '$cookieStore', IndexCarController]);

@@ -51,7 +51,11 @@
 </div>
 <div class="row" ng-repeat="car in carInventories" ng-if="carInventories.length > 0">
   <div class="col col-md-3">
-    <img src="http://www.nandhnicarrentals.com/car_image/fiesta.jpg" style="width:100%"/>
+    <carousel interval="myInterval">
+      <slide ng-repeat="slide in car.slides" active="slide.active">
+        <img ng-src="{{slide.image}}" style="margin:auto;">
+      </slide>
+    </carousel>
   </div>
   <div class="col col-md-8">
     <div class="col col-md-12"><h3>{{car.name}}</h4><br/></div>
