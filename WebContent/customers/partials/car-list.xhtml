@@ -2,9 +2,15 @@
   <div class="col col-md-12">
     <form class="form-horizontal">
       <div class="row">
+        <div class="col col-md-3 well">
+          <b>Address:</b> {{selectedBranch.address}}<br/>
+          <b>Timezone:</b> {{selectedBranch.timezone}}<br/>
+          <b>Opening hour:</b> {{selectedBranch.openingHour}}<br/>
+          <b>Closing hour:</b> {{selectedBranch.closingHour}}
+        </div>
         <div class="col col-md-4">
           <div class="form-group">
-            <label class="col-sm-4 control-label">From</label>
+            <label class="col-sm-2 control-label">From</label>
             <div class="col-sm-8">
               <div class="dropdown control-label" style="text-align:left">
                 <a  class="dropdown-toggle" id="dropdown1" role="button"
@@ -17,7 +23,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="col-sm-4 control-label">To</label>
+            <label class="col-sm-2 control-label">To</label>
             <div class="col-sm-8">
               <div class="dropdown control-label" style="text-align:left">
                 <a  class="dropdown-toggle" id="dropdown2" role="button"
@@ -29,12 +35,14 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="col col-md-2">
-          <button class="btn btn-primary" ng-click="refreshInventories()">
-            <span class="glyphicon glyphicon-search"/>
-            Search
-          </button>
+           <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-4">
+              <button class="btn btn-primary" ng-click="refreshInventories()">
+                <span class="glyphicon glyphicon-search"/>
+                Search
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </form>
@@ -47,6 +55,12 @@
 <div class="row" ng-if="carInventories.length == 0 && carLoaded">
   <div class="col col-md-12">
     <b>No car is available for the selected period.</b>
+  </div>
+</div>
+<div class="row" ng-if="carInventories.length > 0">
+  <div class="col col-md-12">
+    <i>Search result for period: {{searchResult.startTime | date:'medium'}} to {{searchResult.endTime | date:'medium'}}</i>
+    <br/><br/>
   </div>
 </div>
 <div class="row" ng-repeat="car in carInventories" ng-if="carInventories.length > 0">
