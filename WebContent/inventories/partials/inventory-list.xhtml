@@ -52,7 +52,10 @@
             <td data-title="'Price'" sortable="'price'">{{data.price}}</td>
             <td data-title="'Status'" sortable="'status'">{{data.status}}</td>
             <td data-title="'Created'" sortable="'createdAt'">{{data.createdAt | date:'mediumDate'}}</td>
-            <td style="width:90px">
+            <td style="width:120px">
+              <a class="btn btn-default btn-sm" ui-sref="branch.images({branchId: selectedBranch.id, id: data.id})">
+                <span aria-hidden="true" class="glyphicon glyphicon-picture"/>
+              </a>
               <button type="button" class="btn btn-danger btn-sm" ng-click="deleteInventory(data)">
                 <span aria-hidden="true" class="glyphicon glyphicon-trash"/>
               </button type="button">
@@ -80,7 +83,10 @@
             <td data-title="'Price'" sortable="'price'">{{data.price}}</td>
             <td data-title="'Status'" sortable="'status'">{{data.status}}</td>
             <td data-title="'Created'" sortable="'createdAt'">{{data.createdAt | date:'mediumDate'}}</td>
-            <td style="width:90px">
+            <td style="width:120px">
+              <a class="btn btn-default btn-sm" ui-sref="branch.images({branchId: selectedBranch.id, id: data.id})">
+                <span aria-hidden="true" class="glyphicon glyphicon-picture"/>
+              </a>
               <button type="button" class="btn btn-danger btn-sm" ng-click="deleteInventory(data)">
                 <span aria-hidden="true" class="glyphicon glyphicon-trash"/>
               </button type="button">

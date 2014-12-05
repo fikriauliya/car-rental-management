@@ -70,7 +70,6 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 								}
 							});
 						});
-
 					});
 					$scope.carLoaded = true;
 					$scope.endProgress();

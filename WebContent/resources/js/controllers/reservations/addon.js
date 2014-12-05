@@ -1,6 +1,6 @@
 reservationManagementApp = angular.module('reservationManagementApp');
-reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'Customers', 'TimezoneConverter', 'ngProgress', '$cookieStore', 'Inventories', 'Reservations',
-  function($scope, $timeout, Customers, TimezoneConverter, ngProgress, $cookieStore, Inventories, Reservations) {
+reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'Customers', 'Images', 'TimezoneConverter', 'ngProgress', '$cookieStore', 'Inventories', 'Reservations',
+  function($scope, $timeout, Customers, Images, TimezoneConverter, ngProgress, $cookieStore, Inventories, Reservations) {
 	$scope.errors = [];
 	$scope.info = "";
 	$scope.progress = 0;
@@ -39,6 +39,25 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 			function(d, h){
 				$scope.gpsInventories = d;
 				_.each($scope.gpsInventories, function(d) { d.type = {id: 'gps'}});
+				_.each($scope.gpsInventories, function(d) {
+					d.slides = [];
+
+					if (d.primaryImageId != -1) {
+						d.slides.push({
+							image: "http://localhost:9090/" + basePath + "/images/" + d.id + "/" + [d.primaryImageId]
+						});
+					}
+
+					Images.query({inventoryId: d.id}, function(images, h) {
+						_.each(images, function(curImage)  {
+							if (curImage != d.primaryImageId.toString()) {
+								d.slides.push({
+									image: "http://localhost:9090/" + basePath + "/images/" + d.id + "/" + curImage
+								});
+							}
+						});
+					});
+				});
 				$scope.endProgress();
 			},
 			function(d, h) {
@@ -52,6 +71,25 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 			function(d, h){
 				$scope.babySeatInventories = d;
 				_.each($scope.babySeatInventories, function(d) { d.type = {id: 'baby_seat'}});
+				_.each($scope.babySeatInventories, function(d) {
+					d.slides = [];
+
+					if (d.primaryImageId != -1) {
+						d.slides.push({
+							image: "http://localhost:9090/" + basePath + "/images/" + d.id + "/" + [d.primaryImageId]
+						});
+					}
+
+					Images.query({inventoryId: d.id}, function(images, h) {
+						_.each(images, function(curImage)  {
+							if (curImage != d.primaryImageId.toString()) {
+								d.slides.push({
+									image: "http://localhost:9090/" + basePath + "/images/" + d.id + "/" + curImage
+								});
+							}
+						});
+					});
+				});
 				$scope.endProgress();
 			},
 			function(d, h) {

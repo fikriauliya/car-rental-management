@@ -51,9 +51,9 @@
 </div>
 <div class="row" ng-repeat="car in carInventories" ng-if="carInventories.length > 0">
   <div class="col col-md-3">
-    <carousel interval="myInterval">
+    <carousel>
       <slide ng-repeat="slide in car.slides" active="slide.active">
-        <img ng-src="{{slide.image}}" style="margin:auto;">
+        <img ng-src="{{slide.image}}" style="margin:auto;"/>
       </slide>
     </carousel>
   </div>
