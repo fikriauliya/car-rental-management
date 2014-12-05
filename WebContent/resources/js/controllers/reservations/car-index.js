@@ -29,10 +29,15 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 
 	$scope.$watch('search.endTime', function(newVal, oldVal){
 		if (newVal.getMinutes() == 0) {
-			newVal.setHours(23);
-			newVal.setMinutes(59);
-			newVal.setSeconds(59);
-			newVal.setMilliseconds(999);
+			$scope.search.endTime = new Date(newVal.getTime() - 1);
+		} else if ($scope.search.endTime.getTime() <= $scope.search.startTime.getTime()) {
+			$scope.search.endTime = new Date($scope.search.startTime.getTime() + 24*60*60*1000);
+		}
+	});
+
+	$scope.$watch('search.startTime', function(newVal, oldVal){
+		if ($scope.search.endTime.getTime() <= $scope.search.startTime.getTime()) {
+			$scope.search.endTime = new Date($scope.search.startTime.getTime() + 24*60*60*1000);
 		}
 	});
 
