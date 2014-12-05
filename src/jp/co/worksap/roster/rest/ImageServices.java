@@ -8,11 +8,11 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
@@ -21,11 +21,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import jp.co.worksap.roster.ejb.InventoryEJB;
+import jp.co.worksap.roster.entity.Inventory;
 import jp.co.worksap.roster.rest.modelview.ImageInfo;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.eclipse.persistence.annotations.DeleteAll;
-import org.glassfish.api.Param;
 
 @Path("images/")
 @Stateless
@@ -41,6 +40,8 @@ public class ImageServices {
 	}
 
 	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response setPrimary(ImageInfo imageInfo) {
         inventoryEJB.updatePrimaryImage(imageInfo.getInventoryId(), imageInfo.getImageId());
 
@@ -48,14 +49,30 @@ public class ImageServices {
 	}
 
 	@DELETE
-	@Path("{id}/")
-	public Response delete(@Context HttpServletRequest request, ImageInfo imageInfo) {
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response destroy(@Context HttpServletRequest request, @QueryParam("inventoryId") int inventoryId, @QueryParam("imageId") int imageId) {
 		String appPath = request.getServletContext().getRealPath("");
-		String savePath = appPath + File.separator;
-        final String path = savePath + "\\images\\" + imageInfo.getInventoryId() + "\\" + imageInfo.getImageId();
-        (new File(path)).delete();
 
-        return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
+		Inventory inventory = inventoryEJB.findInventory(inventoryId);
+		if (inventory.getPrimaryImageId() == imageId) {
+			String[] images = ImageServices.getImages(appPath, inventoryId);
+			for (String image: images) {
+				if (Integer.parseInt(image) != imageId) {
+					inventoryEJB.updatePrimaryImage(inventoryId, Integer.parseInt(image));
+					break;
+				}
+			}
+		}
+
+		String savePath = appPath + File.separator;
+        final String path = savePath + "\\images\\" + inventoryId + "\\" + imageId;
+
+        if ((new File(path)).delete()) {
+        	return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
+        } else {
+        	return Response.status(Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON).build();
+        }
 	}
 
 	public static String[] getImages(String appPath, int inventoryId) {
@@ -70,7 +87,6 @@ public class ImageServices {
         if (listOfFiles != null) {
 	        for (int i = 0; i < listOfFiles.length; i++) {
 				if (listOfFiles[i].isFile()) {
-					System.out.println("File " + listOfFiles[i].getName());
 					res.add(listOfFiles[i].getName());
 				}
 			}
