@@ -18,7 +18,6 @@ import javax.servlet.http.Part;
 
 import jp.co.worksap.roster.rest.ImageServices;
 
-import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -30,6 +29,11 @@ import org.apache.commons.lang3.tuple.Pair;
 public class UploadServlet extends HttpServlet {
 
     /**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
+
+	/**
      * handles file upload
      */
     protected void doPost(HttpServletRequest request,
@@ -53,8 +57,6 @@ public class UploadServlet extends HttpServlet {
 
         Pair<String, String> primaryAndLastImages = ImageServices.getPrimaryAndLastImage(appPath, Integer.parseInt(folder));
         final String fileName = String.valueOf((Integer.parseInt(primaryAndLastImages.getRight()) + 1));
-
-        System.out.println(fileName);
 
         OutputStream out = null;
         InputStream filecontent = null;
@@ -82,20 +84,6 @@ public class UploadServlet extends HttpServlet {
                 writer.close();
             }
         }
-    }
-
-    /**
-     * Extracts file name from HTTP header content-disposition
-     */
-    private String extractFileName(Part part) {
-        String contentDisp = part.getHeader("content-disposition");
-        String[] items = contentDisp.split(";");
-        for (String s : items) {
-            if (s.trim().startsWith("filename")) {
-                return s.substring(s.indexOf("=") + 2, s.length()-1);
-            }
-        }
-        return "";
     }
 
     private String extractInventoryId(Part part) {
