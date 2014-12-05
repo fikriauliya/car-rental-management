@@ -55,7 +55,8 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 						d.fuelType = _.find($scope.inventoryFuelTypes,
 								function(d1){
 									return d1.id == d.fuelType;
-								})
+								});
+						d.totalPrice = d.price * (($scope.search.endTime.getTime() - $scope.search.startTime.getTime() + 1) / (60 * 60 * 1000));
 					});
 					_.each($scope.carInventories, function(d) {
 						d.slides = [];

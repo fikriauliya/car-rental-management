@@ -39,7 +39,7 @@
                     {{inventory.minWeight}}<br/>
                     <b>Maximum weight (kg): </b>
                     {{inventory.maxWeight}}<br/>
-                    <h3><span class="label label-success">{{inventory.price}}</span></h3>
+                    <h3><span class="label label-success">{{inventory.totalPrice}}</span></h3>
                   </div>
                   <div class="col col-md-2">
                     <button ng-click="addInventory(inventory)" class="btn btn-primary btn-sm" ng-if="!isInSelectedInventory(inventory)">
@@ -100,7 +100,7 @@
                     <b>Screen size (mm): </b>
                     {{inventory.screenSize ? "Yes" : "No"}}<br/>
 
-                    <h3><span class="label label-success">{{inventory.price}}</span></h3>
+                    <h3><span class="label label-success">{{inventory.totalPrice}}</span></h3>
                   </div>
                   <div class="col col-md-2">
                     <button ng-click="addInventory(inventory)" class="btn btn-primary btn-sm" ng-if="!isInSelectedInventory(inventory)">
@@ -180,7 +180,7 @@
         <div class="col-md-2 well">
           <h4>Selected car</h4>
           Name: <b>{{selectedCar.name}}</b><br/>
-          Price: <b>{{selectedCar.price}}</b>
+          Price: <b>{{selectedCar.totalPrice}}</b>
           <hr/>
 
           <h4>Itenary</h4>
@@ -192,7 +192,7 @@
           <ol ng-if = "selectedInventories.length > 0">
             <li ng-repeat="inventory in selectedInventories track by inventory.id">
               Name: <b>{{inventory.name}}</b><br/>
-              Price: <b>{{inventory.price}}</b>
+              Price: <b>{{inventory.totalPrice}}</b>
             </li>
           </ol>
           <div ng-if = "selectedInventories.length == 0">

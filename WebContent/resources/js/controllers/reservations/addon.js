@@ -26,6 +26,7 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 	$scope.timezone = $cookieStore.get('timezone');
 	$scope.startTime = TimezoneConverter.convertToLocalTimeZoneTime($cookieStore.get('startTime'), $scope.timezone);
 	$scope.endTime = TimezoneConverter.convertToLocalTimeZoneTime($cookieStore.get('endTime'), $scope.timezone);
+	$scope.selectedCar.totalPrice = $scope.selectedCar.price * (($scope.endTime.getTime() - $scope.startTime.getTime() + 1) / (60 * 60 * 1000));
 
 	$scope.selectedInventories = [];
 
@@ -38,7 +39,10 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 			endTime: $scope.endTime.getTime()},
 			function(d, h){
 				$scope.gpsInventories = d;
-				_.each($scope.gpsInventories, function(d) { d.type = {id: 'gps'}});
+				_.each($scope.gpsInventories, function(d) {
+					d.type = {id: 'gps'};
+					d.totalPrice = d.price * (($scope.endTime.getTime() - $scope.startTime.getTime() + 1) / (60 * 60 * 1000));
+				});
 				_.each($scope.gpsInventories, function(d) {
 					d.slides = [];
 
@@ -70,7 +74,10 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 			endTime: $scope.endTime.getTime()},
 			function(d, h){
 				$scope.babySeatInventories = d;
-				_.each($scope.babySeatInventories, function(d) { d.type = {id: 'baby_seat'}});
+				_.each($scope.babySeatInventories, function(d) {
+					d.type = {id: 'baby_seat'};
+					d.totalPrice = d.price * (($scope.endTime.getTime() - $scope.startTime.getTime() + 1) / (60 * 60 * 1000));
+				});
 				_.each($scope.babySeatInventories, function(d) {
 					d.slides = [];
 
@@ -111,8 +118,8 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 	}
 
 	$scope.calculateTotal = function(selectedCar, selectedInventories) {
-		return selectedCar.price +
-			_.reduce(selectedInventories, function(memo, e) { return memo + e.price }, 0);
+		return selectedCar.totalPrice +
+			_.reduce(selectedInventories, function(memo, e) { return memo + e.totalPrice; }, 0) ;
 	}
 
 	$scope.createReservation = function() {
@@ -125,7 +132,6 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 		$scope.newReservation.startTime = TimezoneConverter.convertToTargetTimeZoneTime($scope.startTime, $scope.timezone);
 		$scope.newReservation.endTime = TimezoneConverter.convertToTargetTimeZoneTime($scope.endTime, $scope.timezone);
 
-		console.log($scope.newReservation);
 		$scope.newReservation.$save(
 			function(d, h) {
 				$scope.clearNotification();
