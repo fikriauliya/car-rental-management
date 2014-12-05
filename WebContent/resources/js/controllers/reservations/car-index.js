@@ -54,9 +54,12 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 					});
 					_.each($scope.carInventories, function(d) {
 						d.slides = [];
-						d.slides.push({
-							image: "http://localhost:9090/" + basePath + "/images/" + d.id + "/" + [d.primaryImageId]
-						});
+
+						if (d.primaryImageId != -1) {
+							d.slides.push({
+								image: "http://localhost:9090/" + basePath + "/images/" + d.id + "/" + [d.primaryImageId]
+							});
+						}
 
 						Images.query({inventoryId: d.id}, function(images, h) {
 							_.each(images, function(curImage)  {

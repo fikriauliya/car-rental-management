@@ -63,7 +63,7 @@ public abstract class Inventory {
 	@Min(value=0)
 	private BigDecimal price;
 
-	private int primaryImageId;
+	private int primaryImageId = -1;
 
 	public int getId() {
 		return id;

@@ -57,11 +57,17 @@ public class ImageServices {
 		Inventory inventory = inventoryEJB.findInventory(inventoryId);
 		if (inventory.getPrimaryImageId() == imageId) {
 			String[] images = ImageServices.getImages(appPath, inventoryId);
+
+			boolean foundPrimaryReplacement = false;
 			for (String image: images) {
 				if (Integer.parseInt(image) != imageId) {
 					inventoryEJB.updatePrimaryImage(inventoryId, Integer.parseInt(image));
+					foundPrimaryReplacement = true;
 					break;
 				}
+			}
+			if (!foundPrimaryReplacement) {
+				inventoryEJB.updatePrimaryImage(inventoryId, -1);
 			}
 		}
 
