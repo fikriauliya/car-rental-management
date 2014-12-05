@@ -66,10 +66,8 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 									});
 								}
 							});
-							console.log(d.slides);
 						});
 
-						console.log(d.slides);
 					});
 					$scope.carLoaded = true;
 					$scope.endProgress();
