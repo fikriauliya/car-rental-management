@@ -63,12 +63,17 @@ var IndexReservationController = function($scope, $state, $stateParams, $filter,
 	    total: 0,
 	    groupBy: 'groupId',
 	    getData: function($defer, params) {
-	        var orderedData = params.sorting() ? $filter('orderBy')($scope.detailedReservations, params.orderBy()) : $scope.detailedReservations;
+	    	var filteredData = $filter('filter')($scope.detailedReservations, $scope.filterText);
+	        var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
 
 	        params.total(orderedData.length);
 	        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 	    }
 	});
+
+	$scope.filterReservation = function() {
+		$scope.tableParams.reload();
+	};
 
 	$scope.uiConfig = {
       calendar:{
