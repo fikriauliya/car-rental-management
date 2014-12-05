@@ -1,7 +1,7 @@
 package jp.co.worksap.roster.entity;
 
+import java.sql.Time;
 import java.util.List;
-import java.util.TimeZone;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +11,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.validator.constraints.Length;
@@ -42,6 +44,12 @@ public class Branch {
 
 	@NotEmpty
 	private String timezone;
+
+	@NotEmpty
+	private String openingHour;
+
+	@NotEmpty
+	private String closingHour;
 
 	@ManyToMany
 	@JoinTable(name = "T_BRANCH_USER")
@@ -102,4 +110,21 @@ public class Branch {
 	public void setTimezone(String timezone) {
 		this.timezone = timezone;
 	}
+
+	public String getOpeningHour() {
+		return openingHour;
+	}
+
+	public void setOpeningHour(String openingHour) {
+		this.openingHour = openingHour;
+	}
+
+	public String getClosingHour() {
+		return closingHour;
+	}
+
+	public void setClosingHour(String closingHour) {
+		this.closingHour = closingHour;
+	}
+
 }

@@ -50,6 +50,20 @@
                 </div>
               </div>
               <div class="form-group">
+                <label class="col-sm-3 control-label">Opening hour</label>
+                <div class="col-sm-9">
+                  <input type="time" placeholder="HH:mm" class="form-control" ng-model="newBranch.openingHour" ng-if="!inEditMode"/>
+                  <input type="time" placeholder="HH:mm" class="form-control" ng-model="selectedBranch.openingHour" ng-if="inEditMode"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">Closing hour</label>
+                <div class="col-sm-9">
+                  <input type="time" placeholder="HH:mm" class="form-control" ng-model="newBranch.closingHour" ng-if="!inEditMode"/>
+                  <input type="time" placeholder="HH:mm" class="form-control" ng-model="selectedBranch.closingHour" ng-if="inEditMode"/>
+                </div>
+              </div>
+              <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-4">
                   <button class="btn btn-primary btn-sm" ng-click="createBranch()" ng-if="!inEditMode">Create</button>
                   <button class="btn btn-primary btn-sm" ng-click="updateBranch()" ng-if="inEditMode">Update</button>
