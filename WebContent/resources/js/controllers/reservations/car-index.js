@@ -88,7 +88,12 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 	$scope.isLoggedIn = isLoggedIn;
 
 	$scope.reserve = function(car) {
-		$cookieStore.put('selectedCar', car);
+		$cookieStore.put('selectedCar', {
+			owner: {id: car.owner.id},
+			price: car.price,
+			id: car.id,
+			name: car.name
+		});
 
 		$cookieStore.put('timezone', $scope.selectedBranch.timezone);
 		$cookieStore.put('startTime', TimezoneConverter.convertToTargetTimeZoneTime($scope.search.startTime, $scope.selectedBranch.timezone));
