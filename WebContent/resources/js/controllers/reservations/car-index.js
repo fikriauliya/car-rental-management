@@ -116,7 +116,7 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 
 							if (d.primaryImageId != -1) {
 								d.slides.push({
-									image: "http://localhost:9090/" + basePath + "/images/" + d.id + "/" + [d.primaryImageId]
+									image: baseUrl + basePath + "/images/" + d.id + "/" + [d.primaryImageId]
 								});
 							}
 
@@ -124,7 +124,7 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 								_.each(images, function(curImage)  {
 									if (curImage != d.primaryImageId.toString()) {
 										d.slides.push({
-											image: "http://localhost:9090/" + basePath + "/images/" + d.id + "/" + curImage
+											image: baseUrl + basePath + "/images/" + d.id + "/" + curImage
 										});
 									}
 								});

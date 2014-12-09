@@ -48,7 +48,7 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 
 					if (d.primaryImageId != -1) {
 						d.slides.push({
-							image: "http://localhost:9090/" + basePath + "/images/" + d.id + "/" + [d.primaryImageId]
+							image: baseUrl + basePath + "/images/" + d.id + "/" + [d.primaryImageId]
 						});
 					}
 
@@ -56,7 +56,7 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 						_.each(images, function(curImage)  {
 							if (curImage != d.primaryImageId.toString()) {
 								d.slides.push({
-									image: "http://localhost:9090/" + basePath + "/images/" + d.id + "/" + curImage
+									image: baseUrl + basePath + "/images/" + d.id + "/" + curImage
 								});
 							}
 						});
@@ -83,7 +83,7 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 
 					if (d.primaryImageId != -1) {
 						d.slides.push({
-							image: "http://localhost:9090/" + basePath + "/images/" + d.id + "/" + [d.primaryImageId]
+							image: baseUrl + basePath + "/images/" + d.id + "/" + [d.primaryImageId]
 						});
 					}
 
@@ -91,7 +91,7 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 						_.each(images, function(curImage)  {
 							if (curImage != d.primaryImageId.toString()) {
 								d.slides.push({
-									image: "http://localhost:9090/" + basePath + "/images/" + d.id + "/" + curImage
+									image: baseUrl + basePath + "/images/" + d.id + "/" + curImage
 								});
 							}
 						});
