@@ -22,6 +22,8 @@ var ReservationDetailController = function($scope, $state, $stateParams, $filter
 	}, function() {
 		$scope.endProgress();
 	});
+
+	$scope.setSelectedBranch($stateParams.branchId);
 };
 
 angular.module('adminReservationManagementApp').controller('ReservationDetailController',

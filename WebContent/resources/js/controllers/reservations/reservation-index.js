@@ -16,7 +16,7 @@ var IndexReservationController = function($scope, $state, $stateParams, $filter,
 	$scope.refreshReservations = function() {
 		$scope.startProgress();
 		$scope.$parent.branchResolved.promise.then(function(b) {
-			Reservations.query({branchId: $stateParams.id, startTime: $scope.curStart, endTime: $scope.curEnd}, function(d, h){
+			Reservations.query({branchId: $stateParams.branchId, startTime: $scope.curStart, endTime: $scope.curEnd}, function(d, h){
 	        	$scope.reservations[0] = [];
 
 	        	_.each(d, function(dd) {
@@ -75,32 +75,35 @@ var IndexReservationController = function($scope, $state, $stateParams, $filter,
 		$scope.tableParams.reload();
 	};
 
-	$scope.uiConfig = {
-      calendar:{
-        height: 450,
-        editable: false,
-        header:{
-          left: 'month agendaWeek agendaDay',
-          center: 'title',
-          right: 'today prev,next'
-        },
-        timezone: false,
-        eventClick: $scope.alertOnEventClick,
-        eventDrop: $scope.alertOnDrop,
-        eventResize: $scope.alertOnResize,
-        eventRender: $scope.eventRender,
-        viewRender: function(view, element) {
-            var start = (new Date(view.start._d)).getTime();
-            var end = (new Date(view.end._d)).getTime();
+	if ($stateParams.branchId) {
+		$scope.setSelectedBranch($stateParams.branchId);
+		$scope.uiConfig = {
+	      calendar:{
+	        height: 450,
+	        editable: false,
+	        header:{
+	          left: 'month agendaWeek agendaDay',
+	          center: 'title',
+	          right: 'today prev,next'
+	        },
+	        timezone: false,
+	        eventClick: $scope.alertOnEventClick,
+	        eventDrop: $scope.alertOnDrop,
+	        eventResize: $scope.alertOnResize,
+	        eventRender: $scope.eventRender,
+	        viewRender: function(view, element) {
+	            var start = (new Date(view.start._d)).getTime();
+	            var end = (new Date(view.end._d)).getTime();
 
-            $scope.curStart = start;
-            $scope.curEnd = end;
+	            $scope.curStart = start;
+	            $scope.curEnd = end;
 
-            $("#myCalendar").fullCalendar('removeEvents');
-            $scope.refreshReservations();
-        }
-      }
-    };
+	            $("#myCalendar").fullCalendar('removeEvents');
+	            $scope.refreshReservations();
+	        }
+	      }
+	    };
+	}
 }
 angular.module('adminReservationManagementApp').controller('IndexInventoryController',
 		['$scope', '$state', '$stateParams', '$filter',  '$timeout',

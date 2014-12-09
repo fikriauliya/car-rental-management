@@ -1,9 +1,10 @@
 var InventoryImagesController = function($scope, $state, $stateParams, Images, Inventories, FileUploader) {
+	console.log("+InventoryImagesController");
 	$scope.refreshImages = function() {
 		$scope.startProgress();
 
 		$scope.primaryImage = 0;
-		Inventories.get({id: $stateParams.id, branchId: $stateParams.branchId}, function(d, h) {
+		Inventories.get({id: $stateParams.inventoryId, branchId: $stateParams.branchId}, function(d, h) {
 			$scope.primaryImage = d.primaryImageId;
 			$scope.endProgress();
 		}, function(d, h) {
@@ -11,9 +12,9 @@ var InventoryImagesController = function($scope, $state, $stateParams, Images, I
 		});
 
 		$scope.startProgress();
-		Images.query({inventoryId: $stateParams.id}, function(d, h) {
+		Images.query({inventoryId: $stateParams.inventoryId}, function(d, h) {
 			$scope.images = _.map(d, function(dd)  {
-				return [parseInt(dd), basePath + "/images/" + $stateParams.id + "/" + dd];
+				return [parseInt(dd), basePath + "/images/" + $stateParams.inventoryId + "/" + dd];
 			});
 			$scope.endProgress();
 		}, function(d, h) {
@@ -27,7 +28,7 @@ var InventoryImagesController = function($scope, $state, $stateParams, Images, I
 
 	$scope.makePrimaryImage = function(image) {
 		$scope.startProgress();
-		Images.update({inventoryId: parseInt($stateParams.id), imageId: image[0]}, function(d, h){
+		Images.update({inventoryId: parseInt($stateParams.inventoryId), imageId: image[0]}, function(d, h){
 			$scope.refreshImages();
 			$scope.endProgress();
 		}, function(d, h) {
@@ -39,7 +40,7 @@ var InventoryImagesController = function($scope, $state, $stateParams, Images, I
 	$scope.deleteImage = function(image) {
 		if (confirm("Are you sure want to delete this image?")) {
 			$scope.startProgress();
-			Images.remove({inventoryId: parseInt($stateParams.id), imageId: image[0]}, function(d, h) {
+			Images.remove({inventoryId: parseInt($stateParams.inventoryId), imageId: image[0]}, function(d, h) {
 				$scope.refreshImages();
 				$scope.endProgress();
 			}, function(d, h) {
@@ -51,7 +52,7 @@ var InventoryImagesController = function($scope, $state, $stateParams, Images, I
 
 	$scope.uploader = new FileUploader({
 		url: basePath + '/UploadServlet',
-		formData: [{inventoryId: $stateParams.id}],
+		formData: [{inventoryId: $stateParams.inventoryId}],
 		onCompleteAll: function() {
 			$scope.refreshImages();
 		}
@@ -63,7 +64,10 @@ var InventoryImagesController = function($scope, $state, $stateParams, Images, I
             return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
         }
     });
+
+    $scope.setSelectedBranch($stateParams.branchId);
 	$scope.refreshImages();
+	console.log("-InventoryImagesController");
 };
 angular.module('inventoryManagementApp').controller('InventoryImagesController',
 		['$scope', '$state', '$stateParams', 'Images', 'Inventories', 'FileUploader', InventoryImagesController]);

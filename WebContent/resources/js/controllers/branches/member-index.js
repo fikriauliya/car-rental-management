@@ -1,6 +1,8 @@
 branchManagementApp = angular.module('branchManagementApp');
 branchManagementApp.controller('IndexBranchMemberController', ['$scope', '$state', '$stateParams', '$filter',  '$timeout', 'Branches', 'BranchUsers', 'Search', 'ngTableParams',
   function($scope, $state, $stateParams, $filter, $timeout, Branches, BranchUsers, Search, ngTableParams) {
+	console.log("$stateParams child", $stateParams);
+
 	$scope.branch = {};
 
 	$scope.displayBranchMemberDialog = function() {
@@ -11,7 +13,7 @@ branchManagementApp.controller('IndexBranchMemberController', ['$scope', '$state
 
 	$scope.refreshMembers = function() {
 		$scope.startProgress();
-		Branches.get({id: $stateParams.id},
+		Branches.get({id: $stateParams.branchId},
 			function(d, h){
 				$scope.branch = d;
 				$timeout(function(){ $scope.tableParams.reload(); $scope.endProgress();});
@@ -73,7 +75,7 @@ branchManagementApp.controller('IndexBranchMemberController', ['$scope', '$state
     	$scope.startProgress();
 
     	var b = new BranchUsers();
-    	b.$save({id: $stateParams.id, userId: user.id},
+    	b.$save({id: $stateParams.branchId, userId: user.id},
     		function(d, h) {
     			$scope.refreshMembers();
 
@@ -94,7 +96,7 @@ branchManagementApp.controller('IndexBranchMemberController', ['$scope', '$state
     	$scope.startProgress();
 
     	var b = new BranchUsers();
-    	BranchUsers.remove({id: $stateParams.id, userId: user.id},
+    	BranchUsers.remove({id: $stateParams.branchId, userId: user.id},
     		function(d, h) {
     			$scope.refreshMembers();
 
@@ -111,6 +113,7 @@ branchManagementApp.controller('IndexBranchMemberController', ['$scope', '$state
     	);
     };
 
+    $scope.setSelectedBranch($stateParams.branchId);
 	$scope.refreshMembers();
   }
 ]);

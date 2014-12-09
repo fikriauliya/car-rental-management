@@ -58,7 +58,7 @@
     <h4>Reserved inventories detail</h4>
     <ol>
       <li ng-repeat="reservation in reservations">
-        <a ng-href="http://localhost:9090/CarRentalManagement/inventories/index.jsf#/members/{{reservation.inventory.owner.id}}?highlightInventoryId={{reservation.inventory.id}}">{{reservation.inventory.name}}</a>
+        <a ng-href="http://localhost:9090/CarRentalManagement/inventories/index.jsf#/{{reservation.inventory.owner.id}}/inventories/{{reservation.inventory.id}}/detail">{{reservation.inventory.name}}</a>
       </li>
     </ol>
   </div>

@@ -39,7 +39,7 @@ branchManagementApp.config(function($provide, $httpProvider, $locationProvider) 
 branchManagementApp.run(['$rootScope', '$log', function($rootScope, $log) {
 	$rootScope.$on('$stateChangeStart',
 		function(event, toState, toParams, fromState, fromParams){
-			$log.log(fromState, " -> ", toState);
+			$log.log(fromState, fromParams, " -> ", toState, toParams);
 		}
 	);
 }]);
@@ -54,18 +54,17 @@ branchManagementApp.config(['$stateProvider', '$urlRouterProvider', function($st
 					templateUrl: 'partials/branch-list.xhtml',
 					controller: 'IndexBranchController'
 				}
+			},
+			data: {
+				displayCreateNewBranch: true
 			}
 		})
 		.state('branch.members', {
-			url: '/members/:id',
+			url: '/:branchId/',
 			views: {
 				"default": {
 					templateUrl: 'partials/member-list.xhtml',
 					controller: 'IndexBranchMemberController'
-				},
-				"createBranch": {
-					templateUrl: 'partials/branch-create.xhtml',
-					controller: 'CreateBranchController'
 				}
 			}
 		})
@@ -82,7 +81,7 @@ inventoryManagementApp.config(function($provide, $httpProvider, $locationProvide
 inventoryManagementApp.run(['$rootScope', '$log', function($rootScope, $log) {
 	$rootScope.$on('$stateChangeStart',
 		function(event, toState, toParams, fromState, fromParams){
-			$log.log(fromState, " -> ", toState);
+			$log.log(fromState, fromParams, " -> ", toState, toParams);
 		}
 	);
 }]);
@@ -97,10 +96,13 @@ inventoryManagementApp.config(['$stateProvider', '$urlRouterProvider', function(
 					templateUrl: '../branches/partials/branch-list.xhtml',
 					controller: 'IndexBranchController'
 				}
+			},
+			data: {
+				displayCreateNewBranch: false
 			}
 		})
 		.state('branch.members', {
-			url: '/members/:id?highlightInventoryId',
+			url: '/:branchId/inventories/:inventoryId/detail',
 			views: {
 				"default": {
 					templateUrl: 'partials/inventory-list.xhtml',
@@ -109,7 +111,7 @@ inventoryManagementApp.config(['$stateProvider', '$urlRouterProvider', function(
 			}
 		})
 		.state('branch.images', {
-			url: '/members/:branchId/inventories/:id/images',
+			url: '/:branchId/inventories/:inventoryId/images',
 			views: {
 				"default": {
 					templateUrl: 'partials/image-list.xhtml',
@@ -132,7 +134,7 @@ reservationManagementApp.config(function($provide, $httpProvider, $locationProvi
 reservationManagementApp.run(['$rootScope', '$log', function($rootScope, $log) {
 	$rootScope.$on('$stateChangeStart',
 		function(event, toState, toParams, fromState, fromParams){
-			$log.log(fromState, " -> ", toState);
+			$log.log(fromState, fromParams, " -> ", toState, toParams);
 		}
 	);
 }]);
@@ -147,10 +149,13 @@ reservationManagementApp.config(['$stateProvider', '$urlRouterProvider', functio
 					templateUrl: 'branches/partials/branch-list.xhtml',
 					controller: 'IndexBranchController'
 				}
+			},
+			data: {
+				displayCreateNewBranch: false
 			}
 		})
 		.state('branch.members', {
-			url: '/members/:id',
+			url: '/:branchId/',
 			views: {
 				"default": {
 					templateUrl: 'customers/partials/car-list.xhtml',
@@ -174,7 +179,7 @@ adminReservationManagementApp.config(function($provide, $httpProvider, $location
 adminReservationManagementApp.run(['$rootScope', '$log', function($rootScope, $log) {
 	$rootScope.$on('$stateChangeStart',
 		function(event, toState, toParams, fromState, fromParams){
-			$log.log(fromState, " -> ", toState);
+			$log.log(fromState, fromParams, " -> ", toState, toParams);
 		}
 	);
 }]);
@@ -189,10 +194,13 @@ adminReservationManagementApp.config(['$stateProvider', '$urlRouterProvider', fu
 					templateUrl: '../branches/partials/branch-list.xhtml',
 					controller: 'IndexBranchController'
 				}
+			},
+			data: {
+				displayCreateNewBranch: false
 			}
 		})
 		.state('branch.members', {
-			url: '/members/:id',
+			url: '/:branchId/',
 			views: {
 				"default": {
 					templateUrl: 'partials/reservation-list.xhtml',
@@ -201,7 +209,7 @@ adminReservationManagementApp.config(['$stateProvider', '$urlRouterProvider', fu
 			}
 		})
 		.state('branch.details', {
-			url: '/members/:branchId/reservations/:groupId',
+			url: '/:branchId/reservations/:groupId',
 			views: {
 				"default": {
 					templateUrl: 'partials/reservation-detail.xhtml',

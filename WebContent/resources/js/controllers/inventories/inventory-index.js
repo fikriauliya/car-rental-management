@@ -1,4 +1,6 @@
 var IndexInventoryController = function($scope, $state, $stateParams, $filter, $timeout, Inventories, ngTableParams) {
+	console.log("+IndexInventoryController");
+
 	$scope.initializeNewInventory = function() {
 		$scope.newInventory = new Inventories();
 		$scope.newInventory.type = {id: 'car'};
@@ -38,7 +40,7 @@ var IndexInventoryController = function($scope, $state, $stateParams, $filter, $
 
 	$scope.refreshInventories = function() {
 		$scope.startProgress();
-		Inventories.query({entity: 'car', branchId: $stateParams.id},
+		Inventories.query({entity: 'car', branchId: $stateParams.branchId},
 			function(d, h){
 				$scope.carInventories = d;
 				_.each($scope.carInventories, function(d) { d.type = {id: 'car'}});
@@ -51,7 +53,7 @@ var IndexInventoryController = function($scope, $state, $stateParams, $filter, $
 		);
 
 		$scope.startProgress();
-		Inventories.query({entity: 'gps', branchId: $stateParams.id},
+		Inventories.query({entity: 'gps', branchId: $stateParams.branchId},
 			function(d, h){
 				$scope.gpsInventories = d;
 				_.each($scope.gpsInventories, function(d) { d.type = {id: 'gps'}});
@@ -63,7 +65,7 @@ var IndexInventoryController = function($scope, $state, $stateParams, $filter, $
 		);
 
 		$scope.startProgress();
-		Inventories.query({entity: 'baby_seat', branchId: $stateParams.id},
+		Inventories.query({entity: 'baby_seat', branchId: $stateParams.branchId},
 			function(d, h){
 				$scope.babySeatInventories = d;
 				_.each($scope.babySeatInventories, function(d) { d.type = {id: 'baby_seat'}});
@@ -92,7 +94,7 @@ var IndexInventoryController = function($scope, $state, $stateParams, $filter, $
 		var entity = $scope.newInventory.type.id;
 		var d = cleanUpData($scope.newInventory);
 
-		d.$save({entity: entity, branchId: $stateParams.id},
+		d.$save({entity: entity, branchId: $stateParams.branchId},
 			function(d, h) {
 				$scope.clearNotification();
 				$scope.$parent.info = "New inventory " + $scope.newInventory.name + " has been created";
@@ -117,7 +119,7 @@ var IndexInventoryController = function($scope, $state, $stateParams, $filter, $
 		var entity = $scope.selectedInventory.type.id;
 		var d = cleanUpData($scope.selectedInventory);
 
-		Inventories.update({entity: entity, branchId: $stateParams.id, id: $scope.selectedInventory.id}, d,
+		Inventories.update({entity: entity, branchId: $stateParams.branchId, id: $scope.selectedInventory.id}, d,
 			function(d, h) {
 				$scope.clearNotification();
 				$scope.$parent.info = "Inventory " + $scope.selectedInventory.name + " has been updated";
@@ -140,7 +142,7 @@ var IndexInventoryController = function($scope, $state, $stateParams, $filter, $
 		if (confirm("Are you sure want to delete this inventory?")) {
 			$scope.startProgress();
 
-			Inventories.remove({branchId: $stateParams.id, id: data.id},
+			Inventories.remove({branchId: $stateParams.branchId, id: data.id},
 				function(d, h) {
 					$scope.clearNotification();
 
@@ -208,7 +210,12 @@ var IndexInventoryController = function($scope, $state, $stateParams, $filter, $
 		    }
 		});
 
-	$scope.refreshInventories();
+	if ($stateParams.branchId) {
+		$scope.setSelectedBranch($stateParams.branchId);
+		$scope.refreshInventories();
+	}
+
+	console.log("-IndexInventoryController");
 }
 angular.module('inventoryManagementApp').controller('IndexInventoryController',
 		['$scope', '$state', '$stateParams', '$filter',  '$timeout',

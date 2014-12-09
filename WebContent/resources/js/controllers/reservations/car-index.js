@@ -96,7 +96,7 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 				$scope.endProgress();
 			}
 			else {
-				Inventories.query({entity: 'car', branchId: $stateParams.id,
+				Inventories.query({entity: 'car', branchId: $stateParams.branchId,
 					startTime: TimezoneConverter.convertToTargetTimeZoneTime($scope.search.startTime, $scope.selectedBranch.timezone),
 					endTime: TimezoneConverter.convertToTargetTimeZoneTime($scope.search.endTime, $scope.selectedBranch.timezone)},
 					function(d, h){
@@ -175,6 +175,8 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 			window.location="customers/addonselection.jsf";
 		}
 	}
+
+	$scope.setSelectedBranch($stateParams.branchId);
 
 //	$scope.refreshInventories();
 }
