@@ -16,7 +16,9 @@
       <table class="table table-striped table-condensed" ng-table="carInventoryTableParams">
         <tbody>
           <tr ng-repeat="data in $data">
-            <td data-title="'Name'" sortable="'name'" ng-class="{highlighted: highlightInventoryId == data.id}">{{data.name}}</td>
+            <td data-title="'Name'" sortable="'name'" ng-class="{highlighted: highlightInventoryId == data.id}">
+              <a ui-sref="branch.detail({branchId: selectedBranch.id, inventoryId: data.id, entity: 'car'})">{{data.name}}</a>
+            </td>
             <td data-title="'Price'" sortable="'price'" ng-class="{highlighted: highlightInventoryId == data.id}">{{data.price}}</td>
             <td data-title="'Status'" sortable="'status'" ng-class="{highlighted: highlightInventoryId == data.id}">{{data.status}}</td>
             <td data-title="'Created'" sortable="'createdAt'" ng-class="{highlighted: highlightInventoryId == data.id}">{{data.createdAt | date:'mediumDate'}}</td>
@@ -47,7 +49,9 @@
       <table class="table table-striped table-condensed" ng-table="babySeatInventoryTableParams">
         <tbody>
           <tr ng-repeat="data in $data">
-            <td data-title="'Name'" sortable="'name'" ng-class="{highlighted: highlightInventoryId == data.id}">{{data.name}}</td>
+            <td data-title="'Name'" sortable="'name'" ng-class="{highlighted: highlightInventoryId == data.id}">
+              <a ui-sref="branch.detail({branchId: selectedBranch.id, inventoryId: data.id, entity: 'baby_seat'})">{{data.name}}</a>
+            </td>
             <td data-title="'Price'" sortable="'price'" ng-class="{highlighted: highlightInventoryId == data.id}">{{data.price}}</td>
             <td data-title="'Status'" sortable="'status'" ng-class="{highlighted: highlightInventoryId == data.id}">{{data.status}}</td>
             <td data-title="'Created'" sortable="'createdAt'" ng-class="{highlighted: highlightInventoryId == data.id}">{{data.createdAt | date:'mediumDate'}}</td>
@@ -78,7 +82,9 @@
       <table class="table table-striped table-condensed" ng-table="gpsInventoryTableParams">
         <tbody>
           <tr ng-repeat="data in $data">
-            <td data-title="'Name'" sortable="'name'" ng-class="{highlighted: highlightInventoryId == data.id}">{{data.name}}</td>
+            <td data-title="'Name'" sortable="'name'" ng-class="{highlighted: highlightInventoryId == data.id}">
+              <a ui-sref="branch.detail({branchId: selectedBranch.id, inventoryId: data.id, entity: 'gps'})">{{data.name}}</a>
+            </td>
             <td data-title="'Price'" sortable="'price'" ng-class="{highlighted: highlightInventoryId == data.id}">{{data.price}}</td>
             <td data-title="'Status'" sortable="'status'" ng-class="{highlighted: highlightInventoryId == data.id}">{{data.status}}</td>
             <td data-title="'Created'" sortable="'createdAt'" ng-class="{highlighted: highlightInventoryId == data.id}">{{data.createdAt | date:'mediumDate'}}</td>

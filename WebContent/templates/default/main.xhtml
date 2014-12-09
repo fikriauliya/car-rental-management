@@ -16,6 +16,7 @@
   <h:outputScript library="jquery" name="js/jquery-1.11.1.min.js" />
 
   <script>
+  	var baseUrl = '#{request.scheme}://#{request.serverName}:#{request.serverPort}';
     var basePath = '#{request.contextPath}';
     var isAdmin = $.parseJSON("#{request.isUserInRole('admin')}");
     var isHR = $.parseJSON("#{request.isUserInRole('hr')}");

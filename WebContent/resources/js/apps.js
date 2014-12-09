@@ -102,11 +102,20 @@ inventoryManagementApp.config(['$stateProvider', '$urlRouterProvider', function(
 			}
 		})
 		.state('branch.members', {
-			url: '/:branchId/inventories/:inventoryId/detail',
+			url: '/:branchId/inventories/',
 			views: {
 				"default": {
 					templateUrl: 'partials/inventory-list.xhtml',
 					controller: 'IndexInventoryController'
+				},
+			}
+		})
+		.state('branch.detail', {
+			url: '/:branchId/inventories/:inventoryId/detail?entity',
+			views: {
+				"default": {
+					templateUrl: 'partials/inventory-detail.xhtml',
+					controller: 'InventoryDetailController'
 				},
 			}
 		})
