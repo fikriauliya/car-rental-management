@@ -8,7 +8,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import jp.co.worksap.roster.entity.Inventory;
+import jp.co.worksap.roster.entity.InventoryStatus;
 import jp.co.worksap.roster.entity.Reservation;
+import jp.co.worksap.roster.entity.ReservationStatus;
 
 @Stateless
 public class ReservationEJB {
@@ -32,5 +35,27 @@ public class ReservationEJB {
 		TypedQuery<Reservation> q = em.createNamedQuery("findReservationsByGroupId", Reservation.class)
 				.setParameter("groupId", groupId);
 		return q.getResultList();
+	}
+
+	public void updateStatus(List<Reservation> reservations, ReservationStatus status) {
+		for (Reservation reservation : reservations) {
+			reservation.setStatus(status);
+			em.persist(reservation);
+		}
+	}
+
+	public void updateInventories(List<Reservation> reservations, InventoryStatus status) {
+		for (Reservation reservation : reservations) {
+			Inventory inventory = reservation.getInventory();
+			inventory.setStatus(status);
+			em.persist(inventory);
+		}
+	}
+
+	public void markAsPaid(List<Reservation> reservations) {
+		for (Reservation reservation : reservations) {
+			reservation.setPaid(true);
+			em.persist(reservation);
+		}
 	}
 }

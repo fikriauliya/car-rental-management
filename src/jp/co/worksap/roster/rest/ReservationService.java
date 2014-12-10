@@ -9,6 +9,7 @@ import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -24,8 +25,11 @@ import jp.co.worksap.roster.ejb.InventoryEJB;
 import jp.co.worksap.roster.ejb.ReservationEJB;
 import jp.co.worksap.roster.entity.Customer;
 import jp.co.worksap.roster.entity.Inventory;
+import jp.co.worksap.roster.entity.InventoryStatus;
 import jp.co.worksap.roster.entity.Reservation;
+import jp.co.worksap.roster.entity.ReservationStatus;
 import jp.co.worksap.roster.rest.modelview.ReservationInfo;
+import jp.co.worksap.roster.rest.modelview.ReservationUpdateData;
 
 @Stateless
 @Path("/reservations/")
@@ -87,5 +91,28 @@ public class ReservationService {
 		}
 
 		return Response.status(Status.CREATED).type(MediaType.APPLICATION_JSON).build();
+	}
+
+	@PUT
+	public Response update(ReservationUpdateData data) {
+		long groupId = data.getGroupId();
+		String operation = data.getOperation();
+
+		List<Reservation> reservations = reservationEJB.findReservations(groupId);
+
+		if (operation.equals("startRental")) {
+			reservationEJB.updateInventories(reservations, InventoryStatus.RENTED);
+			reservationEJB.updateStatus(reservations, ReservationStatus.STARTED);
+		} else if (operation.equals("finishRental")) {
+			reservationEJB.updateInventories(reservations, InventoryStatus.AVAILABLE);
+			reservationEJB.updateStatus(reservations, ReservationStatus.FINISHED);
+		} else if (operation.equals("cancelRental")) {
+			reservationEJB.updateInventories(reservations, InventoryStatus.AVAILABLE);
+			reservationEJB.updateStatus(reservations, ReservationStatus.CANCELED);
+		} else if (operation.equals("markPaid")) {
+			reservationEJB.markAsPaid(reservations);
+		}
+
+		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
 	}
 }

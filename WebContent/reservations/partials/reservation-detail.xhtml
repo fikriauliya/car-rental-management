@@ -1,6 +1,31 @@
 <div class="row">
   <div class="col-md-12">
-    <h4>Reservation Details #{{reservations[0].groupId}}</h4>
+    <h4>
+      Reservation Details #{{reservations[0].groupId}}
+      <span class="label label-danger" ng-if="!reservations[0].paid">Unpaid</span>
+      <span class="label label-success" ng-if="reservations[0].paid">Paid</span>
+
+      <span class="label label-primary" ng-if="reservations[0].status == 'SCHEDULED'">{{reservations[0].status}}</span>
+      <span class="label label-danger" ng-if="reservations[0].status == 'CANCELED'">{{reservations[0].status}}</span>
+      <span class="label label-success" ng-if="reservations[0].status == 'STARTED'">{{reservations[0].status}}</span>
+      <span class="label label-warning" ng-if="reservations[0].status == 'FINISHED'">{{reservations[0].status}}</span>
+    </h4>
+    <button class="btn btn-sm btn-success" ng-click="startRental()">
+      <span class="glyphicon glyphicon-play"/>
+      Start rental
+    </button>
+    <button class="btn btn-sm btn-warning" ng-click="finishRental()">
+      <span class="glyphicon glyphicon-stop"/>
+      Finish rental
+    </button>
+    <button class="btn btn-sm btn-danger" ng-click="cancelRental()">
+      <span class="glyphicon glyphicon-remove-circle"/>
+      Cancel reservation
+    </button>
+    <button class="btn btn-sm btn-primary" ng-click="markPaid()">
+      <span class="glyphicon glyphicon-remove-circle"/>
+      Mark as paid
+    </button>
     <hr/>
   </div>
 
@@ -59,6 +84,11 @@
     <ol>
       <li ng-repeat="reservation in reservations">
         <a ng-href="{{parentUrl}}/inventories/index.jsf#/{{reservation.inventory.owner.id}}/inventories/{{reservation.inventory.id}}/detail?entity={{reservation.inventory.type}}">{{reservation.inventory.name}}</a>
+
+        <span class="label label-primary" ng-if="reservation.inventory.status == 'AVAILABLE'">{{reservation.inventory.status}}</span>
+        <span class="label label-success" ng-if="reservation.inventory.status == 'RENTED'">{{reservation.inventory.status}}</span>
+        <span class="label label-danger" ng-if="reservation.inventory.status == 'BROKEN'">{{reservation.inventory.status}}</span>
+        <span class="label label-default" ng-if="reservation.inventory.status == 'DELETED'">{{reservation.inventory.status}}</span>
       </li>
     </ol>
   </div>

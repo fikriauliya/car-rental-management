@@ -4,5 +4,5 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public enum InventoryStatus {
-	AVAILABLE, RENTED, RETURNED, BROKEN, DELETED
+	AVAILABLE, RENTED, BROKEN, DELETED
 }

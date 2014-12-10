@@ -107,4 +107,9 @@ public class InventoryEJB {
 		i.setStatus(InventoryStatus.DELETED);
 		em.persist(i);
 	}
+
+	public void updateStatus(Inventory inventory, InventoryStatus status) {
+		inventory.setStatus(status);
+		em.persist(inventory);
+	}
 }

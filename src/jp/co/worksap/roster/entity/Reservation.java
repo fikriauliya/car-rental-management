@@ -78,6 +78,12 @@ public class Reservation {
 	@XmlElement(name="end")
 	private Date endTime;
 
+	@NotNull
+	private ReservationStatus status = ReservationStatus.SCHEDULED;
+
+	@NotNull
+	private boolean isPaid = true;
+
 	public int getId() {
 		return id;
 	}
@@ -164,6 +170,22 @@ public class Reservation {
 
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
+	}
+
+	public ReservationStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(ReservationStatus status) {
+		this.status = status;
+	}
+
+	public boolean isPaid() {
+		return isPaid;
+	}
+
+	public void setPaid(boolean isPaid) {
+		this.isPaid = isPaid;
 	}
 
 
