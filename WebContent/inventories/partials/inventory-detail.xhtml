@@ -1,7 +1,20 @@
 <div class="row">
   <div class="col col-md-5">
-    <h4>{{inventory.name}} (ID: {{inventory.id}})</h4>
+    <h4>
+      {{inventory.name}} (ID: {{inventory.id}})
+      <span class="label label-primary" ng-if="inventory.status == 'AVAILABLE'">{{inventory.status}}</span>
+      <span class="label label-success" ng-if="inventory.status == 'RENTED'">{{inventory.status}}</span>
+      <span class="label label-danger" ng-if="inventory.status == 'BROKEN'">{{inventory.status}}</span>
+      <span class="label label-default" ng-if="inventory.status == 'DELETED'">{{inventory.status}}</span>
+    </h4>
 	<form class="form-horizontal">
+      <div class="form-group">
+        <label class="col-sm-5 control-label">Price</label>
+        <div class="col-sm-2">
+          <input ng-disabled="true" class="form-control" ng-model="inventory.price"/>
+        </div>
+      </div>
+
 	  <div ng-if="(inventory.type == 'baby_seat')">
 		  <div class="form-group">
 	        <label class="col-sm-5 control-label">Minimum weight (kg)</label>
