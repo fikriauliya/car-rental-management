@@ -31,6 +31,8 @@ var ReservationDetailController = function($scope, $state, $stateParams, $filter
 	$scope.startRental = function() {
 		Reservations.update({groupId: $stateParams.groupId, operation: "startRental"}, function(d, h){
 			$scope.refreshReservationDetail();
+		}, function(d, h) {
+			alert("You can't start renting on this reservation. Please make sure all inventories reserved are available");
 		});
 	};
 

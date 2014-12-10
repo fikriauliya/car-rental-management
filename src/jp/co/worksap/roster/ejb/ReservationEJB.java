@@ -37,6 +37,12 @@ public class ReservationEJB {
 		return q.getResultList();
 	}
 
+	public List<Reservation> findReservationsByInventoryId(int inventoryId) {
+		TypedQuery<Reservation> q = em.createNamedQuery("findReservationsByInventoryId", Reservation.class)
+				.setParameter("inventoryId", inventoryId);
+		return q.getResultList();
+	}
+
 	public void updateStatus(List<Reservation> reservations, ReservationStatus status) {
 		for (Reservation reservation : reservations) {
 			reservation.setStatus(status);
@@ -50,6 +56,15 @@ public class ReservationEJB {
 			inventory.setStatus(status);
 			em.persist(inventory);
 		}
+	}
+
+	public boolean isEligibleForRent(List<Reservation> reservations) {
+		for (Reservation reservation: reservations) {
+			if (reservation.getInventory().getStatus() != InventoryStatus.AVAILABLE) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public void markAsPaid(List<Reservation> reservations) {

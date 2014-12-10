@@ -94,6 +94,8 @@ public class ReservationService {
 	}
 
 	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response update(ReservationUpdateData data) {
 		long groupId = data.getGroupId();
 		String operation = data.getOperation();
@@ -101,8 +103,12 @@ public class ReservationService {
 		List<Reservation> reservations = reservationEJB.findReservations(groupId);
 
 		if (operation.equals("startRental")) {
-			reservationEJB.updateInventories(reservations, InventoryStatus.RENTED);
-			reservationEJB.updateStatus(reservations, ReservationStatus.STARTED);
+			if (reservationEJB.isEligibleForRent(reservations)) {
+				reservationEJB.updateInventories(reservations, InventoryStatus.RENTED);
+				reservationEJB.updateStatus(reservations, ReservationStatus.STARTED);
+			} else {
+				return Response.status(Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON).build();
+			}
 		} else if (operation.equals("finishRental")) {
 			reservationEJB.updateInventories(reservations, InventoryStatus.AVAILABLE);
 			reservationEJB.updateStatus(reservations, ReservationStatus.FINISHED);

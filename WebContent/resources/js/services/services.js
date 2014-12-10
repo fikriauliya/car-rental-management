@@ -99,6 +99,13 @@ reservationServices.factory("Reservations",
 	  });
    }
   ]);
+reservationServices.factory("ReservationHistories",
+  ["$resource",
+   function($resource) {
+	  return $resource(basePath + "/api/reservation_histories/:inventoryId")
+    }
+  ]);
+
 
 imageServices = angular.module('imageServices', ['ngResource']);
 imageServices.factory("Images",
