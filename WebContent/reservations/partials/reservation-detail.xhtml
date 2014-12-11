@@ -10,19 +10,19 @@
       <span class="label label-success" ng-if="reservations[0].status == 'STARTED'">{{reservations[0].status}}</span>
       <span class="label label-warning" ng-if="reservations[0].status == 'FINISHED'">{{reservations[0].status}}</span>
     </h4>
-    <button class="btn btn-sm btn-success" ng-click="startRental()">
+    <button class="btn btn-sm btn-success" ng-click="startRental()" ng-if="reservations[0].status == 'SCHEDULED'">
       <span class="glyphicon glyphicon-play"/>
       Start rental
     </button>
-    <button class="btn btn-sm btn-warning" ng-click="finishRental()">
+    <button class="btn btn-sm btn-warning" ng-click="finishRental()" ng-if="reservations[0].status == 'STARTED'">
       <span class="glyphicon glyphicon-stop"/>
       Finish rental
     </button>
-    <button class="btn btn-sm btn-danger" ng-click="cancelRental()">
+    <button class="btn btn-sm btn-danger" ng-click="cancelRental()" ng-if="reservations[0].status == 'SCHEDULED'">
       <span class="glyphicon glyphicon-remove-circle"/>
       Cancel reservation
     </button>
-    <button class="btn btn-sm btn-primary" ng-click="markPaid()">
+    <button class="btn btn-sm btn-primary" ng-click="markPaid()" ng-if="!reservations[0].paid && reservations[0].status != 'CANCELED'">
       <span class="glyphicon glyphicon-remove-circle"/>
       Mark as paid
     </button>
