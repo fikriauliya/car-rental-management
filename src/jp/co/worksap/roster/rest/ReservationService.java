@@ -2,6 +2,7 @@ package jp.co.worksap.roster.rest;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.ejb.EJB;
@@ -20,14 +21,21 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 
+import jp.co.worksap.roster.ejb.BranchEJB;
 import jp.co.worksap.roster.ejb.CustomerEJB;
 import jp.co.worksap.roster.ejb.InventoryEJB;
 import jp.co.worksap.roster.ejb.ReservationEJB;
+import jp.co.worksap.roster.ejb.UserAgendaEJB;
+import jp.co.worksap.roster.ejb.UserEJB;
+import jp.co.worksap.roster.entity.Branch;
 import jp.co.worksap.roster.entity.Customer;
 import jp.co.worksap.roster.entity.Inventory;
 import jp.co.worksap.roster.entity.InventoryStatus;
 import jp.co.worksap.roster.entity.Reservation;
 import jp.co.worksap.roster.entity.ReservationStatus;
+import jp.co.worksap.roster.entity.User;
+import jp.co.worksap.roster.entity.UserAgenda;
+import jp.co.worksap.roster.entity.UserRole;
 import jp.co.worksap.roster.rest.modelview.ReservationInfo;
 import jp.co.worksap.roster.rest.modelview.ReservationUpdateData;
 
@@ -38,10 +46,19 @@ public class ReservationService {
 	InventoryEJB inventoryEJB;
 
 	@EJB
+	BranchEJB branchEJB;
+
+	@EJB
 	ReservationEJB reservationEJB;
 
 	@EJB
 	CustomerEJB customerEJB;
+
+	@EJB
+	UserAgendaEJB userAgendaEJB;
+
+	@EJB
+	UserEJB userEJB;
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -71,6 +88,8 @@ public class ReservationService {
 		long timestamp = (new Date()).getTime();
 		Customer customer = customerEJB.findCustomerByUserId(userId);
 
+		boolean driverAssigned = false;
+
 		for (int inventoryId : reservationInfo.getInventoryIds()) {
 			Reservation reservation = new Reservation();
 			reservation.setGroupId(timestamp);
@@ -86,6 +105,39 @@ public class ReservationService {
 			reservation.setStartTime(reservationInfo.getStartTime());
 			reservation.setEndTime(reservationInfo.getEndTime());
 			reservation.setCustomer(customer);
+
+			if (!driverAssigned && reservationInfo.isDriverRequired()) {
+				List<String> busyEmployeeIds = userAgendaEJB.findReservedUsersByDate(inventory.getOwner().getId(), reservation.getStartTime(), reservation.getEndTime());
+				Branch branch = branchEJB.findBranch(inventory.getOwner().getId());
+				List<User> allEmployees = branch.getUsers();
+
+				for (User employee:allEmployees) {
+					if (!busyEmployeeIds.contains(employee.getId())) {
+						List<UserRole> roles = userEJB.findAllAssignedRoles(employee.getId());
+						List<String> rolesStr = new LinkedList<String>();
+						for (UserRole role:roles) {
+							rolesStr.add(role.getRoleName());
+							System.out.println(role.getRoleName());
+						}
+
+						if (rolesStr.contains("driver")) {
+							//found available driver
+							UserAgenda ua = new UserAgenda();
+							ua.setAssignedBy(employee);
+							ua.setStartTime(reservationInfo.getStartTime());
+							ua.setEndTime(reservationInfo.getEndTime());
+							ua.setTitle(String.valueOf(branch.getId()) + "-" + String.valueOf(reservation.getGroupId()));
+							ua.setUser(employee);
+							userAgendaEJB.createUserAgenda(ua);
+
+							reservation.setAssignedDriver(employee);
+							reservation.setDriverFee(branch.getDriverFee());
+							break;
+						}
+					}
+				}
+				driverAssigned = true;
+			}
 
 			reservationEJB.createReservation(reservation);
 		}

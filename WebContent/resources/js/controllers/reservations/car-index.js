@@ -165,6 +165,7 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 			name: car.name
 		});
 
+		$cookieStore.put('driverFee', $scope.selectedBranch.driverFee);
 		$cookieStore.put('timezone', $scope.selectedBranch.timezone);
 		$cookieStore.put('startTime', TimezoneConverter.convertToTargetTimeZoneTime($scope.search.startTime, $scope.selectedBranch.timezone));
 		$cookieStore.put('endTime', TimezoneConverter.convertToTargetTimeZoneTime($scope.search.endTime, $scope.selectedBranch.timezone));

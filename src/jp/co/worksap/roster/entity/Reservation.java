@@ -1,5 +1,6 @@
 package jp.co.worksap.roster.entity;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -85,6 +86,10 @@ public class Reservation {
 
 	@NotNull
 	private boolean isPaid = true;
+
+	private BigDecimal driverFee;
+
+	private User assignedDriver;
 
 	public int getId() {
 		return id;
@@ -188,6 +193,22 @@ public class Reservation {
 
 	public void setPaid(boolean isPaid) {
 		this.isPaid = isPaid;
+	}
+
+	public User getAssignedDriver() {
+		return assignedDriver;
+	}
+
+	public void setAssignedDriver(User assignedDriver) {
+		this.assignedDriver = assignedDriver;
+	}
+
+	public BigDecimal getDriverFee() {
+		return driverFee;
+	}
+
+	public void setDriverFee(BigDecimal driverFee) {
+		this.driverFee = driverFee;
 	}
 
 

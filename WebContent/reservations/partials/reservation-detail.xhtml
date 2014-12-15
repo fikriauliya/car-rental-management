@@ -78,6 +78,31 @@
         </tr>
       </tbody>
     </table>
+    <hr/>
+    <div ng-if="reservations[0].assignedDriver">
+      <h4>Driver required</h4>
+      <table class="table table-striped table-condensed">
+        <tbody>
+          <tr>
+            <td>First name</td>
+            <td>{{reservations[0].assignedDriver.firstName}}</td>
+          </tr>
+          <tr>
+            <td>Last name</td>
+            <td>{{reservations[0].assignedDriver.lastName}}</td>
+          </tr>
+          <tr>
+            <td>Email</td>
+            <td>{{reservations[0].assignedDriver.email}}</td>
+          </tr>
+          <tr>
+            <td>Phone</td>
+            <td>{{reservations[0].assignedDriver.phone}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <a class="btn btn-primary btn-sm" ng-href="{{parentUrl}}/users/agenda.jsf?userId={{reservations[0].assignedDriver.id}}">Check Agenda</a>
+    </div>
   </div>
   <div class="col-md-4">
     <h4>Reserved inventories detail</h4>

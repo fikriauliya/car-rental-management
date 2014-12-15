@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,9 +28,16 @@ import org.hibernate.validator.constraints.NotEmpty;
 			"OR (:startTime <= u.endTime AND :endTime >= u.endTime)" +
 			"OR (:startTime >= u.startTime AND :endTime <= u.endTime))" +
 			"AND :userId = u.user.id"),
-	@NamedQuery(name="deleteUserAgenda", query = "DELETE from UserAgenda u where u.id = :id"),
+	@NamedQuery(name="delet	eUserAgenda", query = "DELETE from UserAgenda u where u.id = :id"),
 	@NamedQuery(name="findUserAgenda", query = "SELECT u from UserAgenda u where u.id = :id"),
 	@NamedQuery(name="deleteUserAgendaByUser", query = "DELETE from UserAgenda u where u.user.id = :userId OR u.assignedBy.id = :userId"),
+	@NamedQuery(name="findReservedUsersByDate", query="SELECT DISTINCT(u.user.id) FROM UserAgenda u " +
+			"LEFT OUTER JOIN u.user v " +
+			"LEFT OUTER JOIN v.branches w " +
+			"WHERE ((:startTime <= u.startTime AND :endTime >= u.startTime) " +
+			"OR (:startTime <= u.endTime AND :endTime >= u.endTime) " +
+			"OR (:startTime >= u.startTime AND :endTime <= u.endTime)) " +
+			"AND (:branchId = w.id)"),
 })
 @Table(name = "T_USER_AGENDA")
 public class UserAgenda {
@@ -37,6 +45,7 @@ public class UserAgenda {
 	private int id;
 
 	@NotNull
+	@OneToOne
 	private User user;
 
 	@NotNull

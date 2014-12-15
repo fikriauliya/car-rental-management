@@ -10,7 +10,14 @@ public class ReservationInfo {
 	private Date cardExpiryDate;
 	private Date startTime;
 	private Date endTime;
+	private boolean isDriverRequired;
 
+	public boolean isDriverRequired() {
+		return isDriverRequired;
+	}
+	public void setDriverRequired(boolean isDriverRequired) {
+		this.isDriverRequired = isDriverRequired;
+	}
 	public int[] getInventoryIds() {
 		return inventoryIds;
 	}

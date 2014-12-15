@@ -116,6 +116,9 @@
 	<security-role>
 		<role-name>hr</role-name>
 	</security-role>
+	<security-role>
+		<role-name>driver</role-name>
+	</security-role>
 
 	<session-config>
 		<session-timeout>120</session-timeout>

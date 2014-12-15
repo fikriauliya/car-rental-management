@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import jp.co.worksap.roster.entity.User;
 import jp.co.worksap.roster.entity.UserAgenda;
 
 @Stateless
@@ -20,6 +21,14 @@ public class UserAgendaEJB {
 				.setParameter("startTime", startTime)
 				.setParameter("endTime", endTime)
 				.setParameter("userId", userId);
+		return q.getResultList();
+	}
+
+	public List<String> findReservedUsersByDate(int branchId, Date startTime, Date endTime) {
+		TypedQuery<String> q = em.createNamedQuery("findReservedUsersByDate", String.class)
+				.setParameter("startTime", startTime)
+				.setParameter("endTime", endTime)
+				.setParameter("branchId", branchId);
 		return q.getResultList();
 	}
 

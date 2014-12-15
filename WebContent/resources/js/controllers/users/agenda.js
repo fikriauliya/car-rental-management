@@ -17,6 +17,14 @@ myApp.controller('AgendaUserController', ['$scope', '$location', '$timeout', 'Us
 	$scope.refreshEvents = function() {
 		ngProgress.start();
 		UserAgendas.query({id: $scope.userId, start: $scope.curStart, end: $scope.curEnd}, function(d, h){
+			var digitsRegex = new RegExp("^(\\d+)\\-(\\d+)$");
+			_.each(d, function(dd) {
+				if (digitsRegex.test(dd.title)) {
+					var matches = digitsRegex.exec(dd.title);
+					console.log(matches);
+					dd.titleLink = baseUrl + basePath + "/reservations/index.jsf#/" + matches[1] + "/reservations/" + matches[2];
+				}
+			});
         	$scope.events[0] = [];
         	$scope.events[0] = d;
         	$scope.tableParams.reload();
