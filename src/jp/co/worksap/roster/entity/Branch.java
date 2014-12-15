@@ -1,5 +1,6 @@
 package jp.co.worksap.roster.entity;
 
+import java.math.BigDecimal;
 import java.sql.Time;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Min;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.validator.constraints.Length;
@@ -50,6 +52,9 @@ public class Branch {
 
 	@NotEmpty
 	private String closingHour;
+
+	@Min(value=0)
+	private BigDecimal driverFee;
 
 	@ManyToMany
 	@JoinTable(name = "T_BRANCH_USER")
@@ -125,6 +130,14 @@ public class Branch {
 
 	public void setClosingHour(String closingHour) {
 		this.closingHour = closingHour;
+	}
+
+	public BigDecimal getDriverFee() {
+		return driverFee;
+	}
+
+	public void setDriverFee(BigDecimal driverFee) {
+		this.driverFee = driverFee;
 	}
 
 }

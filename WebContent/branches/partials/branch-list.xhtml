@@ -72,6 +72,13 @@
                 </div>
               </div>
               <div class="form-group">
+                <label class="col-sm-3 control-label">Driver fee</label>
+                <div class="col-sm-9">
+                  <input class="form-control" ng-model="newBranch.driverFee" ng-if="!inEditMode"/>
+                  <input class="form-control" ng-model="selectedBranch.driverFee" ng-if="inEditMode"/>
+                </div>
+              </div>
+              <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-4">
                   <button class="btn btn-primary btn-sm" ng-click="createBranch()" ng-if="!inEditMode">Create</button>
                   <button class="btn btn-primary btn-sm" ng-click="updateBranch()" ng-if="inEditMode">Update</button>

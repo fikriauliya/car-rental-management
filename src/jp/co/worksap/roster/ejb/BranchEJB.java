@@ -28,6 +28,7 @@ public class BranchEJB {
 		b.setTimezone(branch.getTimezone());
 		b.setOpeningHour(branch.getOpeningHour());
 		b.setClosingHour(branch.getClosingHour());
+		b.setDriverFee(branch.getDriverFee());
 		em.persist(b);
 	}
 
