@@ -19,7 +19,7 @@ var httpInterceptor = function($q) {
 
 var myApp = angular.module('myApp', ['userServices', 'organizationServices', 'peerReviewServices', 'userAgendaServices',
                                  'angularBootstrapNavTree', 'transferLogsServices', 'angularSpinner',
-                                 'ngTable', 'ui.calendar', 'ui.bootstrap.datetimepicker', 'ngProgress']);
+                                 'ngTable', 'ui.calendar', 'ui.bootstrap.datetimepicker', 'ngProgress', 'timezoneServices']);
 myApp.factory('myHttpInterceptor', ['$q', httpInterceptor]);
 
 myApp.config(function($provide, $httpProvider, $locationProvider) {

@@ -128,6 +128,7 @@ public class ReservationService {
 							ua.setEndTime(reservationInfo.getEndTime());
 							ua.setTitle(String.valueOf(branch.getId()) + "-" + String.valueOf(reservation.getGroupId()));
 							ua.setUser(employee);
+							ua.setTimezone(branch.getTimezone());
 							userAgendaEJB.createUserAgenda(ua);
 
 							reservation.setAssignedDriver(employee);

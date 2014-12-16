@@ -1,6 +1,6 @@
 myApp = angular.module('myApp');
-myApp.controller('AgendaUserController', ['$scope', '$location', '$timeout', 'UserAgendas', '$filter', '$log', 'ngTableParams', 'ngProgress',
-  function($scope, $location, $timeout, UserAgendas, $filter, $log, ngTableParams, ngProgress) {
+myApp.controller('AgendaUserController', ['$scope', '$location', '$timeout', 'UserAgendas', '$filter', '$log', 'ngTableParams', 'ngProgress', 'TimezoneConverter',
+  function($scope, $location, $timeout, UserAgendas, $filter, $log, ngTableParams, ngProgress, TimezoneConverter) {
 	var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
@@ -14,16 +14,42 @@ myApp.controller('AgendaUserController', ['$scope', '$location', '$timeout', 'Us
 		$scope.info = "";
 	};
 
+	var tzdetect = {
+	    names: moment.tz.names(),
+	    matches: function(base){
+	        var results = [], now = Date.now(), makekey = function(id){
+	            return [0, 4, 8, -5*12, 4-5*12, 8-5*12, 4-2*12, 8-2*12].map(function(months){
+	                var m = moment(now + months*30*24*60*60*1000);
+	                if (id) m.tz(id);
+	                return m.format("DDHHmm");
+	            }).join(' ');
+	        }, lockey = makekey(base);
+	        tzdetect.names.forEach(function(id){
+	            if (makekey(id)===lockey) results.push(id);
+	        });
+	        return results;
+	    }
+	};
+
 	$scope.refreshEvents = function() {
 		ngProgress.start();
 		UserAgendas.query({id: $scope.userId, start: $scope.curStart, end: $scope.curEnd}, function(d, h){
 			var digitsRegex = new RegExp("^(\\d+)\\-(\\d+)$");
+
+			if (d.length > 0) {
+				$scope.myTimeZone = d[0].timezone;
+			};
+
 			_.each(d, function(dd) {
 				if (digitsRegex.test(dd.title)) {
 					var matches = digitsRegex.exec(dd.title);
-					console.log(matches);
 					dd.titleLink = baseUrl + basePath + "/reservations/index.jsf#/" + matches[1] + "/reservations/" + matches[2];
 				}
+				dd.startTime = TimezoneConverter.convertToLocalTimeZoneTime(dd.start, $scope.myTimeZone);
+        		dd.start = TimezoneConverter.convertToLocalTimeZoneTime(dd.start, $scope.myTimeZone);
+
+        		dd.endTime = TimezoneConverter.convertToLocalTimeZoneTime(dd.end, $scope.myTimeZone);
+        		dd.end = TimezoneConverter.convertToLocalTimeZoneTime(dd.end, $scope.myTimeZone);
 			});
         	$scope.events[0] = [];
         	$scope.events[0] = d;
@@ -45,6 +71,10 @@ myApp.controller('AgendaUserController', ['$scope', '$location', '$timeout', 'Us
 
 	$scope.createEvent = function() {
 		ngProgress.start();
+		var tzid = tzdetect.matches()[0];
+
+		$scope.newEvent.timezone = tzid;
+
 		$scope.newEvent.$save({id: $scope.userId}, function(d, h){
 			$scope.clearNotification();
 
@@ -101,6 +131,7 @@ myApp.controller('AgendaUserController', ['$scope', '$location', '$timeout', 'Us
         eventDrop: $scope.alertOnDrop,
         eventResize: $scope.alertOnResize,
         eventRender: $scope.eventRender,
+        timezone: false,
         viewRender: function(view, element) {
             var start = (new Date(view.start._d)).getTime();
             var end = (new Date(view.end._d)).getTime();

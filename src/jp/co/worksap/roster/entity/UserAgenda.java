@@ -65,6 +65,8 @@ public class UserAgenda {
 	@Length(max=200)
 	private String title;
 
+	private String timezone;
+
 	public int getId() {
 		return id;
 	}
@@ -111,6 +113,14 @@ public class UserAgenda {
 
 	public void setAssignedBy(User assignedBy) {
 		this.assignedBy = assignedBy;
+	}
+
+	public String getTimezone() {
+		return timezone;
+	}
+
+	public void setTimezone(String timezone) {
+		this.timezone = timezone;
 	}
 
 }
