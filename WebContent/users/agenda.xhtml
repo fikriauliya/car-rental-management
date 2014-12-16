@@ -37,7 +37,7 @@
           <tbody>
             <tr ng-repeat="event in $data">
               <td data-title="'Title'" sortable="'title'">
-                <a ng-href="{{event.titleLink}}" ng-if="event.titleLink">{{event.title}}</a>
+                <a target="_blank" ng-href="{{event.titleLink}}" ng-if="event.titleLink">{{event.title}}</a>
                 <div ng-if="!event.titleLink">{{event.title}}</div>
               </td>
               <td data-title="'From'" sortable="'start'">{{event.start | date: 'medium'}}</td>
