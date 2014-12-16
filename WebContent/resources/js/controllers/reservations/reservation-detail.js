@@ -1,6 +1,7 @@
 var ReservationDetailController = function($scope, $state, $stateParams, $filter, $timeout, Reservations, Branches, TimezoneConverter, ngTableParams, ngProgress) {
 	console.log($stateParams.branchId);
 	console.log($stateParams.groupId);
+	$scope.reservations = [];
 
 	$scope.refreshReservationDetail = function() {
 		$scope.startProgress();
@@ -26,6 +27,12 @@ var ReservationDetailController = function($scope, $state, $stateParams, $filter
 		}, function() {
 			$scope.endProgress();
 		});
+	}
+
+	$scope.totalPrice = function(reservations) {
+		var a = _.reduce(reservations, function(memo, item){ return memo + item.inventory.price; }, 0);
+		if (reservations.length > 0 && reservations[0].assignedDriver) { return a + reservations[0].driverFee; }
+		return a;
 	}
 
 	$scope.startRental = function() {

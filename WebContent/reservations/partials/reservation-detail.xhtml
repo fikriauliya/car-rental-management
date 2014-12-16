@@ -104,7 +104,7 @@
       <a class="btn btn-primary btn-sm" ng-href="{{parentUrl}}/users/agenda.jsf?userId={{reservations[0].assignedDriver.id}}">Check Agenda</a>
     </div>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-3">
     <h4>Reserved inventories detail</h4>
     <ol>
       <li ng-repeat="reservation in reservations">
@@ -116,5 +116,32 @@
         <span class="label label-default" ng-if="reservation.inventory.status == 'DELETED'">{{reservation.inventory.status}}</span>
       </li>
     </ol>
+  </div>
+  <div class="col-md-3">
+    <h4>Price breakdown</h4>
+    <table class="table table-condensed table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="reservation in reservations">
+          <td>{{reservation.inventory.name}}</td>
+          <td>{{reservation.inventory.price}}</td>
+        </tr>
+        <tr ng-if="reservations[0].assignedDriver">
+          <td>Driver</td>
+          <td>{{reservations[0].driverFee}}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td><b>Total</b></td>
+          <td><b>{{totalPrice(reservations)}}</b></td>
+        </tr>
+      </tfoot>
+    </table>
   </div>
 </div>
