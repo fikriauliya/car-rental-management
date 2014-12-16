@@ -1,0 +1,65 @@
+<div class="row">
+  <div class="col col-md-12">
+    <h4>Statistics for {{selectedBranch.name}}</h4>
+    <div class="form-group">
+      <label class="col-sm-1 control-label">Month</label>
+      <div class="col-sm-8">
+        <div class="dropdown control-label" style="text-align:left">
+          <a  class="dropdown-toggle" id="dropdown1" role="button"
+            data-toggle="dropdown" data-target="#" href="">{{selectedMonth | date:'MMM yyyy'}}</a>
+          <ul class="dropdown-menu" role="menu">
+              <datetimepicker data-ng-model="selectedMonth"
+                data-datetimepicker-config="{ dropdownSelector: '#dropdown1', minView: 'month', startView: 'month' }"/>
+          </ul>
+          <button class="btn btn-primary btn-sm" style="margin-left:20px" ng-click="generateReport()">Generate</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col col-md-12">
+    <hr/>
+  </div>
+</div>
+<div class="row" ng-if="groupedReservations">
+  <div class="col col-md-6">
+    <h4>Financial report</h4>
+    Total income: <b>{{totalIncome}}</b>
+    <table class="table table-striped table-condensed" style="margin-top:20px">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Reservation #</th>
+          <th>Income</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="(groupId, reservations) in groupedReservations">
+          <td>{{$index + 1}}</td>
+          <td><a ng-href="{{reservationDetailLink(reservations[0].inventory.owner.id, groupId)}}" target="_blank">{{groupId}}</a></td>
+          <td>{{totalPrice(reservations)}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col col-md-6">
+    <h4>Inventory report</h4>
+    Total rented
+
+    <table class="table table-striped table-condensed" style="margin-top:20px">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Name</th>
+          <th>Rented for</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="(inventoryId, inventories) in groupedInventories">
+          <td>{{$index + 1}}</td>
+          <td><a ng-href="{{inventoryDetailLink(inventories[0].owner.id, inventories[0].id, inventories[0].type)}}" target="_blank">{{inventories[0].name}}</a></td>
+          <td>{{inventories.length}} times</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

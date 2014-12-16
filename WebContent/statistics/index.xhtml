@@ -1,0 +1,26 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/templates/default/internal.xhtml">
+  <ui:define name="header">
+    <h:outputScript name="js/controllers/branches/branch-index.js" />
+    <h:outputScript name="js/controllers/statistics/statistics-index.js" />
+  </ui:define>
+  <ui:define name="content">
+    <div ng-app="statisticsApp">
+      <div class="row">
+        <div class="col col-md-12">
+          <h4>Statistics</h4>
+          <hr/>
+        </div>
+      </div>
+      <div ui-view="default"/>
+    </div>
+  </ui:define>
+</ui:composition>
+</html>

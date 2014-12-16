@@ -227,3 +227,47 @@ adminReservationManagementApp.config(['$stateProvider', '$urlRouterProvider', fu
 			}
 		})
 }]);
+
+var statisticsApp = angular.module('statisticsApp', ['customerServices', 'branchServices', 'timezoneServices',
+                                                                                     'inventoryServices', 'ui.bootstrap', 'ngTable', 'ui.calendar', 'ngProgress', 'ui.router',
+                                                                                     'ui.bootstrap.datetimepicker', 'ngCookies', 'reservationServices']);
+statisticsApp.factory('myHttpInterceptor', ['$q', httpInterceptor]);
+
+statisticsApp.config(function($provide, $httpProvider, $locationProvider) {
+  	$httpProvider.interceptors.push('myHttpInterceptor');
+  	$locationProvider.html5Mode(false);
+  });
+
+statisticsApp.run(['$rootScope', '$log', function($rootScope, $log) {
+  	$rootScope.$on('$stateChangeStart',
+  		function(event, toState, toParams, fromState, fromParams){
+  			$log.log(fromState, fromParams, " -> ", toState, toParams);
+  		}
+  	);
+  }]);
+
+statisticsApp.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+	$urlRouterProvider.otherwise("");
+	$stateProvider
+		.state('branch', {
+			url: "",
+			views: {
+				"default": {
+					templateUrl: '../branches/partials/branch-list.xhtml',
+					controller: 'IndexBranchController'
+				}
+			},
+			data: {
+				displayCreateNewBranch: false
+			}
+		})
+		.state('branch.members', {
+			url: '/:branchId/',
+			views: {
+				"default": {
+					templateUrl: 'partials/statistics-list.xhtml',
+					controller: 'IndexStatisticsController'
+				},
+			}
+		})
+}]);
