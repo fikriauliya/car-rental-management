@@ -129,7 +129,7 @@
       <tbody>
         <tr ng-repeat="reservation in reservations">
           <td>{{reservation.inventory.name}}</td>
-          <td>{{reservation.inventory.price}}</td>
+          <td>{{calculatePrice(reservation)}}</td>
         </tr>
         <tr ng-if="reservations[0].assignedDriver">
           <td>Driver</td>

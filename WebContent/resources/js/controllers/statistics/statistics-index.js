@@ -15,12 +15,22 @@ var IndexStatisticsController = function($scope, $state, $stateParams, $filter, 
 		var to  = TimezoneConverter.convertToTargetTimeZoneTime(nextMonth, $scope.selectedBranch.timezone);
 
 		Reservations.query({branchId: $stateParams.branchId, startTime: from, endTime: to}, function(d, h){
+			_.each(d, function(dd) {
+	    		dd.startTime = TimezoneConverter.convertToLocalTimeZoneTime(dd.start, $scope.selectedBranch.timezone);
+	    		dd.start = TimezoneConverter.convertToLocalTimeZoneTime(dd.start, $scope.selectedBranch.timezone);
+
+	    		dd.endTime = TimezoneConverter.convertToLocalTimeZoneTime(dd.end, $scope.selectedBranch.timezone);
+	    		dd.end = TimezoneConverter.convertToLocalTimeZoneTime(dd.end, $scope.selectedBranch.timezone);
+			});
 			var paidReservations = _.filter(d, function(r) { return r.paid; });
 			$scope.groupedReservations = _.groupBy(paidReservations, function(r) { return r.groupId; });
 			$scope.totalIncome = _.reduce($scope.groupedReservations, function(memo, data) { return memo + $scope.totalPrice(data); }, 0);
 
 			var inventories = _.map(paidReservations, function(r) { return r.inventory; });
 			_.each(inventories, function(dd) {
+	    		dd.startTime = TimezoneConverter.convertToLocalTimeZoneTime(dd.start, $scope.selectedBranch.timezone);
+	    		dd.start = TimezoneConverter.convertToLocalTimeZoneTime(dd.start, $scope.selectedBranch.timezone);
+
 				if ('maxWeight' in dd) dd.type = "baby_seat";
 	    		else if ('numOfSeat' in dd) dd.type = "car";
 	    		else dd.type = "gps";
@@ -30,10 +40,12 @@ var IndexStatisticsController = function($scope, $state, $stateParams, $filter, 
 	};
 
 	$scope.totalPrice = function(reservations) {
-		var a = _.reduce(reservations, function(memo, item){ return memo + item.inventory.price; }, 0);
+		console.log(reservations);
+		var a = _.reduce(reservations, function(memo, item){ console.log(item); return memo + item.inventory.price * ((item.endTime.getTime() - item.startTime.getTime() + 1) / (60 * 60 * 1000)); }, 0);
+		console.log(a);
 		if (reservations.length > 0 && reservations[0].assignedDriver) { return a + reservations[0].driverFee; }
 		return a;
-	};
+	}
 
 	$scope.reservationDetailLink = function(branchId, groupId) {
 		return baseUrl + basePath + "/reservations/index.jsf#/" + branchId + "/reservations/" + groupId;
