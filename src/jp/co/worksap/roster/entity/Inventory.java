@@ -63,6 +63,11 @@ public abstract class Inventory {
 	@Min(value=0)
 	private BigDecimal price;
 
+
+	private Float latitude = new Float(0);
+
+	private Float longitude = new Float(0);
+
 	private int primaryImageId = -1;
 
 	public int getId() {
@@ -135,6 +140,22 @@ public abstract class Inventory {
 
 	public void setPrimaryImageId(int primaryImageId) {
 		this.primaryImageId = primaryImageId;
+	}
+
+	public Float getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(Float latitude) {
+		this.latitude = latitude;
+	}
+
+	public Float getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(Float longitude) {
+		this.longitude = longitude;
 	}
 
 	public static enum InventoryType {

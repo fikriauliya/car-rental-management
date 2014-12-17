@@ -40,9 +40,9 @@ public class Branch {
 	@Length(min=4, max=100)
 	private String address;
 
-	private Float latitude;
+	private Float latitude = new Float(0);
 
-	private Float longitude;
+	private Float longitude = new Float(0);
 
 	@NotEmpty
 	private String timezone;
