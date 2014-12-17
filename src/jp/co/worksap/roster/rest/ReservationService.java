@@ -20,6 +20,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
+import javax.xml.ws.WebServiceException;
 
 import jp.co.worksap.roster.ejb.BranchEJB;
 import jp.co.worksap.roster.ejb.CustomerEJB;
@@ -140,14 +141,19 @@ public class ReservationService {
 
 							reservation.setAssignedDriver(employee);
 							reservation.setDriverFee(branch.getDriverFee());
+
+							driverAssigned = true;
 							break;
 						}
 					}
 				}
-				driverAssigned = true;
 			}
 
 			reservationEJB.createReservation(reservation);
+		}
+
+		if (!driverAssigned && reservationInfo.isDriverRequired()) {
+			throw new WebServiceException("No driver is available");
 		}
 
 		return Response.status(Status.CREATED).type(MediaType.APPLICATION_JSON).build();
