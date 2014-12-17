@@ -118,9 +118,13 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 		return _.contains($scope.selectedInventories, inventory);
 	}
 
-	$scope.calculateTotal = function(selectedCar, selectedInventories) {
-		return selectedCar.totalPrice +
+	$scope.calculateTotal = function(selectedCar, selectedInventories, driverRequired) {
+		var res = selectedCar.totalPrice +
 			_.reduce(selectedInventories, function(memo, e) { return memo + e.totalPrice; }, 0) ;
+		if (driverRequired) {
+			return res + $scope.driverFee;
+		}
+		return res;
 	}
 
 	$scope.createReservation = function() {

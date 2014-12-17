@@ -126,7 +126,7 @@
         <div class="col-md-3">
           <h3>Hire driver option</h3>
           <input type="checkbox" ng-model="newReservation.driverRequired" />
-          I need a driver ({{driverFee}})
+          I need a driver (additional {{driverFee}})
 
           <hr/>
           <h3>Payment information</h3>
@@ -192,18 +192,25 @@
           <hr/>
 
           <h4>Selected add ons</h4>
-          <ol ng-if = "selectedInventories.length > 0">
+          <ul ng-if = "selectedInventories.length > 0">
             <li ng-repeat="inventory in selectedInventories track by inventory.id">
               Name: <b>{{inventory.name}}</b><br/>
               Price: <b>{{inventory.totalPrice}}</b>
             </li>
-          </ol>
+          </ul>
           <div ng-if = "selectedInventories.length == 0">
             No add on
           </div>
           <hr/>
+          <div ng-if="newReservation.driverRequired">
+            <h4>Driver fee</h4>
+            <ul>
+              <li><b>{{driverFee}}</b></li>
+            </ul>
+            <hr/>
+          </div>
           <h4>Total:</h4>
-             <h3><span class="label label-success">{{calculateTotal(selectedCar, selectedInventories)}}</span></h3>
+             <h3><span class="label label-success">{{calculateTotal(selectedCar, selectedInventories, newReservation.driverRequired)}}</span></h3>
         </div>
       </div>
     </div>
