@@ -67,7 +67,7 @@
   <div class="col col-md-3">
     <carousel>
       <slide ng-repeat="slide in car.slides" active="slide.active">
-        <img ng-src="{{slide.image}}" style="margin:auto;"/>
+        <img ng-src="{{slide.image}}" onerror="this.src='images/404_image.svg';" style="margin:auto;"/>
       </slide>
     </carousel>
   </div>
