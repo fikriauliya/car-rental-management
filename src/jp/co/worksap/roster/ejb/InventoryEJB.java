@@ -44,6 +44,8 @@ public class InventoryEJB {
 		b.setStatus(inventory.getStatus());
 		b.setPrice(inventory.getPrice());
 		b.setUpdatedAt(new Date());
+		b.setLatitude(inventory.getLatitude());
+		b.setLongitude(inventory.getLongitude());
 
 		if (inventory instanceof CarInventory) {
 			((CarInventory) b).copyPropertiesFrom((CarInventory)inventory);

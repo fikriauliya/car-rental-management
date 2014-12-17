@@ -141,7 +141,16 @@ public class CarInventory extends Inventory {
 				+ zeroToHundredKmPerHrTime + ", power=" + power
 				+ ", wheelBase=" + wheelBase + ", numOfSeat=" + numOfSeat
 				+ ", numOfDoor=" + numOfDoor + ", isRightSideDriver="
-				+ isRightSideDriver + ", fuelType=" + fuelType + "]";
+				+ isRightSideDriver + ", fuelType=" + fuelType + ", getId()="
+				+ getId() + ", getName()=" + getName() + ", getOwner()="
+				+ getOwner() + ", getCreatedAt()=" + getCreatedAt()
+				+ ", getUpdatedAt()=" + getUpdatedAt() + ", getVersion()="
+				+ getVersion() + ", getStatus()=" + getStatus()
+				+ ", getPrice()=" + getPrice() + ", getPrimaryImageId()="
+				+ getPrimaryImageId() + ", getLatitude()=" + getLatitude()
+				+ ", getLongitude()=" + getLongitude() + ", getClass()="
+				+ getClass() + ", hashCode()=" + hashCode() + ", toString()="
+				+ super.toString() + "]";
 	}
 
 	public String getTransmission() {

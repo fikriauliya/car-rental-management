@@ -47,6 +47,24 @@ var IndexMapsController = function($scope, $state, $stateParams, $filter, $timeo
 		});
 	};
 
+	$scope.updateLocation = function() {
+		Inventories.update({entity: 'car', branchId: $stateParams.branchId, id: $scope.newLocation.inventory.id}, $scope.newLocation.inventory,
+			function(d, h) {
+				$scope.clearNotification();
+				$scope.$parent.info = "Inventory " + $scope.newLocation.inventory.name + " has been updated";
+
+				$scope.refreshInventories();
+				$scope.endProgress();
+			},
+			function(d, h) {
+				$scope.clearNotification();
+				$scope.$parent.errors = d.data;
+
+				$scope.endProgress();
+			}
+		);
+	};
+
 	if ($stateParams.branchId) {
 		$scope.setSelectedBranch($stateParams.branchId);
 		$scope.refreshInventories();
