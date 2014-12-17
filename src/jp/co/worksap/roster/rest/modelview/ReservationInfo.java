@@ -11,7 +11,14 @@ public class ReservationInfo {
 	private Date startTime;
 	private Date endTime;
 	private boolean isDriverRequired;
+	private boolean cardPayment = true;
 
+	public boolean isCardPayment() {
+		return cardPayment;
+	}
+	public void setCardPayment(boolean cardPayment) {
+		this.cardPayment = cardPayment;
+	}
 	public boolean isDriverRequired() {
 		return isDriverRequired;
 	}

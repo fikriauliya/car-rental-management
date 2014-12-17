@@ -127,7 +127,7 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 		return res;
 	}
 
-	$scope.createReservation = function() {
+	$scope.createReservation = function(cardPayment) {
 		$scope.startProgress();
 
 		$scope.newReservation.inventoryIds = [];
@@ -136,6 +136,7 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 			_.map($scope.selectedInventories, function(d) { return d.id }));;
 		$scope.newReservation.startTime = TimezoneConverter.convertToTargetTimeZoneTime($scope.startTime, $scope.timezone);
 		$scope.newReservation.endTime = TimezoneConverter.convertToTargetTimeZoneTime($scope.endTime, $scope.timezone);
+		$scope.newReservation.cardPayment = cardPayment;
 
 		$scope.newReservation.$save(
 			function(d, h) {

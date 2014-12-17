@@ -105,6 +105,13 @@ public class ReservationService {
 			reservation.setStartTime(reservationInfo.getStartTime());
 			reservation.setEndTime(reservationInfo.getEndTime());
 			reservation.setCustomer(customer);
+			reservation.setPaid(reservationInfo.isCardPayment());
+
+			if (!reservationInfo.isCardPayment()) {
+				reservation.setCardCIV(" ");
+				reservation.setCardName(" ");
+				reservation.setCardNumber(" ");
+			}
 
 			if (!driverAssigned && reservationInfo.isDriverRequired()) {
 				List<String> busyEmployeeIds = userAgendaEJB.findReservedUsersByDate(inventory.getOwner().getId(), reservation.getStartTime(), reservation.getEndTime());
