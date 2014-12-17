@@ -12,25 +12,28 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 
 	$scope.carInventories = [];
 
-	$scope.$parent.branchResolved.promise.then(function(b) {
-		var opHour = parseInt($scope.selectedBranch.openingHour.substring(0, 2));
-		var opMin = parseInt($scope.selectedBranch.openingHour.substring(4, 6));
-		var clHour = parseInt($scope.selectedBranch.closingHour.substring(0, 2));
-		var clMin = parseInt($scope.selectedBranch.closingHour.substring(4, 6));
+	if ($stateParams.branchId) {
+		$scope.setSelectedBranch($stateParams.branchId);
+		$scope.$parent.branchResolved.promise.then(function(b) {
+			var opHour = parseInt($scope.selectedBranch.openingHour.substring(0, 2));
+			var opMin = parseInt($scope.selectedBranch.openingHour.substring(4, 6));
+			var clHour = parseInt($scope.selectedBranch.closingHour.substring(0, 2));
+			var clMin = parseInt($scope.selectedBranch.closingHour.substring(4, 6));
 
-		var today = new Date();
-		var tomorrow = new Date(today);
-		tomorrow.setDate(today.getDate() + 1);
-		tomorrow.setHours(opHour, opMin, 0, 0);
+			var today = new Date();
+			var tomorrow = new Date(today);
+			tomorrow.setDate(today.getDate() + 1);
+			tomorrow.setHours(opHour, opMin, 0, 0);
 
-		var tomorrowNight = new Date(tomorrow);
-		tomorrowNight.setHours(clHour - 1, 59, 59, 999);
+			var tomorrowNight = new Date(tomorrow);
+			tomorrowNight.setHours(clHour - 1, 59, 59, 999);
 
-		$scope.search = {
-			startTime: tomorrow,
-			endTime: tomorrowNight
-		};
-	});
+			$scope.search = {
+				startTime: tomorrow,
+				endTime: tomorrowNight
+			};
+		});
+	}
 
 	$scope.carLoaded = false;
 
@@ -176,8 +179,6 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 			window.location="customers/addonselection.jsf";
 		}
 	}
-
-	$scope.setSelectedBranch($stateParams.branchId);
 
 //	$scope.refreshInventories();
 }
