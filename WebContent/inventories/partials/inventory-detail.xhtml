@@ -6,6 +6,7 @@
       <span class="label label-success" ng-if="inventory.status == 'RENTED'">{{inventory.status}}</span>
       <span class="label label-danger" ng-if="inventory.status == 'BROKEN'">{{inventory.status}}</span>
       <span class="label label-default" ng-if="inventory.status == 'DELETED'">{{inventory.status}}</span>
+      <span class="label label-warning" ng-if="inventory.status == 'RETURNED'">{{inventory.status}}</span>
     </h4>
     <hr/>
 	<form class="form-horizontal">

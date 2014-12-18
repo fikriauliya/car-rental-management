@@ -54,6 +54,7 @@
                 <span class="label label-success" ng-if="event.inventory.status == 'RENTED'">{{event.inventory.status}}</span>
                 <span class="label label-danger" ng-if="event.inventory.status == 'BROKEN'">{{event.inventory.status}}</span>
                 <span class="label label-default" ng-if="event.inventory.status == 'DELETED'">{{event.inventory.status}}</span>
+                <span class="label label-warning" ng-if="event.inventory.status == 'RETURNED'">{{event.inventory.status}}</span>
               </td>
               <td data-title="'Lastname'" sortable="'customer.user.lastName'"></td>
               <td data-title="'From'" sortable="'start'"></td>

@@ -215,7 +215,7 @@ public class ReservationService {
 				return Response.status(Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON).build();
 			}
 		} else if (operation.equals("finishRental")) {
-			reservationEJB.updateInventories(reservations, InventoryStatus.AVAILABLE);
+			reservationEJB.updateInventories(reservations, InventoryStatus.RETURNED);
 			reservationEJB.updateStatus(reservations, ReservationStatus.FINISHED);
 		} else if (operation.equals("cancelRental")) {
 			reservationEJB.updateInventories(reservations, InventoryStatus.AVAILABLE);
@@ -223,6 +223,8 @@ public class ReservationService {
 			userAgendaEJB.deleteUserAgendaByTitle(String.valueOf(data.getBranchId()) + "-" + String.valueOf(data.getGroupId()));
 		} else if (operation.equals("markPaid")) {
 			reservationEJB.markAsPaid(reservations);
+		} else if (operation.equals("finishChecking")) {
+			reservationEJB.updateInventories(reservations, InventoryStatus.AVAILABLE);
 		}
 
 		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();

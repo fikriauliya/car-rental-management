@@ -53,6 +53,12 @@ var ReservationDetailController = function($scope, $state, $stateParams, $filter
 		});
 	};
 
+	$scope.finishChecking = function() {
+		Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "finishChecking"}, function(d, h){
+			$scope.refreshReservationDetail();
+		});
+	};
+
 	$scope.cancelRental = function() {
 		Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "cancelRental"}, function(d, h){
 			$scope.refreshReservationDetail();
