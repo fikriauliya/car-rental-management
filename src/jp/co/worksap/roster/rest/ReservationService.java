@@ -181,6 +181,7 @@ public class ReservationService {
 		} else if (operation.equals("cancelRental")) {
 			reservationEJB.updateInventories(reservations, InventoryStatus.AVAILABLE);
 			reservationEJB.updateStatus(reservations, ReservationStatus.CANCELED);
+			userAgendaEJB.deleteUserAgendaByTitle(String.valueOf(data.getBranchId()) + "-" + String.valueOf(data.getGroupId()));
 		} else if (operation.equals("markPaid")) {
 			reservationEJB.markAsPaid(reservations);
 		}

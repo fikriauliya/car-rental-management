@@ -8,7 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-import jp.co.worksap.roster.entity.User;
 import jp.co.worksap.roster.entity.UserAgenda;
 
 @Stateless
@@ -45,6 +44,12 @@ public class UserAgendaEJB {
 	public int deleteUserAgendaByUser(String userId) {
 		TypedQuery<UserAgenda> q = em.createNamedQuery("deleteUserAgendaByUser", UserAgenda.class)
 				.setParameter("userId", userId);
+		return q.executeUpdate();
+	}
+
+	public int deleteUserAgendaByTitle(String title) {
+		TypedQuery<UserAgenda> q = em.createNamedQuery("deleteUserAgendaByTitle", UserAgenda.class)
+				.setParameter("title", title);
 		return q.executeUpdate();
 	}
 

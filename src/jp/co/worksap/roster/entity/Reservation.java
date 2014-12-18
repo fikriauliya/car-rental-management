@@ -33,7 +33,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 			"WHERE ((:startTime <= u.startTime AND :endTime >= u.startTime) " +
 			"OR (:startTime <= u.endTime AND :endTime >= u.endTime) " +
 			"OR (:startTime >= u.startTime AND :endTime <= u.endTime)) " +
-			"AND (u.inventory.owner.id = :branchId)"),
+			"AND (u.inventory.owner.id = :branchId)" +
+			"AND (u.status <> jp.co.worksap.roster.entity.ReservationStatus.CANCELED)"),
 	@NamedQuery(name="findReservationsByGroupId", query="SELECT u from Reservation u " +
 			"WHERE u.groupId = :groupId"),
 	@NamedQuery(name="findReservationsByInventoryId", query="SELECT u from Reservation u " +

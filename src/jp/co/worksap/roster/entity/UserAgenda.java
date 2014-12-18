@@ -31,6 +31,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 	@NamedQuery(name="delet	eUserAgenda", query = "DELETE from UserAgenda u where u.id = :id"),
 	@NamedQuery(name="findUserAgenda", query = "SELECT u from UserAgenda u where u.id = :id"),
 	@NamedQuery(name="deleteUserAgendaByUser", query = "DELETE from UserAgenda u where u.user.id = :userId OR u.assignedBy.id = :userId"),
+	@NamedQuery(name="deleteUserAgendaByTitle", query = "DELETE from UserAgenda u where u.title = :title"),
 	@NamedQuery(name="findReservedUsersByDate", query="SELECT DISTINCT(u.user.id) FROM UserAgenda u " +
 			"LEFT OUTER JOIN u.user v " +
 			"LEFT OUTER JOIN v.branches w " +
