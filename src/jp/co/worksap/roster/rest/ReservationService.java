@@ -1,12 +1,16 @@
 package jp.co.worksap.roster.rest;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -39,6 +43,7 @@ import jp.co.worksap.roster.entity.UserAgenda;
 import jp.co.worksap.roster.entity.UserRole;
 import jp.co.worksap.roster.rest.modelview.ReservationInfo;
 import jp.co.worksap.roster.rest.modelview.ReservationUpdateData;
+import jp.co.worksap.roster.utilities.EmailServices;
 
 @Stateless
 @Path("/reservations/")
@@ -84,12 +89,14 @@ public class ReservationService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(ReservationInfo reservationInfo, @Context SecurityContext context) {
+	public Response create(ReservationInfo reservationInfo, @Context SecurityContext context, @Context HttpServletRequest request) {
 		String userId = context.getUserPrincipal().getName();
 		long timestamp = (new Date()).getTime();
 		Customer customer = customerEJB.findCustomerByUserId(userId);
 
 		boolean driverAssigned = false;
+		User assignedDriver = null;
+		Branch branch = null;
 
 		for (int inventoryId : reservationInfo.getInventoryIds()) {
 			Reservation reservation = new Reservation();
@@ -98,7 +105,6 @@ public class ReservationService {
 			reservation.setCardExpiryDate(reservationInfo.getCardExpiryDate());
 			reservation.setCardName(reservationInfo.getCardName());
 			reservation.setCardNumber(reservationInfo.getCardNumber());
-			reservation.setCustomer(reservation.getCustomer());
 
 			Inventory inventory = inventoryEJB.findInventory(inventoryId);
 			reservation.setInventory(inventory);
@@ -116,7 +122,8 @@ public class ReservationService {
 
 			if (!driverAssigned && reservationInfo.isDriverRequired()) {
 				List<String> busyEmployeeIds = userAgendaEJB.findReservedUsersByDate(inventory.getOwner().getId(), reservation.getStartTime(), reservation.getEndTime());
-				Branch branch = branchEJB.findBranch(inventory.getOwner().getId());
+				branch = branchEJB.findBranch(inventory.getOwner().getId());
+
 				List<User> allEmployees = branch.getUsers();
 
 				for (User employee:allEmployees) {
@@ -142,6 +149,8 @@ public class ReservationService {
 							reservation.setAssignedDriver(employee);
 							reservation.setDriverFee(branch.getDriverFee());
 
+							assignedDriver = employee;
+
 							driverAssigned = true;
 							break;
 						}
@@ -156,6 +165,36 @@ public class ReservationService {
 			throw new WebServiceException("No driver is available");
 		}
 
+		EmailServices.sendEmail(customer.getUser().getEmail(), "CRM+ Booking confirmation",
+				"<h2>Your invoice</h2>" +
+				"<p>Thank you for your reservation. Your reservation id is: " + timestamp + "</p>");
+
+		String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+	    String basePath = request.getContextPath();
+
+		if (assignedDriver != null) {
+			SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d, yyyy h:mm a");
+			sdf.setTimeZone(TimeZone.getTimeZone(branch.getTimezone()));
+
+			EmailServices.sendEmail(assignedDriver.getEmail(), "New driving service request",
+				"<p>" +
+				"<b>Customer name: </b>" +
+				customer.getUser().getFirstName() + " " + customer.getUser().getLastName() + "</td>" +
+				"<br/>" +
+				"<b>From: </b>" +
+				sdf.format(reservationInfo.getStartTime()) +
+				"<br/>" +
+				"<b>To: </b>" +
+				sdf.format(reservationInfo.getEndTime()) +
+				"<br/>" +
+				"<p>For detail information " +
+				"<a href='" + baseUrl + basePath + "/reservations/index.jsf#/" + String.valueOf(branch.getId()) + "/reservations/" + timestamp + "'>click here</a>" +
+				"<br>" +
+				"To check your agenda " +
+				"<a href='" + baseUrl + basePath + "/users/agenda.jsf?userId=" + assignedDriver.getId() + "'>click here</a>" +
+				"</p>");
+		}
+		branch.getTimezone();
 		return Response.status(Status.CREATED).type(MediaType.APPLICATION_JSON).build();
 	}
 
