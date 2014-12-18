@@ -208,6 +208,9 @@ public class ReservationService {
 		List<Reservation> reservations = reservationEJB.findReservations(groupId);
 
 		if (operation.equals("startRental")) {
+			if (reservations.get(0).getStatus() != ReservationStatus.SCHEDULED) {
+				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");
+			}
 			if (reservationEJB.isEligibleForRent(reservations)) {
 				reservationEJB.updateInventories(reservations, InventoryStatus.RENTED);
 				reservationEJB.updateStatus(reservations, ReservationStatus.STARTED);
@@ -215,15 +218,27 @@ public class ReservationService {
 				return Response.status(Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON).build();
 			}
 		} else if (operation.equals("finishRental")) {
+			if (reservations.get(0).getStatus() != ReservationStatus.STARTED) {
+				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");
+			}
 			reservationEJB.updateInventories(reservations, InventoryStatus.RETURNED);
 			reservationEJB.updateStatus(reservations, ReservationStatus.FINISHED);
 		} else if (operation.equals("cancelRental")) {
+			if (reservations.get(0).getStatus() != ReservationStatus.SCHEDULED) {
+				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");
+			}
 			reservationEJB.updateInventories(reservations, InventoryStatus.AVAILABLE);
 			reservationEJB.updateStatus(reservations, ReservationStatus.CANCELED);
 			userAgendaEJB.deleteUserAgendaByTitle(String.valueOf(data.getBranchId()) + "-" + String.valueOf(data.getGroupId()));
 		} else if (operation.equals("markPaid")) {
+			if (reservations.get(0).isPaid() ||  (reservations.get(0).getStatus() == ReservationStatus.CANCELED)) {
+				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");
+			}
 			reservationEJB.markAsPaid(reservations);
 		} else if (operation.equals("finishChecking")) {
+			if (reservations.get(0).getStatus() != ReservationStatus.FINISHED) {
+				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");
+			}
 			reservationEJB.updateInventories(reservations, InventoryStatus.AVAILABLE);
 		}
 

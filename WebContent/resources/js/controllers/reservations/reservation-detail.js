@@ -43,6 +43,7 @@ var ReservationDetailController = function($scope, $state, $stateParams, $filter
 		Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "startRental"}, function(d, h){
 			$scope.refreshReservationDetail();
 		}, function(d, h) {
+			$scope.refreshReservationDetail();
 			alert("You can't start renting on this reservation. Please make sure all inventories reserved are available");
 		});
 	};
@@ -50,24 +51,36 @@ var ReservationDetailController = function($scope, $state, $stateParams, $filter
 	$scope.finishRental = function() {
 		Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "finishRental"}, function(d, h){
 			$scope.refreshReservationDetail();
+		}, function(d, h) {
+			$scope.refreshReservationDetail();
+			alert(d.data);
 		});
 	};
 
 	$scope.finishChecking = function() {
 		Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "finishChecking"}, function(d, h){
 			$scope.refreshReservationDetail();
+		}, function(d, h) {
+			$scope.refreshReservationDetail();
+			alert(d.data);
 		});
 	};
 
 	$scope.cancelRental = function() {
 		Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "cancelRental"}, function(d, h){
 			$scope.refreshReservationDetail();
+		}, function(d, h) {
+			$scope.refreshReservationDetail();
+			alert(d.data);
 		});
 	};
 
 	$scope.markPaid = function() {
 		Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "markPaid"}, function(d, h){
 			$scope.refreshReservationDetail();
+		}, function(d, h) {
+			$scope.refreshReservationDetail();
+			alert(d.data);
 		});
 	};
 
