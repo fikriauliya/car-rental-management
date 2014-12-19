@@ -189,7 +189,7 @@
 	    </div>
     </form>
   </div>
-  <div class="col col-md-7">
+  <div class="col col-md-7" ng-if="isAdmin">
     <a class="btn btn-success" ui-sref="branch.images({branchId: selectedBranch.id, inventoryId: inventory.id})">
       <span aria-hidden="true" class="glyphicon glyphicon-picture"/> Images
     </a>

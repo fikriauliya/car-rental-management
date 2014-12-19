@@ -12,6 +12,8 @@ var InventoryDetailController = function($scope, $state, $stateParams, $filter, 
 
 	$scope.reservationHistories = [];
 
+	$scope.isAdmin = isAdmin;
+
 	$scope.refreshInventory = function() {
 		$scope.startProgress();
 		Inventories.get({branchId: $stateParams.branchId, id: $stateParams.inventoryId}, function(d, h) {

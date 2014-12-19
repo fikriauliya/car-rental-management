@@ -3,6 +3,8 @@ var ReservationDetailController = function($scope, $state, $stateParams, $filter
 	console.log($stateParams.groupId);
 	$scope.reservations = [];
 
+	$scope.isAdmin = isAdmin;
+
 	$scope.refreshReservationDetail = function() {
 		$scope.startProgress();
 		$scope.$parent.branchResolved.promise.then(function(b) {
