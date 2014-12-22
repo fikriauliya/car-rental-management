@@ -17,7 +17,8 @@ import org.hibernate.validator.constraints.Length;
 @Table(name="T_CAR_INVENTORY")
 @XmlRootElement
 @NamedQueries({
-	@NamedQuery(name="findCarInventories", query="SELECT u FROM CarInventory u WHERE u.owner.id = :ownerId AND u.status <>  jp.co.worksap.roster.entity.InventoryStatus.DELETED ORDER BY u.name")
+	@NamedQuery(name="findCarInventories", query="SELECT u FROM CarInventory u WHERE u.owner.id = :ownerId AND u.status <> jp.co.worksap.roster.entity.InventoryStatus.DELETED " +
+			"AND u.status <> jp.co.worksap.roster.entity.InventoryStatus.BROKEN ORDER BY u.name")
 })
 public class CarInventory extends Inventory {
 	@Min(value=0)

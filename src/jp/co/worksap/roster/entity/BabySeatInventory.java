@@ -16,7 +16,8 @@ import jp.co.worksap.roster.entity.validator.FieldLessThan;
 @Table(name="T_BABY_SEAT_INVENTORY")
 @XmlRootElement
 @NamedQueries({
-	@NamedQuery(name="findBabySeatInventories", query="SELECT u FROM BabySeatInventory u WHERE u.owner.id = :ownerId AND u.status <> jp.co.worksap.roster.entity.InventoryStatus.DELETED ORDER BY u.name")
+	@NamedQuery(name="findBabySeatInventories", query="SELECT u FROM BabySeatInventory u WHERE u.owner.id = :ownerId AND u.status <> jp.co.worksap.roster.entity.InventoryStatus.DELETED " +
+			"AND u.status <> jp.co.worksap.roster.entity.InventoryStatus.BROKEN ORDER BY u.name")
 })
 @FieldLessThan(first="minWeight", second="maxWeight", message="Minimum weight must be less than maximum weight")
 public class BabySeatInventory extends Inventory {

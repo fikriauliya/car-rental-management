@@ -17,7 +17,8 @@ import org.hibernate.validator.constraints.Range;
 @Table(name="T_GPS_INVENTORY")
 @XmlRootElement
 @NamedQueries({
-	@NamedQuery(name="findGpsInventories", query="SELECT u FROM GpsInventory u WHERE u.owner.id = :ownerId AND u.status <> jp.co.worksap.roster.entity.InventoryStatus.DELETED ORDER BY u.name")
+	@NamedQuery(name="findGpsInventories", query="SELECT u FROM GpsInventory u WHERE u.owner.id = :ownerId AND u.status <> jp.co.worksap.roster.entity.InventoryStatus.DELETED " +
+			"AND u.status <> jp.co.worksap.roster.entity.InventoryStatus.BROKEN ORDER BY u.name")
 })
 public class GpsInventory extends Inventory {
 	@Range(min=0, max=10000000)
