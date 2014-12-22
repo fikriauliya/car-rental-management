@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col col-md-12">
+  <div class="col col-md-12" ng-if="isInventoryOfficer">
     <button class="btn btn-xs btn-success" style="margin-left:5px" ng-click="displayInventoryDialog(false)">
       <span class="glyphicon glyphicon-plus"/>
       Create new inventory
@@ -29,13 +29,13 @@
             </td>
             <td data-title="'Created'" sortable="'createdAt'" ng-class="{highlighted: highlightInventoryId == data.id}">{{data.createdAt | date:'mediumDate'}}</td>
             <td style="width:120px" ng-class="{highlighted: highlightInventoryId == data.id}">
-              <a class="btn btn-default btn-sm" ui-sref="branch.images({branchId: selectedBranch.id, inventoryId: data.id})" ng-if="isAdmin">
+              <a class="btn btn-default btn-sm" ui-sref="branch.images({branchId: selectedBranch.id, inventoryId: data.id})" ng-if="isInventoryOfficer">
                 <span aria-hidden="true" class="glyphicon glyphicon-picture"/>
               </a>
-              <button type="button" class="btn btn-danger btn-sm" ng-click="deleteInventory(data)" ng-if="isAdmin">
+              <button type="button" class="btn btn-danger btn-sm" ng-click="deleteInventory(data)" ng-if="isInventoryOfficer">
                 <span aria-hidden="true" class="glyphicon glyphicon-trash"/>
               </button type="button">
-              <button type="button" class="btn btn-warning btn-sm" ng-if="isAdmin">
+              <button type="button" class="btn btn-warning btn-sm" ng-if="isInventoryOfficer">
                 <span aria-hidden="true" class="glyphicon glyphicon-edit" ng-click="displayInventoryDialog(true, data)"/>
               </button type="button">
             </td>
@@ -68,13 +68,13 @@
             </td>
             <td data-title="'Created'" sortable="'createdAt'" ng-class="{highlighted: highlightInventoryId == data.id}">{{data.createdAt | date:'mediumDate'}}</td>
             <td style="width:120px" ng-class="{highlighted: highlightInventoryId == data.id}">
-              <a class="btn btn-default btn-sm" ui-sref="branch.images({branchId: selectedBranch.id, inventoryId: data.id})" ng-if="isAdmin">
+              <a class="btn btn-default btn-sm" ui-sref="branch.images({branchId: selectedBranch.id, inventoryId: data.id})" ng-if="isInventoryOfficer">
                 <span aria-hidden="true" class="glyphicon glyphicon-picture"/>
               </a>
-              <button type="button" class="btn btn-danger btn-sm" ng-click="deleteInventory(data)" ng-if="isAdmin">
+              <button type="button" class="btn btn-danger btn-sm" ng-click="deleteInventory(data)" ng-if="isInventoryOfficer">
                 <span aria-hidden="true" class="glyphicon glyphicon-trash"/>
               </button type="button">
-              <button type="button" class="btn btn-warning btn-sm" ng-if="isAdmin">
+              <button type="button" class="btn btn-warning btn-sm" ng-if="isInventoryOfficer">
                 <span aria-hidden="true" class="glyphicon glyphicon-edit" ng-click="displayInventoryDialog(true, data)"/>
               </button type="button">
             </td>
@@ -107,13 +107,13 @@
             </td>
             <td data-title="'Created'" sortable="'createdAt'" ng-class="{highlighted: highlightInventoryId == data.id}">{{data.createdAt | date:'mediumDate'}}</td>
             <td style="width:120px" ng-class="{highlighted: highlightInventoryId == data.id}">
-              <a class="btn btn-default btn-sm" ui-sref="branch.images({branchId: selectedBranch.id, inventoryId: data.id})" ng-if="isAdmin">
+              <a class="btn btn-default btn-sm" ui-sref="branch.images({branchId: selectedBranch.id, inventoryId: data.id})" ng-if="isInventoryOfficer">
                 <span aria-hidden="true" class="glyphicon glyphicon-picture"/>
               </a>
-              <button type="button" class="btn btn-danger btn-sm" ng-click="deleteInventory(data)" ng-if="isAdmin">
+              <button type="button" class="btn btn-danger btn-sm" ng-click="deleteInventory(data)" ng-if="isInventoryOfficer">
                 <span aria-hidden="true" class="glyphicon glyphicon-trash"/>
               </button type="button">
-              <button type="button" class="btn btn-warning btn-sm" ng-if="isAdmin">
+              <button type="button" class="btn btn-warning btn-sm" ng-if="isInventoryOfficer">
                 <span aria-hidden="true" class="glyphicon glyphicon-edit" ng-click="displayInventoryDialog(true, data)"/>
               </button type="button">
             </td>

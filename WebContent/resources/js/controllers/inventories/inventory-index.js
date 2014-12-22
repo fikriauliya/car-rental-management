@@ -1,6 +1,8 @@
 var IndexInventoryController = function($scope, $state, $stateParams, $filter, $timeout, Inventories, ngTableParams) {
 	console.log("+IndexInventoryController");
 
+	$scope.isInventoryOfficer = isInventoryOfficer;
+
 	$scope.initializeNewInventory = function() {
 		$scope.newInventory = new Inventories();
 		$scope.newInventory.type = {id: 'car'};

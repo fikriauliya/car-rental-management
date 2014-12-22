@@ -24,6 +24,9 @@ var InventoryDetailController = function($scope, $state, $stateParams, $filter, 
 	$scope.reservationHistories = [];
 
 	$scope.isAdmin = isAdmin;
+	$scope.isDirector = isDirector;
+	$scope.isTechnician = isTechnician;
+	$scope.isInventoryOfficer = isInventoryOfficer;
 
 	$scope.refreshInventory = function() {
 		$scope.startProgress();

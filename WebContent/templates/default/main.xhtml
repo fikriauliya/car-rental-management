@@ -21,6 +21,10 @@
     var isAdmin = $.parseJSON("#{request.isUserInRole('admin')}");
     var isHR = $.parseJSON("#{request.isUserInRole('hr')}");
     var isEmployee = $.parseJSON("#{request.isUserInRole('employee')}");
+    var isDriver = $.parseJSON("#{request.isUserInRole('driver')}");
+    var isInventoryOfficer = $.parseJSON("#{request.isUserInRole('inventory_officer')}");
+    var isTechnician = $.parseJSON("#{request.isUserInRole('technician')}");
+    var isDirector = $.parseJSON("#{request.isUserInRole('director')}");
     var isLoggedIn = $.parseJSON("#{userSessionController.isUserLoggedIn()}");
   </script>
   <h:outputStylesheet library="bootstrap" name="css/bootstrap.css"  />

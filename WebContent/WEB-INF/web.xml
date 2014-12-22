@@ -71,6 +71,8 @@
 			<role-name>admin</role-name>
 			<role-name>employee</role-name>
 			<role-name>hr</role-name>
+			<role-name>inventory_officer</role-name>
+			<role-name>director</role-name>
 		</auth-constraint>
 	</security-constraint>
 		<security-constraint>
@@ -80,8 +82,8 @@
 			<url-pattern>/branches/index.jsf</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
-			<role-name>admin</role-name>
 			<role-name>hr</role-name>
+			<role-name>director</role-name>
 		</auth-constraint>
 	</security-constraint>
 	<security-constraint>
@@ -92,8 +94,10 @@
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>admin</role-name>
-			<role-name>hr</role-name>
 			<role-name>driver</role-name>
+			<role-name>inventory_officer</role-name>
+			<role-name>technician</role-name>
+			<role-name>director</role-name>
 		</auth-constraint>
 	</security-constraint>
 	<security-constraint>
@@ -104,8 +108,8 @@
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>admin</role-name>
-			<role-name>hr</role-name>
 			<role-name>driver</role-name>
+			<role-name>director</role-name>
 		</auth-constraint>
 	</security-constraint>
 	<security-constraint>
@@ -115,8 +119,7 @@
 			<url-pattern>/statistics/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
-			<role-name>admin</role-name>
-			<role-name>hr</role-name>
+			<role-name>director</role-name>
 		</auth-constraint>
 	</security-constraint>
 		<security-constraint>
@@ -127,7 +130,7 @@
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>admin</role-name>
-			<role-name>hr</role-name>
+			<role-name>director</role-name>
 		</auth-constraint>
 	</security-constraint>
 
@@ -140,6 +143,10 @@
 		<auth-constraint>
 			<role-name>admin</role-name>
 			<role-name>hr</role-name>
+			<role-name>director</role-name>
+			<role-name>technician</role-name>
+			<role-name>driver</role-name>
+			<role-name>inventory_officer</role-name>
 		</auth-constraint>
 	</security-constraint>
 
@@ -154,6 +161,15 @@
 	</security-role>
 	<security-role>
 		<role-name>driver</role-name>
+	</security-role>
+	<security-role>
+		<role-name>inventory_officer</role-name>
+	</security-role>
+	<security-role>
+		<role-name>technician</role-name>
+	</security-role>
+	<security-role>
+		<role-name>director</role-name>
 	</security-role>
 
 	<session-config>

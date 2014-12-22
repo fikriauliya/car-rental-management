@@ -8,11 +8,13 @@
       <span class="label label-default" ng-if="inventory.status == 'DELETED'">{{inventory.status}}</span>
       <span class="label label-warning" ng-if="inventory.status == 'RETURNED'">{{inventory.status}}</span>
     </h4>
-    <div ng-if="inventory.status == 'RETURNED' || inventory.status == 'BROKEN'">
-      <button class="btn btn-sm btn-primary" ng-click="updateStatus('AVAILABLE')">Mark as Available</button>
-    </div>
-    <div ng-if="inventory.status == 'RETURNED' || inventory.status == 'AVAILABLE'">
-      <button class="btn btn-sm btn-danger" ng-click="updateStatus('BROKEN')">Mark as Broken</button>
+    <div ng-if="isInventoryOfficer || isTechnician">
+      <div ng-if="inventory.status == 'RETURNED' || inventory.status == 'BROKEN'">
+        <button class="btn btn-sm btn-primary" ng-click="updateStatus('AVAILABLE')">Mark as Available</button>
+      </div>
+      <div ng-if="inventory.status == 'RETURNED' || inventory.status == 'AVAILABLE'">
+        <button class="btn btn-sm btn-danger" ng-click="updateStatus('BROKEN')">Mark as Broken</button>
+      </div>
     </div>
     <hr/>
 	<form class="form-horizontal">
@@ -195,7 +197,7 @@
 	    </div>
     </form>
   </div>
-  <div class="col col-md-7" ng-if="isAdmin">
+  <div class="col col-md-7" ng-if="isAdmin || isDirector">
     <a class="btn btn-success" ui-sref="branch.images({branchId: selectedBranch.id, inventoryId: inventory.id})">
       <span aria-hidden="true" class="glyphicon glyphicon-picture"/> Images
     </a>
