@@ -32,8 +32,11 @@ import jp.co.worksap.roster.ejb.InventoryEJB;
 import jp.co.worksap.roster.ejb.ReservationEJB;
 import jp.co.worksap.roster.ejb.UserAgendaEJB;
 import jp.co.worksap.roster.ejb.UserEJB;
+import jp.co.worksap.roster.entity.BabySeatInventory;
 import jp.co.worksap.roster.entity.Branch;
+import jp.co.worksap.roster.entity.CarInventory;
 import jp.co.worksap.roster.entity.Customer;
+import jp.co.worksap.roster.entity.GpsInventory;
 import jp.co.worksap.roster.entity.Inventory;
 import jp.co.worksap.roster.entity.InventoryStatus;
 import jp.co.worksap.roster.entity.Reservation;
@@ -194,14 +197,13 @@ public class ReservationService {
 				"<a href='" + baseUrl + basePath + "/users/agenda.jsf?userId=" + assignedDriver.getId() + "'>click here</a>" +
 				"</p>");
 		}
-		branch.getTimezone();
 		return Response.status(Status.CREATED).type(MediaType.APPLICATION_JSON).build();
 	}
 
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response update(ReservationUpdateData data) {
+	public Response update(ReservationUpdateData data, @Context HttpServletRequest request) {
 		long groupId = data.getGroupId();
 		String operation = data.getOperation();
 
@@ -223,6 +225,58 @@ public class ReservationService {
 			}
 			reservationEJB.updateInventories(reservations, InventoryStatus.RETURNED);
 			reservationEJB.updateStatus(reservations, ReservationStatus.FINISHED);
+
+			Inventory inventory = reservations.get(0).getInventory();
+			List<String> busyEmployeeIds = userAgendaEJB.findReservedUsersByDate(inventory.getOwner().getId(), reservations.get(0).getStartTime(), reservations.get(0).getEndTime());
+			Branch branch = branchEJB.findBranch(inventory.getOwner().getId());
+
+			List<User> allEmployees = branch.getUsers();
+
+			for (User employee:allEmployees) {
+				if (!busyEmployeeIds.contains(employee.getId())) {
+					List<UserRole> roles = userEJB.findAllAssignedRoles(employee.getId());
+					List<String> rolesStr = new LinkedList<String>();
+					for (UserRole role:roles) {
+						rolesStr.add(role.getRoleName());
+						System.out.println(role.getRoleName());
+					}
+
+					if (rolesStr.contains("technician")) {
+						//found available driver
+
+						SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d, yyyy h:mm a");
+						sdf.setTimeZone(TimeZone.getTimeZone(branch.getTimezone()));
+
+						String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+					    String basePath = request.getContextPath();
+
+						StringBuffer reservationsSummary = new StringBuffer();
+						reservationsSummary.append("<ol>");
+						for (Reservation r:reservations) {
+							String inventoryName = r.getInventory().getName();
+							String entityType = "";
+
+							reservationsSummary.append("<li>");
+							if (r.getInventory() instanceof CarInventory) {
+								entityType = "car";
+							} else if (r.getInventory() instanceof BabySeatInventory) {
+								entityType = "baby_seat";
+							} else if (r.getInventory() instanceof GpsInventory) {
+								entityType = "gps";
+							}
+							reservationsSummary.append("<a href='" + baseUrl + basePath + "/inventories/index.jsf#/" + branch.getId() +
+									"/inventories/" + r.getInventory().getId() + "/detail?entity=" + entityType + "'>" + inventoryName + "</a>");
+							reservationsSummary.append("</li>");
+						}
+						reservationsSummary.append("</ol>");
+
+						EmailServices.sendEmail(employee.getEmail(), "New technician service request",
+							"<p>" + reservationsSummary.toString() + "</p>");
+					}
+				}
+			}
+
+
 		} else if (operation.equals("cancelRental")) {
 			if (reservations.get(0).getStatus() != ReservationStatus.SCHEDULED) {
 				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");

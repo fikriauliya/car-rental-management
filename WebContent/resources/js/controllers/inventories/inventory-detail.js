@@ -10,6 +10,17 @@ var InventoryDetailController = function($scope, $state, $stateParams, $filter, 
       	{id: 'PLUG_IN_HYBRID', name: 'Plug-in hybrid'}
      ];
 
+	var cleanUpData = function(inventory) {
+		var entity = inventory.type;
+		var res = _.omit(inventory, 'type');
+		if (entity == "car") {
+			res.fuelType = inventory.fuelType.id;
+		} else {
+			res = _.omit(res, 'fuelType');
+		}
+		return res;
+	}
+
 	$scope.reservationHistories = [];
 
 	$scope.isAdmin = isAdmin;
@@ -39,6 +50,21 @@ var InventoryDetailController = function($scope, $state, $stateParams, $filter, 
 		});
 	};
 
+	$scope.updateStatus = function(newStatus) {
+		var d = cleanUpData($scope.inventory);
+		d.status = newStatus;
+
+		$scope.startProgress();
+		Inventories.update({entity: $stateParams.entity, branchId: $stateParams.branchId, id: $stateParams.inventoryId}, d,
+			function(d, h) {
+				$scope.refreshInventory();
+				$scope.endProgress();
+			},
+			function(d, h) {
+				$scope.endProgress();
+			}
+		);
+	}
 	$scope.tableParams = new ngTableParams(
 	{
 	    page: 1, count: 10,

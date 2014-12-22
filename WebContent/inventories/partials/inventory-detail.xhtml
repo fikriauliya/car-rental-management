@@ -8,6 +8,12 @@
       <span class="label label-default" ng-if="inventory.status == 'DELETED'">{{inventory.status}}</span>
       <span class="label label-warning" ng-if="inventory.status == 'RETURNED'">{{inventory.status}}</span>
     </h4>
+    <div ng-if="inventory.status == 'RETURNED' || inventory.status == 'BROKEN'">
+      <button class="btn btn-sm btn-primary" ng-click="updateStatus('AVAILABLE')">Mark as Available</button>
+    </div>
+    <div ng-if="inventory.status == 'RETURNED' || inventory.status == 'AVAILABLE'">
+      <button class="btn btn-sm btn-danger" ng-click="updateStatus('BROKEN')">Mark as Broken</button>
+    </div>
     <hr/>
 	<form class="form-horizontal">
       <div class="form-group">
