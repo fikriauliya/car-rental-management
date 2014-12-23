@@ -1,5 +1,8 @@
 var InventoryImagesController = function($scope, $state, $stateParams, Images, Inventories, FileUploader) {
 	console.log("+InventoryImagesController");
+
+	$scope.isInventoryOfficer = isInventoryOfficer;
+
 	$scope.refreshImages = function() {
 		$scope.startProgress();
 

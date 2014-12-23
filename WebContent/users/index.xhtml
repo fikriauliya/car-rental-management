@@ -80,7 +80,7 @@
                     {{selectedUnit.data.description}}
                     <br/><br/>
                   </div>
-                  <h:panelGroup layout="block" rendered="#{request.isUserInRole('admin') || request.isUserInRole('hr')}">
+                  <h:panelGroup layout="block" rendered="request.isUserInRole('hr')}">
                     <button class="btn btn-xs btn-primary" style="margin-left:10px" data-toggle="modal" ng-click="displayNewUnitDialog();">
                       <span class="glyphicon glyphicon-plus"/>
                       Add sub unit
@@ -101,7 +101,7 @@
                 <button class="btn btn-xs btn-info" ng-disabled="currentPage == 0" ng-click="prevPage()">Prev</button>
                 {{currentPage + 1}} / {{totalPage}}
                 <button class="btn btn-xs btn-info" ng-disabled="currentPage == totalPage - 1" ng-click="nextPage()">Next</button>
-                <h:panelGroup rendered="#{request.isUserInRole('admin') || request.isUserInRole('hr')}">
+                <h:panelGroup rendered="request.isUserInRole('hr')}">
                   <button class="btn btn-xs btn-primary" style="margin-left:10px" data-toggle="modal" ng-click="displayNewUserDialog()">
                     <span class="glyphicon glyphicon-plus"/>
                     Add employee
@@ -139,7 +139,7 @@
                       <td ng-switch-default="true">{{user.email}}</td>
                       <td ng-switch-default="true">{{user.phone}}</td>
                       <td ng-switch-default="true">
-                        <h:panelGroup rendered="#{request.isUserInRole('admin') || request.isUserInRole('hr')}">
+                        <h:panelGroup rendered="request.isUserInRole('hr')}">
                           <button class="btn btn-primary btn-xs" ng-click="editUser(user, true)">Edit</button>
                           <button class="btn btn-info btn-xs" ng-click="transferUser(user)">Transfer</button>
                           <button class="btn btn-warning btn-xs" ng-click="leaveUser(user)">Leave</button>
@@ -160,7 +160,7 @@
                 <b>No record</b>
               </div>
               <hr/>
-              <h:panelGroup layout="block" class="col col-md-4" rendered="#{request.isUserInRole('admin') || request.isUserInRole('hr')}">
+              <h:panelGroup layout="block" class="col col-md-4" rendered="request.isUserInRole('hr')}">
                 <h4>Transfered In</h4>
                 <div ng-if="transferInLogs.length > 0">
                   <div style="margin-bottom:20px">
@@ -189,7 +189,7 @@
                   <b>No record</b>
                 </div>
               </h:panelGroup>
-              <h:panelGroup layout="block" class="col col-md-4" rendered="#{request.isUserInRole('admin') || request.isUserInRole('hr')}">
+              <h:panelGroup layout="block" class="col col-md-4" rendered="request.isUserInRole('hr')}">
                 <h4>Transfered Out</h4>
                 <div ng-if="transferOutLogs.length > 0">
                   <div style="margin-bottom:20px">
@@ -218,7 +218,7 @@
                   <b>No record</b>
                 </div>
               </h:panelGroup>
-              <h:panelGroup layout="block" class="col col-md-4" rendered="#{request.isUserInRole('admin') || request.isUserInRole('hr')}">
+              <h:panelGroup layout="block" class="col col-md-4" rendered="request.isUserInRole('hr')}">
                 <h4>Leave</h4>
                 <div ng-if="leaveUsers.length > 0">
                   <div style="margin-bottom:20px">

@@ -29,7 +29,7 @@
             </td>
             <td data-title="'Created'" sortable="'createdAt'" ng-class="{highlighted: highlightInventoryId == data.id}">{{data.createdAt | date:'mediumDate'}}</td>
             <td style="width:120px" ng-class="{highlighted: highlightInventoryId == data.id}">
-              <a class="btn btn-default btn-sm" ui-sref="branch.images({branchId: selectedBranch.id, inventoryId: data.id})" ng-if="isInventoryOfficer">
+              <a class="btn btn-default btn-sm" ui-sref="branch.images({branchId: selectedBranch.id, inventoryId: data.id})">
                 <span aria-hidden="true" class="glyphicon glyphicon-picture"/>
               </a>
               <button type="button" class="btn btn-danger btn-sm" ng-click="deleteInventory(data)" ng-if="isInventoryOfficer">
@@ -68,7 +68,7 @@
             </td>
             <td data-title="'Created'" sortable="'createdAt'" ng-class="{highlighted: highlightInventoryId == data.id}">{{data.createdAt | date:'mediumDate'}}</td>
             <td style="width:120px" ng-class="{highlighted: highlightInventoryId == data.id}">
-              <a class="btn btn-default btn-sm" ui-sref="branch.images({branchId: selectedBranch.id, inventoryId: data.id})" ng-if="isInventoryOfficer">
+              <a class="btn btn-default btn-sm" ui-sref="branch.images({branchId: selectedBranch.id, inventoryId: data.id})">
                 <span aria-hidden="true" class="glyphicon glyphicon-picture"/>
               </a>
               <button type="button" class="btn btn-danger btn-sm" ng-click="deleteInventory(data)" ng-if="isInventoryOfficer">
@@ -107,7 +107,7 @@
             </td>
             <td data-title="'Created'" sortable="'createdAt'" ng-class="{highlighted: highlightInventoryId == data.id}">{{data.createdAt | date:'mediumDate'}}</td>
             <td style="width:120px" ng-class="{highlighted: highlightInventoryId == data.id}">
-              <a class="btn btn-default btn-sm" ui-sref="branch.images({branchId: selectedBranch.id, inventoryId: data.id})" ng-if="isInventoryOfficer">
+              <a class="btn btn-default btn-sm" ui-sref="branch.images({branchId: selectedBranch.id, inventoryId: data.id})">
                 <span aria-hidden="true" class="glyphicon glyphicon-picture"/>
               </a>
               <button type="button" class="btn btn-danger btn-sm" ng-click="deleteInventory(data)" ng-if="isInventoryOfficer">

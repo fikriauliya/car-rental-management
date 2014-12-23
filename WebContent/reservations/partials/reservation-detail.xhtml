@@ -19,10 +19,6 @@
         <span class="glyphicon glyphicon-stop"/>
         Finish rental
       </button>
-      <button class="btn btn-sm btn-default" ng-click="finishChecking()" ng-if="reservations[0].status == 'FINISHED' && reservations[0].inventory.status == 'RETURNED'">
-        <span class="glyphicon glyphicon-stop"/>
-        Finish checking
-      </button>
       <button class="btn btn-sm btn-danger" ng-click="cancelRental()" ng-if="reservations[0].status == 'SCHEDULED'">
         <span class="glyphicon glyphicon-remove-circle"/>
         Cancel reservation
