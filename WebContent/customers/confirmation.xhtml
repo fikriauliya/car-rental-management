@@ -8,15 +8,19 @@
 
 <ui:composition template="/templates/default/public.xhtml">
   <ui:define name="header">
-      <h:outputScript name="js/controllers/branches/branch-index.js" />
-      <h:outputScript name="js/controllers/reservations/car-index.js" />
-      <h:outputScript name="js/controllers/reservations/register.js" />
+      <h:outputScript name="js/controllers/reservations/confirmation.js" />
   </ui:define>
   <ui:define name="content">
-    <div ng-app="reservationManagementApp">
+    <div ng-app="reservationManagementApp" ng-controller="ConfirmationController">
       <div class="row">
-        <div class="col-md-4">
-          <h4>Confirmation</h4>
+        <div class="col-md-12">
+          <h4>Your reservation has been made</h4>
+
+          <p>
+            Thank you for using our service. Your reservation id is: <b>{{id}}</b>.
+            <br/>
+            Please present your ID when you pick up the car.
+          </p>
         </div>
       </div>
     </div>

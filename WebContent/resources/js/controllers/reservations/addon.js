@@ -141,7 +141,8 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 		$scope.newReservation.$save(
 			function(d, h) {
 				$scope.clearNotification();
-				$scope.info = "New reservation has been created";
+				console.log(d);
+				window.location = "confirmation.jsf#?id=" + d.groupId;
 
 				$scope.endProgress();
 			}, function(d, h) {

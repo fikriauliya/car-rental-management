@@ -26,6 +26,8 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 import javax.xml.ws.WebServiceException;
 
+import com.google.gson.Gson;
+
 import jp.co.worksap.roster.ejb.BranchEJB;
 import jp.co.worksap.roster.ejb.CustomerEJB;
 import jp.co.worksap.roster.ejb.InventoryEJB;
@@ -92,10 +94,11 @@ public class ReservationService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(ReservationInfo reservationInfo, @Context SecurityContext context, @Context HttpServletRequest request) {
+	public Reservation create(ReservationInfo reservationInfo, @Context SecurityContext context, @Context HttpServletRequest request) {
 		String userId = context.getUserPrincipal().getName();
 		long timestamp = (new Date()).getTime();
 		Customer customer = customerEJB.findCustomerByUserId(userId);
+		Reservation firstCreatedReservation = null;
 
 		boolean driverAssigned = false;
 		User assignedDriver = null;
@@ -162,6 +165,7 @@ public class ReservationService {
 			}
 
 			reservationEJB.createReservation(reservation);
+			if (firstCreatedReservation == null) firstCreatedReservation = reservation;
 		}
 
 		if (!driverAssigned && reservationInfo.isDriverRequired()) {
@@ -197,7 +201,7 @@ public class ReservationService {
 				"<a href='" + baseUrl + basePath + "/users/agenda.jsf?userId=" + assignedDriver.getId() + "'>click here</a>" +
 				"</p>");
 		}
-		return Response.status(Status.CREATED).type(MediaType.APPLICATION_JSON).build();
+		return firstCreatedReservation;
 	}
 
 	@PUT
