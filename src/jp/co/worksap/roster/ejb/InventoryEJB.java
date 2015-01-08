@@ -1,11 +1,13 @@
 package jp.co.worksap.roster.ejb;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,6 +24,9 @@ import jp.co.worksap.roster.entity.InventoryStatus;
 public class InventoryEJB {
 	@PersistenceContext(unitName="RosterManagement")
 	private EntityManager em;
+
+	@EJB
+	BranchEJB branchEJB;
 
 	public void createInventory(Inventory inventory, Branch branch) {
 		inventory.setStatus(InventoryStatus.AVAILABLE);
@@ -99,13 +104,18 @@ public class InventoryEJB {
 	}
 
 	public Set<Integer> findReservedInventories(int branchId, Date startTime, Date endTime) {
+		Branch branch = branchEJB.findBranch(branchId);
 		TypedQuery<Integer> q2 = em.createNamedQuery("findReservedInventoriesByDate", Integer.class)
-				.setParameter("startTime", startTime)
-				.setParameter("endTime", endTime)
+				.setParameter("startTime", timestampToDate(startTime.getTime() - branch.getBufferHour() * 60 * 60 * 1000))
+				.setParameter("endTime", timestampToDate(endTime.getTime() + branch.getBufferHour() * 60 * 60 * 1000))
 				.setParameter("branchId", branchId);
 
 		Set<Integer> reservedInventoryIds = new HashSet<Integer>(q2.getResultList());
 		return reservedInventoryIds;
+	}
+
+	private Date timestampToDate(long timestamp) {
+		return new Date(new Timestamp(timestamp).getTime());
 	}
 
 	public void deleteInventory(int id) {
