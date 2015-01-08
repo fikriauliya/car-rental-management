@@ -29,6 +29,7 @@ public class BranchEJB {
 		b.setOpeningHour(branch.getOpeningHour());
 		b.setClosingHour(branch.getClosingHour());
 		b.setDriverFee(branch.getDriverFee());
+		b.setBufferHour(branch.getBufferHour());
 		em.persist(b);
 	}
 
