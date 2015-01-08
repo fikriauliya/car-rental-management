@@ -2,24 +2,30 @@ package jp.co.worksap.roster.controller;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.codec.digest.DigestUtils;
+import jp.co.worksap.roster.ejb.UserEJB;
+import jp.co.worksap.roster.entity.UserRole;
 
-@ManagedBean
-@ViewScoped
+@Named
+@RequestScoped
 public class Auth implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String username;
     private String password;
+
+    @Inject
+    private transient UserEJB userEJB;
 
     public void login() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -34,7 +40,13 @@ public class Auth implements Serializable {
         		throw new ServletException();
         	}
             request.login(username, password);
-            externalContext.redirect(externalContext.getRequestContextPath() + "/customers/addonselection.jsf");
+
+            List<UserRole> roles = userEJB.findAllAssignedRoles(username);
+
+            if (roles.isEmpty())
+            	externalContext.redirect(externalContext.getRequestContextPath() + "/customers/addonselection.jsf");
+            else
+            	externalContext.redirect(externalContext.getRequestContextPath() + "/internal-index.jsf");
         } catch (ServletException e) {
             context.addMessage(null, new FacesMessage("Your username/password is incorrect"));
         }
