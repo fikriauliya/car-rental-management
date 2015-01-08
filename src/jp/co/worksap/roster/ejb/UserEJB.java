@@ -6,17 +6,19 @@ import java.util.List;
 import java.util.Set;
 
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-
-import org.apache.commons.lang3.tuple.Pair;
 
 import jp.co.worksap.roster.entity.OrganizationUnit;
 import jp.co.worksap.roster.entity.Role;
 import jp.co.worksap.roster.entity.TransferLog;
 import jp.co.worksap.roster.entity.User;
 import jp.co.worksap.roster.entity.UserRole;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 @Stateless
 public class UserEJB {
@@ -64,6 +66,7 @@ public class UserEJB {
 		return q.getSingleResult();
 	}
 
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
 	public void createUser(User user, boolean isEmployee) {
 		if (isEmployee) {
 			UserRole ur = new UserRole();

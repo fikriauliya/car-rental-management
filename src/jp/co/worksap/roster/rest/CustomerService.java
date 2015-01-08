@@ -2,13 +2,17 @@ package jp.co.worksap.roster.rest;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.xml.ws.WebServiceException;
 
 import jp.co.worksap.roster.ejb.CustomerEJB;
 import jp.co.worksap.roster.ejb.UserEJB;
@@ -30,7 +34,7 @@ public class CustomerService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(CustomerInfo c) {
+	public Response create(CustomerInfo c, @Context HttpServletRequest request) {
 		User u = new User();
 		u.setAttached(false);
 		u.setEmail(c.getEmail());
@@ -51,6 +55,12 @@ public class CustomerService {
 		cust.setUser(u);
 
 		customerEJB.createCustomer(cust);
+		try {
+			request.login(c.getId(), c.getPassword());
+		} catch (ServletException e) {
+			throw new WebServiceException("Can't login");
+		}
+
 		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
 	}
 }

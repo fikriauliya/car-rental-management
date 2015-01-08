@@ -34,11 +34,7 @@ reservationManagementApp.controller('CreateCustomerController', ['$scope', '$tim
 		$scope.startProgress();
 		$scope.newCustomer.$save({},
 			function(data, header) {
-				$scope.clearNotification();
-				$scope.info = "User " + $scope.newCustomer.id + " has been created";
-
-				$scope.newCustomer = new Customers();
-				$scope.endProgress();
+				window.location = "addonselection.jsf";
 			},
 			function(data, header) {
 				$scope.clearNotification();
