@@ -34,9 +34,10 @@ var IndexReservationController = function($scope, $state, $stateParams, $filter,
 
 	        	_.each(d2, function(d) {
 	        		var newRes = {};
-	        		newRes.title = d[0].customer.user.firstName + " " + d[0].customer.user.lastName;
+	        		newRes.title = d[0].customer.user.firstName;
 	        		newRes.start = d[0].startTime;
 	        		newRes.end = d[0].endTime;
+	        		newRes.groupId = d[0].groupId;
 	        		res.push(newRes);
 	        	});
 
@@ -80,6 +81,11 @@ var IndexReservationController = function($scope, $state, $stateParams, $filter,
 	$scope.filterReservation = function() {
 		$scope.tableParams.reload();
 	};
+
+	$scope.alertOnEventClick = function(calEvent, jsEvent, view) {
+		$scope.filterText = calEvent.groupId;
+		$scope.filterReservation();
+    }
 
 	if ($stateParams.branchId) {
 		$scope.setSelectedBranch($stateParams.branchId);
