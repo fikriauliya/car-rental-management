@@ -103,6 +103,8 @@ public class ReservationService {
 
 		boolean driverAssigned = false;
 		User assignedDriver = null;
+		BigDecimal driverFee = null;
+
 		Branch branch = null;
 
 		for (int inventoryId : reservationInfo.getInventoryIds()) {
@@ -154,9 +156,10 @@ public class ReservationService {
 							ua.setTimezone(branch.getTimezone());
 							userAgendaEJB.createUserAgenda(ua);
 
-							reservation.setAssignedDriver(employee);
-							reservation.setDriverFee(branch.getDriverFee().multiply(new BigDecimal((reservationInfo.getEndTime().getTime() - reservationInfo.getStartTime().getTime() + 1) / (24.0 * 60 * 60 * 1000))));
+							driverFee = branch.getDriverFee().multiply(new BigDecimal((reservationInfo.getEndTime().getTime() - reservationInfo.getStartTime().getTime() + 1) / (24.0 * 60 * 60 * 1000)));
 
+							reservation.setAssignedDriver(employee);
+							reservation.setDriverFee(driverFee);
 							assignedDriver = employee;
 
 							driverAssigned = true;
@@ -164,6 +167,9 @@ public class ReservationService {
 						}
 					}
 				}
+			} else if (driverAssigned) {
+				reservation.setAssignedDriver(assignedDriver);
+				reservation.setDriverFee(driverFee);
 			}
 
 			reservationEJB.createReservation(reservation);
