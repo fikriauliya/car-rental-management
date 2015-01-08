@@ -120,6 +120,7 @@ public class ReservationService {
 			reservation.setEndTime(reservationInfo.getEndTime());
 			reservation.setCustomer(customer);
 			reservation.setPaid(reservationInfo.isCardPayment());
+			reservation.setInventoryFee(inventory.getPrice().multiply(new BigDecimal((reservationInfo.getEndTime().getTime() - reservationInfo.getStartTime().getTime() + 1) / (60.0 * 60 * 1000))));
 
 			if (!reservationInfo.isCardPayment()) {
 				reservation.setCardCIV(" ");

@@ -32,13 +32,9 @@ var ReservationDetailController = function($scope, $state, $stateParams, $filter
 	}
 
 	$scope.totalPrice = function(reservations) {
-		var a = _.reduce(reservations, function(memo, item){ return memo + item.inventory.price * ((item.endTime.getTime() - item.startTime.getTime() + 1) / (60 * 60 * 1000)); }, 0);
+		var a = _.reduce(reservations, function(memo, item){ return memo + item.inventoryFee; }, 0);
 		if (reservations.length > 0 && reservations[0].assignedDriver) { return a + reservations[0].driverFee; }
 		return a;
-	}
-
-	$scope.calculatePrice = function(reservation) {
-		return reservation.inventory.price * ((reservation.endTime.getTime() - reservation.startTime.getTime() + 1) / (60 * 60 * 1000));
 	}
 
 	$scope.startRental = function() {

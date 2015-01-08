@@ -92,6 +92,8 @@ public class Reservation {
 
 	private User assignedDriver;
 
+	private BigDecimal inventoryFee;
+
 	public int getId() {
 		return id;
 	}
@@ -210,6 +212,14 @@ public class Reservation {
 
 	public void setDriverFee(BigDecimal driverFee) {
 		this.driverFee = driverFee;
+	}
+
+	public BigDecimal getInventoryFee() {
+		return inventoryFee;
+	}
+
+	public void setInventoryFee(BigDecimal inventoryFee) {
+		this.inventoryFee = inventoryFee;
 	}
 
 

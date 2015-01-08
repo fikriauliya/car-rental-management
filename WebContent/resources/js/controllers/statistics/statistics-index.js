@@ -41,7 +41,7 @@ var IndexStatisticsController = function($scope, $state, $stateParams, $filter, 
 
 	$scope.totalPrice = function(reservations) {
 		console.log(reservations);
-		var a = _.reduce(reservations, function(memo, item){ console.log(item); return memo + item.inventory.price * ((item.endTime.getTime() - item.startTime.getTime() + 1) / (60 * 60 * 1000)); }, 0);
+		var a = _.reduce(reservations, function(memo, item){ console.log(item); return memo + item.inventoryFee; }, 0);
 		console.log(a);
 		if (reservations.length > 0 && reservations[0].assignedDriver) { return a + reservations[0].driverFee; }
 		return a;
