@@ -153,5 +153,10 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 			}
 		);
 	};
+
+	if (!isLoggedIn) {
+		window.location = "registration.jsf";
+	}
+
 	$scope.refreshInventories();
 }]);
