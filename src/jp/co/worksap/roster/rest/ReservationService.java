@@ -1,5 +1,6 @@
 package jp.co.worksap.roster.rest;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -153,7 +154,7 @@ public class ReservationService {
 							userAgendaEJB.createUserAgenda(ua);
 
 							reservation.setAssignedDriver(employee);
-							reservation.setDriverFee(branch.getDriverFee());
+							reservation.setDriverFee(branch.getDriverFee().multiply(new BigDecimal((reservationInfo.getEndTime().getTime() - reservationInfo.getStartTime().getTime() + 1) / (24.0 * 60 * 60 * 1000))));
 
 							assignedDriver = employee;
 

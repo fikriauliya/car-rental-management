@@ -24,9 +24,10 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 
 	$scope.selectedCar = $cookieStore.get('selectedCar');
 	$scope.timezone = $cookieStore.get('timezone');
-	$scope.driverFee = $cookieStore.get('driverFee');
 	$scope.startTime = TimezoneConverter.convertToLocalTimeZoneTime($cookieStore.get('startTime'), $scope.timezone);
 	$scope.endTime = TimezoneConverter.convertToLocalTimeZoneTime($cookieStore.get('endTime'), $scope.timezone);
+
+	$scope.driverFee = $cookieStore.get('driverFee') * (($scope.endTime.getTime() - $scope.startTime.getTime() + 1) / (24 * 60 * 60 * 1000));
 	$scope.selectedCar.totalPrice = $scope.selectedCar.price * (($scope.endTime.getTime() - $scope.startTime.getTime() + 1) / (60 * 60 * 1000));
 
 	$scope.selectedInventories = [];
