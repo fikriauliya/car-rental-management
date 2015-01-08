@@ -22,7 +22,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 @XmlRootElement
 @Entity
-@Table(name = "T_USERS")
+@Table(name = "S_USERS")
 @NamedQueries({
 	@NamedQuery(name="findAllUsers", query = "SELECT u from User u ORDER BY u.id"),
 	@NamedQuery(name="findAllUsersByIdNameAndEmail", query = "SELECT u from User u WHERE (LOWER(u.id) LIKE :token) OR (LOWER(u.firstName) LIKE :token) " +
