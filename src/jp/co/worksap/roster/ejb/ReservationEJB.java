@@ -22,6 +22,12 @@ public class ReservationEJB {
 		em.persist(r);
 	}
 
+	public List<Reservation> findReservations(int branchId, Date startTime) {
+		TypedQuery<Reservation> q = em.createNamedQuery("findReservationsByStartDate", Reservation.class)
+				.setParameter("startTime", startTime)
+				.setParameter("branchId", branchId);
+		return q.getResultList();
+	}
 	public List<Reservation> findReservations(int branchId, Date startTime, Date endTime) {
 		TypedQuery<Reservation> q = em.createNamedQuery("findReservationsByDate", Reservation.class)
 				.setParameter("startTime", startTime)

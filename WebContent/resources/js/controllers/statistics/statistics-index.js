@@ -14,7 +14,7 @@ var IndexStatisticsController = function($scope, $state, $stateParams, $filter, 
 		nextMonth.setMonth(nextMonth.getMonth() + 1);
 		var to  = TimezoneConverter.convertToTargetTimeZoneTime(nextMonth, $scope.selectedBranch.timezone);
 
-		Reservations.query({branchId: $stateParams.branchId, startTime: from, endTime: to}, function(d, h){
+		Reservations.query({branchId: $stateParams.branchId, startTime: from}, function(d, h){
 			_.each(d, function(dd) {
 	    		dd.startTime = TimezoneConverter.convertToLocalTimeZoneTime(dd.start, $scope.selectedBranch.timezone);
 	    		dd.start = TimezoneConverter.convertToLocalTimeZoneTime(dd.start, $scope.selectedBranch.timezone);

@@ -13,6 +13,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -84,8 +85,14 @@ public class ReservationService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{branchId}")
 	public List<Reservation> index(@PathParam("branchId") int branchId,
-			@QueryParam("startTime") long startTime, @QueryParam("endTime") long endTime) {
-		return reservationEJB.findReservations(branchId, timestampToDate(startTime), timestampToDate(endTime));
+			@QueryParam("startTime") long startTime, @DefaultValue("0") @QueryParam("endTime") long endTime) {
+		if (endTime == 0) {
+			System.out.println("With out endtime");
+			return reservationEJB.findReservations(branchId, timestampToDate(startTime));
+		} else {
+			System.out.println("With endtime");
+			return reservationEJB.findReservations(branchId, timestampToDate(startTime), timestampToDate(endTime));
+		}
 	}
 
 	private Date timestampToDate(long timestamp) {

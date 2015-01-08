@@ -29,6 +29,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 			"OR (:startTime <= u.endTime AND :endTime >= u.endTime) " +
 			"OR (:startTime >= u.startTime AND :endTime <= u.endTime)) " +
 			"AND (u.inventory.owner.id = :branchId)"),
+	@NamedQuery(name="findReservationsByStartDate", query="SELECT u from Reservation u " +
+			"WHERE (u.startTime >= :startTime AND :startTime <= u.endTime) " +
+			"AND (u.inventory.owner.id = :branchId)"),
 	@NamedQuery(name="findReservedInventoriesByDate", query="SELECT DISTINCT(u.inventory.id) FROM Reservation u " +
 			"WHERE ((:startTime <= u.startTime AND :endTime >= u.startTime) " +
 			"OR (:startTime <= u.endTime AND :endTime >= u.endTime) " +
