@@ -12,6 +12,7 @@ public class ReservationInfo {
 	private Date endTime;
 	private boolean isDriverRequired;
 	private boolean cardPayment = true;
+	private int branchId;
 
 	public boolean isCardPayment() {
 		return cardPayment;
@@ -66,6 +67,12 @@ public class ReservationInfo {
 	}
 	public void setEndTime(Date endTime) {
 		this.endTime = endTime;
+	}
+	public int getBranchId() {
+		return branchId;
+	}
+	public void setBranchId(int branchId) {
+		this.branchId = branchId;
 	}
 
 }

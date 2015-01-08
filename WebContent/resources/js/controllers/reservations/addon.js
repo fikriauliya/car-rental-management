@@ -138,6 +138,7 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 		$scope.newReservation.startTime = TimezoneConverter.convertToTargetTimeZoneTime($scope.startTime, $scope.timezone);
 		$scope.newReservation.endTime = TimezoneConverter.convertToTargetTimeZoneTime($scope.endTime, $scope.timezone);
 		$scope.newReservation.cardPayment = cardPayment;
+		$scope.newReservation.branchId = $scope.selectedCar.owner.id;
 
 		$scope.newReservation.$save(
 			function(d, h) {

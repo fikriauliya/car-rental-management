@@ -3,10 +3,10 @@ package jp.co.worksap.roster.rest;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.TimeZone;
 
 import javax.ejb.EJB;
@@ -28,8 +28,6 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 import javax.xml.ws.WebServiceException;
 
-import com.google.gson.Gson;
-
 import jp.co.worksap.roster.ejb.BranchEJB;
 import jp.co.worksap.roster.ejb.CustomerEJB;
 import jp.co.worksap.roster.ejb.InventoryEJB;
@@ -42,6 +40,7 @@ import jp.co.worksap.roster.entity.CarInventory;
 import jp.co.worksap.roster.entity.Customer;
 import jp.co.worksap.roster.entity.GpsInventory;
 import jp.co.worksap.roster.entity.Inventory;
+import jp.co.worksap.roster.entity.Inventory.InventoryType;
 import jp.co.worksap.roster.entity.InventoryStatus;
 import jp.co.worksap.roster.entity.Reservation;
 import jp.co.worksap.roster.entity.ReservationStatus;
@@ -103,6 +102,7 @@ public class ReservationService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Reservation create(ReservationInfo reservationInfo, @Context SecurityContext context, @Context HttpServletRequest request) {
+		//recheck inventory availability
 		String userId = context.getUserPrincipal().getName();
 		long timestamp = (new Date()).getTime();
 		Customer customer = customerEJB.findCustomerByUserId(userId);
@@ -114,6 +114,8 @@ public class ReservationService {
 
 		Branch branch = null;
 
+		Set<Integer> reservedInventories = inventoryEJB.findReservedInventories(reservationInfo.getBranchId(), timestampToDate(reservationInfo.getStartTime().getTime()), timestampToDate(reservationInfo.getEndTime().getTime()));
+
 		for (int inventoryId : reservationInfo.getInventoryIds()) {
 			Reservation reservation = new Reservation();
 			reservation.setGroupId(timestamp);
@@ -123,6 +125,10 @@ public class ReservationService {
 			reservation.setCardNumber(reservationInfo.getCardNumber());
 
 			Inventory inventory = inventoryEJB.findInventory(inventoryId);
+			if (reservedInventories.contains(inventory.getId())) {
+				throw new WebServiceException("Some of your reservation items are already reserved by someone else. Please go back to the home page and make reservation again");
+			}
+
 			reservation.setInventory(inventory);
 			reservation.setInventoryVersion(inventory.getVersion());
 			reservation.setStartTime(reservationInfo.getStartTime());

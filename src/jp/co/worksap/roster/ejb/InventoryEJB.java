@@ -86,15 +86,9 @@ public class InventoryEJB {
 		q1.setParameter("ownerId", branchId);
 		List<Inventory> inventories = q1.getResultList();
 
-		TypedQuery<Integer> q2 = em.createNamedQuery("findReservedInventoriesByDate", Integer.class)
-				.setParameter("startTime", startTime)
-				.setParameter("endTime", endTime)
-				.setParameter("branchId", branchId);
-
-		Set<Integer> reservedInventoryIds = new HashSet<Integer>(q2.getResultList());
+		Set<Integer> reservedInventoryIds = findReservedInventories(branchId, startTime, endTime);
 
 		List<Inventory> res = new LinkedList<Inventory>();
-
 		for (Inventory inventory : inventories) {
 			if (!reservedInventoryIds.contains(inventory.getId())) {
 				res.add(inventory);
@@ -102,6 +96,16 @@ public class InventoryEJB {
 		}
 
 		return res;
+	}
+
+	public Set<Integer> findReservedInventories(int branchId, Date startTime, Date endTime) {
+		TypedQuery<Integer> q2 = em.createNamedQuery("findReservedInventoriesByDate", Integer.class)
+				.setParameter("startTime", startTime)
+				.setParameter("endTime", endTime)
+				.setParameter("branchId", branchId);
+
+		Set<Integer> reservedInventoryIds = new HashSet<Integer>(q2.getResultList());
+		return reservedInventoryIds;
 	}
 
 	public void deleteInventory(int id) {
