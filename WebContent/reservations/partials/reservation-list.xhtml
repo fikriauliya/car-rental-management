@@ -37,8 +37,17 @@
                       <span class="label label-warning" ng-if="group.data[0].status == 'FINISHED'">{{group.data[0].status}}</span>
                     </div>
                 </td>
-                <td>{{group.data[0].customer.user.firstName}}</td>
-                <td>{{group.data[0].customer.user.lastName}}</td>
+                <td>{{group.data[0].customer.user.firstName}}
+                  <div style="margin-top:15px; margin-bottom:5px">
+                    <span class="label label-default" ng-if="group.data[0].assignedDriver">Driver required</span>
+                  </div>
+                </td>
+                <td>
+                  {{group.data[0].customer.user.lastName}}
+                  <div style="margin-top:10px" align="right">
+                    <b>{{totalPrice(group.data)}}</b>
+                  </div>
+                </td>
                 <td>{{group.data[0].start | date:'medium'}}</td>
                 <td>{{group.data[0].end | date:'medium'}}</td>
                 <td>
@@ -56,7 +65,9 @@
                 <span class="label label-default" ng-if="event.inventory.status == 'DELETED'">{{event.inventory.status}}</span>
                 <span class="label label-warning" ng-if="event.inventory.status == 'RETURNED'">{{event.inventory.status}}</span>
               </td>
-              <td data-title="'Lastname'" sortable="'customer.user.lastName'"></td>
+              <td data-title="'Lastname'" sortable="'customer.user.lastName'" align="right">
+                {{event.inventoryFee}}
+              </td>
               <td data-title="'From'" sortable="'start'"></td>
               <td data-title="'To'" sortable="'end'"></td>
               <td></td>
