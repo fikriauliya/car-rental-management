@@ -21,6 +21,8 @@ var ReservationDetailController = function($scope, $state, $stateParams, $filter
 		    		else if ('numOfSeat' in dd.inventory) dd.inventory.type = "car";
 		    		else dd.inventory.type = "gps";
 				});
+
+				$scope.totalOverdueFee = _.reduce(d, function(memo, dd) { return memo + dd.overdueFee; }, 0);
 				$scope.reservations = d;
 				$scope.endProgress();
 			}, function(d, h) {
@@ -75,6 +77,33 @@ var ReservationDetailController = function($scope, $state, $stateParams, $filter
 
 	$scope.markPaid = function() {
 		Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "markPaid"}, function(d, h){
+			$scope.refreshReservationDetail();
+		}, function(d, h) {
+			$scope.refreshReservationDetail();
+			alert(d.data);
+		});
+	};
+
+	$scope.markUnpaid = function() {
+		Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "markUnpaid"}, function(d, h){
+			$scope.refreshReservationDetail();
+		}, function(d, h) {
+			$scope.refreshReservationDetail();
+			alert(d.data);
+		});
+	};
+
+	$scope.markOverduePaid = function() {
+		Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "markOverduePaid"}, function(d, h){
+			$scope.refreshReservationDetail();
+		}, function(d, h) {
+			$scope.refreshReservationDetail();
+			alert(d.data);
+		});
+	};
+
+	$scope.markOverdueUnpaid = function() {
+		Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "markOverdueUnpaid"}, function(d, h){
 			$scope.refreshReservationDetail();
 		}, function(d, h) {
 			$scope.refreshReservationDetail();

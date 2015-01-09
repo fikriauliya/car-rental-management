@@ -58,6 +58,9 @@ public class Branch {
 	@Max(value=1000)
 	private int bufferHour;
 
+	@Min(value=0)
+	private BigDecimal overduePenaltyPercentage;
+
 	@ManyToMany
 	@JoinTable(name = "T_BRANCH_USER")
 	private List<User> users;
@@ -148,6 +151,14 @@ public class Branch {
 
 	public void setBufferHour(int bufferHour) {
 		this.bufferHour = bufferHour;
+	}
+
+	public BigDecimal getOverduePenaltyPercentage() {
+		return overduePenaltyPercentage;
+	}
+
+	public void setOverduePenaltyPercentage(BigDecimal overduePenaltyPercentage) {
+		this.overduePenaltyPercentage = overduePenaltyPercentage;
 	}
 
 }

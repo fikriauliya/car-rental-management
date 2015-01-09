@@ -5,7 +5,8 @@
     <b>Opening hour:</b> {{selectedBranch.openingHour}}<br/>
     <b>Closing hour:</b> {{selectedBranch.closingHour}}<br/>
     <b>Driver fee:</b> {{selectedBranch.driverFee}}<br/>
-    <b>Buffer hour:</b> {{selectedBranch.bufferHour}}
+    <b>Buffer hour:</b> {{selectedBranch.bufferHour}}<br/>
+    <b>Overdue penalty percentage:</b> {{selectedBranch.overduePenaltyPercentage}}<br/>
     <hr/>
   </div>
 </div>
@@ -30,18 +31,16 @@
                         <strong>#{{ group.value }}</strong>
                     </a>
                     <div style="margin-top:10px; margin-bottom:5px">
-                      <span class="label label-danger" ng-if="!group.data[0].paid">Unpaid</span>
-                      <span class="label label-success" ng-if="group.data[0].paid">Paid</span>
-
-                      <span class="label label-primary" ng-if="group.data[0].status == 'SCHEDULED'">{{group.data[0].status}}</span>
-                      <span class="label label-danger" ng-if="group.data[0].status == 'CANCELED'">{{group.data[0].status}}</span>
-                      <span class="label label-success" ng-if="group.data[0].status == 'STARTED'">{{group.data[0].status}}</span>
-                      <span class="label label-warning" ng-if="group.data[0].status == 'FINISHED'">{{group.data[0].status}}</span>
+                      <span class="label label-default" ng-if="group.data[0].assignedDriver">Driver required</span>
                     </div>
                 </td>
-                <td>{{group.data[0].customer.user.firstName}}
-                  <div style="margin-top:15px; margin-bottom:5px">
-                    <span class="label label-default" ng-if="group.data[0].assignedDriver">Driver required</span>
+                <td>
+                  {{group.data[0].customer.user.firstName}}
+                  <div style="margin-top:10px; margin-bottom:5px">
+                    <span class="label label-primary" ng-if="group.data[0].status == 'SCHEDULED'">{{group.data[0].status}}</span>
+                    <span class="label label-danger" ng-if="group.data[0].status == 'CANCELED'">{{group.data[0].status}}</span>
+                    <span class="label label-success" ng-if="group.data[0].status == 'STARTED'">{{group.data[0].status}}</span>
+                    <span class="label label-warning" ng-if="group.data[0].status == 'FINISHED'">{{group.data[0].status}}</span>
                   </div>
                 </td>
                 <td>
@@ -50,7 +49,16 @@
                     <b>{{totalPrice(group.data)}}</b>
                   </div>
                 </td>
-                <td>{{group.data[0].start | date:'medium'}}</td>
+                <td>
+                  {{group.data[0].start | date:'medium'}}
+                  <div style="margin-top:10px; margin-bottom:5px">
+                    <span class="label label-danger" ng-if="!group.data[0].paid">Unpaid</span>
+                    <span class="label label-success" ng-if="group.data[0].paid">Paid</span>
+
+                    <span class="label label-danger" ng-if="group.data[0].overdueFee > 0 && !group.data[0].overduePaid">Overdue Unpaid</span>
+                    <span class="label label-success" ng-if="group.data[0].overdueFee > 0 && group.data[0].overduePaid">Overdue Paid</span>
+                  </div>
+                </td>
                 <td>{{group.data[0].end | date:'medium'}}</td>
                 <td>
                   <button style="margin-left:10px" class="btn btn-xs btn-info" ui-sref="branch.details({branchId: selectedBranch.id, groupId: group.value})">Detail</button>

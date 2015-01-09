@@ -97,6 +97,15 @@ public class Reservation {
 
 	private BigDecimal inventoryFee;
 
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date returnedTime;
+
+	@NotNull
+	private boolean isOverduePaid = true;
+
+	private BigDecimal overdueFee;
+
 	public int getId() {
 		return id;
 	}
@@ -223,6 +232,30 @@ public class Reservation {
 
 	public void setInventoryFee(BigDecimal inventoryFee) {
 		this.inventoryFee = inventoryFee;
+	}
+
+	public Date getReturnedTime() {
+		return returnedTime;
+	}
+
+	public void setReturnedTime(Date returnedTime) {
+		this.returnedTime = returnedTime;
+	}
+
+	public boolean isOverduePaid() {
+		return isOverduePaid;
+	}
+
+	public void setOverduePaid(boolean isOverduePaid) {
+		this.isOverduePaid = isOverduePaid;
+	}
+
+	public BigDecimal getOverdueFee() {
+		return overdueFee;
+	}
+
+	public void setOverdueFee(BigDecimal overdueFee) {
+		this.overdueFee = overdueFee;
 	}
 
 

@@ -44,7 +44,9 @@ var IndexStatisticsController = function($scope, $state, $stateParams, $filter, 
 		var a = _.reduce(reservations, function(memo, item){ console.log(item); return memo + item.inventoryFee; }, 0);
 		console.log(a);
 		if (reservations.length > 0 && reservations[0].assignedDriver) { return a + reservations[0].driverFee; }
-		return a;
+
+		var totalOverdueFee = _.reduce(reservations, function(memo, dd) { return memo + dd.overdueFee; }, 0);
+		return a + totalOverdueFee;
 	}
 
 	$scope.reservationDetailLink = function(branchId, groupId) {

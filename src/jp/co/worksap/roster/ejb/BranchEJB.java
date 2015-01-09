@@ -30,6 +30,7 @@ public class BranchEJB {
 		b.setClosingHour(branch.getClosingHour());
 		b.setDriverFee(branch.getDriverFee());
 		b.setBufferHour(branch.getBufferHour());
+		b.setOverduePenaltyPercentage(branch.getOverduePenaltyPercentage());
 		em.persist(b);
 	}
 

@@ -314,6 +314,21 @@ public class ReservationService {
 				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");
 			}
 			reservationEJB.markAsPaid(reservations);
+		} else if (operation.equals("markUnpaid")) {
+			if (!reservations.get(0).isPaid()) {
+				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");
+			}
+			reservationEJB.markAsUnpaid(reservations);
+		} else if (operation.equals("markOverduePaid")) {
+			if (reservations.get(0).isOverduePaid() ||  (reservations.get(0).getStatus() == ReservationStatus.CANCELED)) {
+				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");
+			}
+			reservationEJB.markOverdueAsPaid(reservations);
+		} else if (operation.equals("markOverdueUnpaid")) {
+			if (!reservations.get(0).isOverduePaid()) {
+				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");
+			}
+			reservationEJB.markOverdueAsUnpaid(reservations);
 		} else if (operation.equals("finishChecking")) {
 			if (reservations.get(0).getStatus() != ReservationStatus.FINISHED) {
 				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");

@@ -1,5 +1,7 @@
 package jp.co.worksap.roster.ejb;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
@@ -52,6 +54,17 @@ public class ReservationEJB {
 	public void updateStatus(List<Reservation> reservations, ReservationStatus status) {
 		for (Reservation reservation : reservations) {
 			reservation.setStatus(status);
+
+			if (status == ReservationStatus.FINISHED) {
+				Date now = new Date();
+				reservation.setReturnedTime(now);
+				if (now.getTime() > reservation.getEndTime().getTime()) {
+					BigDecimal overduePenaltyPercentage = reservation.getInventory().getOwner().getOverduePenaltyPercentage();
+					double elapsedHour = (now.getTime() - reservation.getEndTime().getTime()) / (60.0 * 60 * 1000);
+					reservation.setOverdueFee(reservation.getInventory().getPrice().multiply(new BigDecimal(elapsedHour)).multiply(overduePenaltyPercentage).divide(new BigDecimal(100), RoundingMode.HALF_UP));
+				}
+			}
+
 			em.persist(reservation);
 		}
 	}
@@ -76,6 +89,27 @@ public class ReservationEJB {
 	public void markAsPaid(List<Reservation> reservations) {
 		for (Reservation reservation : reservations) {
 			reservation.setPaid(true);
+			em.persist(reservation);
+		}
+	}
+
+	public void markAsUnpaid(List<Reservation> reservations) {
+		for (Reservation reservation : reservations) {
+			reservation.setPaid(false);
+			em.persist(reservation);
+		}
+	}
+
+	public void markOverdueAsPaid(List<Reservation> reservations) {
+		for (Reservation reservation : reservations) {
+			reservation.setOverduePaid(true);
+			em.persist(reservation);
+		}
+	}
+
+	public void markOverdueAsUnpaid(List<Reservation> reservations) {
+		for (Reservation reservation : reservations) {
+			reservation.setOverduePaid(false);
 			em.persist(reservation);
 		}
 	}

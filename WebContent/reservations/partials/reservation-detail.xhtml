@@ -5,6 +5,9 @@
       <span class="label label-danger" ng-if="!reservations[0].paid">Unpaid</span>
       <span class="label label-success" ng-if="reservations[0].paid">Paid</span>
 
+      <span class="label label-danger" ng-if="totalOverdueFee > 0 && !reservations[0].overduePaid">Overdue Unpaid</span>
+      <span class="label label-success" ng-if="totalOverdueFee > 0 && reservations[0].overduePaid">Overdue Paid</span>
+
       <span class="label label-primary" ng-if="reservations[0].status == 'SCHEDULED'">{{reservations[0].status}}</span>
       <span class="label label-danger" ng-if="reservations[0].status == 'CANCELED'">{{reservations[0].status}}</span>
       <span class="label label-success" ng-if="reservations[0].status == 'STARTED'">{{reservations[0].status}}</span>
@@ -24,9 +27,28 @@
         Cancel reservation
       </button>
       <button class="btn btn-sm btn-primary" ng-click="markPaid()" ng-if="!reservations[0].paid && reservations[0].status != 'CANCELED'">
-        <span class="glyphicon glyphicon-remove-circle"/>
+        <span class="glyphicon glyphicon-ok"/>
         Mark as paid
       </button>
+      <button class="btn btn-sm btn-primary" ng-click="markUnpaid()" ng-if="reservations[0].paid">
+        <span class="glyphicon glyphicon-remove"/>
+        Mark as unpaid
+      </button>
+
+      <span ng-if="totalOverdueFee > 0">
+        |
+        <b ng-style="{color:reservations[0].overduePaid?'blue':'red'}">
+          Overdue: {{totalOverdueFee}}
+        </b>
+        <button class="btn btn-sm btn-primary" ng-click="markOverduePaid()" ng-if="!reservations[0].overduePaid && reservations[0].status != 'CANCELED'">
+          <span class="glyphicon glyphicon-ok"/>
+          Mark overdue as paid
+        </button>
+        <button class="btn btn-sm btn-primary" ng-click="markOverdueUnpaid()" ng-if="reservations[0].overduePaid">
+          <span class="glyphicon glyphicon-remove"/>
+          Mark overdue as unpaid
+        </button>
+      </span>
     </div>
     <hr/>
   </div>
