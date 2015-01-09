@@ -34,7 +34,7 @@ myApp.controller('AgendaUserController', ['$scope', '$location', '$timeout', 'Us
 	$scope.refreshEvents = function() {
 		ngProgress.start();
 		UserAgendas.query({id: $scope.userId, start: $scope.curStart, end: $scope.curEnd}, function(d, h){
-			var digitsRegex = new RegExp("^(\\d+)\\-(\\d+)$");
+			var digitsRegex = new RegExp("^(\\d+)\\-(\\d+)\\-(.+)$");
 
 			if (d.length > 0) {
 				$scope.myTimeZone = d[0].timezone;
@@ -44,6 +44,7 @@ myApp.controller('AgendaUserController', ['$scope', '$location', '$timeout', 'Us
 				if (digitsRegex.test(dd.title)) {
 					var matches = digitsRegex.exec(dd.title);
 					dd.titleLink = baseUrl + basePath + "/reservations/index.jsf#/" + matches[1] + "/reservations/" + matches[2];
+					dd.title = matches[3];
 				}
 				dd.startTime = TimezoneConverter.convertToLocalTimeZoneTime(dd.start, $scope.myTimeZone);
         		dd.start = TimezoneConverter.convertToLocalTimeZoneTime(dd.start, $scope.myTimeZone);

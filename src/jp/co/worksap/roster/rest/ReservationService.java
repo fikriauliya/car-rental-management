@@ -164,7 +164,7 @@ public class ReservationService {
 							ua.setAssignedBy(employee);
 							ua.setStartTime(reservationInfo.getStartTime());
 							ua.setEndTime(reservationInfo.getEndTime());
-							ua.setTitle(String.valueOf(branch.getId()) + "-" + String.valueOf(reservation.getGroupId()));
+							ua.setTitle(String.valueOf(branch.getId()) + "-" + String.valueOf(reservation.getGroupId() + "-" + customer.getUser().getFirstName() + " " + customer.getUser().getLastName()));
 							ua.setUser(employee);
 							ua.setTimezone(branch.getTimezone());
 							userAgendaEJB.createUserAgenda(ua);
