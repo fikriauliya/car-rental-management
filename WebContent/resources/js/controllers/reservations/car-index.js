@@ -39,6 +39,16 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 
 	$scope.$watch('search.endTime', function(newVal, oldVal){
 		if (newVal != null) {
+			var now = new Date();
+			if (newVal.getTime() < now.getTime()) {
+				$scope.$parent.errors = ["Selecting past date is not allowed"];
+				$scope.search.startTime = oldVal;
+
+				$timeout(function() {
+					$scope.$parent.errors = [];
+				}, 1500);
+			}
+
 			if (newVal.getMinutes() == 0) {
 				$scope.search.endTime = new Date(newVal.getTime() - 1);
 			} else if ($scope.search.endTime.getTime() <= $scope.search.startTime.getTime()) {
@@ -48,6 +58,18 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 	});
 
 	$scope.$watch('search.startTime', function(newVal, oldVal){
+		if (newVal != null) {
+			var now = new Date();
+			if (newVal.getTime() < now.getTime()) {
+				$scope.$parent.errors = ["Selecting past date is not allowed"];
+				$scope.search.startTime = oldVal;
+
+				$timeout(function() {
+					$scope.$parent.errors = [];
+				}, 1500);
+			}
+		}
+
 		if ($scope.search != null) {
 			if ($scope.search.endTime.getTime() <= $scope.search.startTime.getTime()) {
 				$scope.search.endTime = new Date($scope.search.startTime.getTime() + 24*60*60*1000);
