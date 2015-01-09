@@ -80,6 +80,15 @@ public class ReservationService {
 		return reservationEJB.findReservations(groupId);
 	}
 
+
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/")
+	public List<Reservation> index(@Context SecurityContext context) {
+		String userId = context.getUserPrincipal().getName();
+		return reservationEJB.findReservations(userId);
+	}
+
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/{branchId}")

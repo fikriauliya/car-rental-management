@@ -28,6 +28,10 @@ public class Auth implements Serializable {
     private transient UserEJB userEJB;
 
     public void login() throws IOException {
+    	login(null);
+	}
+
+    public void login(String returnPath) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
@@ -43,10 +47,15 @@ public class Auth implements Serializable {
 
             List<UserRole> roles = userEJB.findAllAssignedRoles(username);
 
-            if (roles.isEmpty())
-            	externalContext.redirect(externalContext.getRequestContextPath() + "/customers/addonselection.jsf");
-            else
+            if (roles.isEmpty() || (roles.size() == 1 && roles.get(0).getRoleName().equals("customer"))) {
+            	if (returnPath == null) {
+            		externalContext.redirect(externalContext.getRequestContextPath() + "/customers/check-reservation.jsf");
+            	} else {
+            		externalContext.redirect(externalContext.getRequestContextPath() + returnPath);
+            	}
+            } else {
             	externalContext.redirect(externalContext.getRequestContextPath() + "/internal-index.jsf");
+            }
         } catch (ServletException e) {
             context.addMessage(null, new FacesMessage("Your username/password is incorrect"));
         }

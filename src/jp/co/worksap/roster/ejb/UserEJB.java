@@ -73,6 +73,11 @@ public class UserEJB {
 			ur.setId(user.getId());
 			ur.setRoleName("employee");
 			em.persist(ur);
+		} else {
+			UserRole ur = new UserRole();
+			ur.setId(user.getId());
+			ur.setRoleName("customer");
+			em.persist(ur);
 		}
 
 		em.persist(user);

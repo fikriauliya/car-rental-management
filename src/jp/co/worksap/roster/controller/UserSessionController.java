@@ -37,7 +37,7 @@ public class UserSessionController implements Serializable {
 		}
 
 		try {
-			if (roles.isEmpty()) {
+			if (roles.isEmpty() || (roles.size() == 1 && roles.get(0).getRoleName().equals("customer"))) {
 				context.getExternalContext().redirect("/" + request.getContextPath());
 			} else {
 				context.getExternalContext().redirect("/" + request.getContextPath() + "/internal-index.jsf");

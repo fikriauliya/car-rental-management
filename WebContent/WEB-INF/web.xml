@@ -75,7 +75,17 @@
 			<role-name>director</role-name>
 		</auth-constraint>
 	</security-constraint>
-		<security-constraint>
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Secure Pages</web-resource-name>
+			<description />
+			<url-pattern>/customers/check-reservation.jsf</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>customer</role-name>
+		</auth-constraint>
+	</security-constraint>
+	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>Secure Pages</web-resource-name>
 			<description />
