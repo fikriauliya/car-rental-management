@@ -139,7 +139,7 @@
                       <td ng-switch-default="true">{{user.email}}</td>
                       <td ng-switch-default="true">{{user.phone}}</td>
                       <td ng-switch-default="true">
-                        <h:panelGroup>
+                        <h:panelGroup rendered="#{request.isUserInRole('hr')}">
                           <button class="btn btn-primary btn-xs" ng-click="editUser(user, true)">Edit</button>
                           <button class="btn btn-info btn-xs" ng-click="transferUser(user)">Transfer</button>
                           <button class="btn btn-warning btn-xs" ng-click="leaveUser(user)">Leave</button>
