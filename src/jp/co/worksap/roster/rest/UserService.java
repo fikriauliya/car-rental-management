@@ -19,6 +19,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.xml.ws.WebServiceException;
 
 import jp.co.worksap.roster.ejb.OrganizationEJB;
 import jp.co.worksap.roster.ejb.PeerReviewEJB;
@@ -132,11 +133,16 @@ public class UserService {
 	@Path("/{id}")
 	@RolesAllowed({"admin" ,"hr"})
 	public Response delete(@PathParam("id") String id){
-		transferLogEJB.deleteTransferLogsByUser(id);
-		peerReviewEJB.deletePeerReviewByUser(id);
-		userAgendaEJB.deleteUserAgendaByUser(id);
-		userEJB.deleteUser(id);
+		try {
+			transferLogEJB.deleteTransferLogsByUser(id);
+			peerReviewEJB.deletePeerReviewByUser(id);
+			userAgendaEJB.deleteUserAgendaByUser(id);
+			userEJB.deleteUser(id);
 
-		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
+
+			return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
+		} catch (Exception ex) {
+			throw new WebServiceException("This user is assigned a task already. Can't delete this user");
+		}
 	}
 }
