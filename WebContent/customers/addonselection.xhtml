@@ -129,7 +129,6 @@
           I need a driver (additional {{driverFee}})
 
           <hr/>
-          <h3>Payment information</h3>
           <div class="alert alert-danger" ng-if="errors">
             <ul>
               <li ng-repeat="error in errors">{{error}}</li>
@@ -138,51 +137,76 @@
           <div class="alert alert-info" ng-if="info">
             {{info}}
           </div>
-          <form class="form-horizontal">
-            <div class="form-group">
-              <label class="col-sm-4 control-label">Card name</label>
-              <div class="col-sm-8">
-                <input class="form-control" id="id" ng-model="newReservation.cardName"/>
+
+          <div role="tabpanel">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active"><a href="#cardPayment" aria-controls="cardPayment" role="tab" data-toggle="tab">Card Payment</a></li>
+              <li role="presentation"><a href="#cashPayment" aria-controls="cashPayment" role="tab" data-toggle="tab">Cash Payment</a></li>
+            </ul>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane active" id="cardPayment">
+                <h3>Payment information</h3>
+                <form class="form-horizontal">
+                  <div class="form-group">
+                    <label class="col-sm-4 control-label">Card name</label>
+                    <div class="col-sm-8">
+                      <input class="form-control" id="id" ng-model="newReservation.cardName"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-4 control-label">Card number</label>
+                    <div class="col-sm-8">
+                      <input class="form-control" id="id" ng-model="newReservation.cardNumber"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-4 control-label">Card CIV</label>
+                    <div class="col-sm-8">
+                      <input class="form-control" id="id" ng-model="newReservation.cardCIV"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-4 control-label">Card expiry date</label>
+                    <div class="col-sm-8">
+                      <div class="dropdown control-label" style="text-align:left">
+                        <a  class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown" data-target="#" href="#">{{newReservation.cardExpiryDate | date:'mediumDate'}}</a>
+                        <ul class="dropdown-menu" role="menu">
+                            <datetimepicker data-ng-model="newReservation.cardExpiryDate"
+                              data-datetimepicker-config="{ dropdownSelector: '#dropdown1', minView: 'day' }"/>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-4">
+                      <button class="btn btn-primary btn-md" ng-click="createReservation(true)">
+                        <span class="glyphicon glyphicon-shopping-cart"/>
+                        Pay
+                      </button>
+                    </div>
+                  </div>
+                </form>
               </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 control-label">Card number</label>
-              <div class="col-sm-8">
-                <input class="form-control" id="id" ng-model="newReservation.cardNumber"/>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 control-label">Card CIV</label>
-              <div class="col-sm-8">
-                <input class="form-control" id="id" ng-model="newReservation.cardCIV"/>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-4 control-label">Card expiry date</label>
-              <div class="col-sm-8">
-                <div class="dropdown control-label" style="text-align:left">
-                  <a  class="dropdown-toggle" id="dropdown1" role="button" data-toggle="dropdown" data-target="#" href="#">{{newReservation.cardExpiryDate | date:'mediumDate'}}</a>
-                  <ul class="dropdown-menu" role="menu">
-                      <datetimepicker data-ng-model="newReservation.cardExpiryDate"
-                        data-datetimepicker-config="{ dropdownSelector: '#dropdown1', minView: 'day' }"/>
-                  </ul>
-                </div>
+              <div role="tabpanel" class="tab-pane" id="cashPayment">
+                <h3>Cash Payment</h3>
+                <form class="form-horizontal">
+                  <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-4">
+                      <button class="btn btn-primary btn-md" ng-click="createReservation(false)" style="margin-top:10px">
+                        <span class="glyphicon glyphicon-shopping-cart"/>
+                        Pay by cash later
+                      </button>
+                    </div>
+                  </div>
+                </form>
               </div>
             </div>
 
-            <div class="form-group">
-              <div class="col-sm-offset-4 col-sm-4">
-                <button class="btn btn-primary btn-md" ng-click="createReservation(true)">
-                  <span class="glyphicon glyphicon-shopping-cart"/>
-                  Pay
-                </button>
-                <button class="btn btn-warning btn-md" ng-click="createReservation(false)" style="margin-top:10px">
-                  <span class="glyphicon glyphicon glyphicon-warning-sign"/>
-                  Pay by cash later
-                </button>
-              </div>
-            </div>
-          </form>
+          </div>
         </div>
         <div class="col-md-2 well">
           <h4>Selected car</h4>
