@@ -1,5 +1,6 @@
 package jp.co.worksap.roster.rest;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.security.RolesAllowed;
@@ -14,14 +15,17 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.SecurityContext;
 
 import jp.co.worksap.roster.ejb.BranchEJB;
 import jp.co.worksap.roster.ejb.UserEJB;
 import jp.co.worksap.roster.entity.Branch;
 import jp.co.worksap.roster.entity.User;
+import jp.co.worksap.roster.entity.UserRole;
 
 @Path("/branches")
 @Stateless
@@ -45,8 +49,29 @@ public class BranchServices {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("")
-	public List<Branch> index() {
-		return branchEJB.findBranches();
+	public List<Branch> index(@Context SecurityContext context) {
+		List<UserRole> roles = new LinkedList<UserRole>();
+
+		if (context.getUserPrincipal() != null) {
+			String userId = context.getUserPrincipal().getName();
+			roles = userEJB.findAllAssignedRoles(userId);
+
+			boolean displayAllBranch = false;
+			for (UserRole role : roles) {
+				if (role.getRoleName().equals("director") || role.getRoleName().equals("customer") || role.getRoleName().equals("hr")) {
+					displayAllBranch = true;
+				}
+			}
+
+			if (displayAllBranch) {
+				return branchEJB.findBranches();
+ 			} else {
+ 				User user = userEJB.findUser(userId);
+ 				return user.getBranches();
+ 			}
+		} else {
+			return branchEJB.findBranches();
+		}
 	}
 
 	@DELETE
