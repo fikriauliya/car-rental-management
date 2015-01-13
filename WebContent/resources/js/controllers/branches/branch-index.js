@@ -1,4 +1,4 @@
-var IndexBranchController = function($scope, $state, Branches, Timezones, ngProgress, $q, $stateParams) {
+var IndexBranchController = function($scope, $state, $timeout, Branches, Timezones, ngProgress, $q, $stateParams) {
 	console.log("+IndexBranchController");
 
 	$scope.errors = [];
@@ -103,25 +103,33 @@ var IndexBranchController = function($scope, $state, Branches, Timezones, ngProg
 	};
 
 	$scope.deleteBranch = function() {
-		$scope.startProgress();
+		if (confirm("Warning, deleting the branch will make all reservations in this branch inaccessible. Are you sure want to delete?")) {
+			$scope.startProgress();
 
-		Branches.remove({id: $scope.selectedBranch.id},
-			function(d, h) {
-				$scope.clearNotification();
+			Branches.remove({id: $scope.selectedBranch.id},
+				function(d, h) {
+					$scope.clearNotification();
 
-				$scope.info = "A branch has been deleted";
-				$scope.refreshBranches();
+					$scope.info = "A branch has been deleted";
+					$scope.refreshBranches();
 
-				$scope.endProgress();
-			},
-			function(d, h) {
-				$scope.clearNotification();
+					$timeout(function() {
+						if ($scope.branches.length > 0) {
+							$scope.changeBranch($scope.branches[0]);
+						}
+					}, 1500);
 
-				$scope.errors = d.data;
+					$scope.endProgress();
+				},
+				function(d, h) {
+					$scope.clearNotification();
 
-				$scope.endProgress();
-			}
-		);
+					$scope.errors = d.data;
+
+					$scope.endProgress();
+				}
+			);
+		}
 	};
 
 	$scope.editBranch = function() {
@@ -165,6 +173,6 @@ var IndexBranchController = function($scope, $state, Branches, Timezones, ngProg
 	console.log("-IndexBranchController");
   }
 
-angular.module('branchManagementApp').controller('IndexBranchController', ['$scope', '$state', 'Branches', 'Timezones', 'ngProgress', '$q', '$stateParams', IndexBranchController]);
-angular.module('inventoryManagementApp').controller('IndexBranchController', ['$scope', '$state', 'Branches', 'Timezones', 'ngProgress', '$q', '$stateParams', IndexBranchController]);
-angular.module('reservationManagementApp').controller('IndexBranchController', ['$scope', '$state', 'Branches', 'Timezones', 'ngProgress', '$q', '$stateParams', IndexBranchController]);
+angular.module('branchManagementApp').controller('IndexBranchController', ['$scope', '$state', '$timeout', 'Branches', 'Timezones', 'ngProgress', '$q', '$stateParams', IndexBranchController]);
+angular.module('inventoryManagementApp').controller('IndexBranchController', ['$scope', '$state', '$timeout', 'Branches', 'Timezones', 'ngProgress', '$q', '$stateParams', IndexBranchController]);
+angular.module('reservationManagementApp').controller('IndexBranchController', ['$scope', '$state', '$timeout', 'Branches', 'Timezones', 'ngProgress', '$q', '$stateParams', IndexBranchController]);

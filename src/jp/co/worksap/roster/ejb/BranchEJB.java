@@ -63,9 +63,9 @@ public class BranchEJB {
 		return res.getResultList();
 	}
 
-	public int deleteBranch(int id) {
-		TypedQuery<Branch> res = em.createNamedQuery("deleteBranch", Branch.class)
-				.setParameter("id", id);
-		return res.executeUpdate();
+	public void deleteBranch(int id) {
+		Branch b = findBranch(id);
+		b.setDeleted(true);
+		em.persist(b);
 	}
 }

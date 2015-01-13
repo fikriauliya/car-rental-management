@@ -22,7 +22,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name="T_BRANCH")
 @Entity
 @NamedQueries({
-	@NamedQuery(name="findBranches", query="SELECT u FROM Branch u ORDER BY u.name"),
+	@NamedQuery(name="findBranches", query="SELECT u FROM Branch u WHERE u.isDeleted = FALSE ORDER BY u.name"),
 	@NamedQuery(name="findBranch", query="SELECT u FROM Branch u WHERE u.id = :id"),
 	@NamedQuery(name="deleteBranch", query="DELETE FROM Branch u WHERE u.id = :id"),
 })
@@ -67,6 +67,8 @@ public class Branch {
 
 	@Length(max=50)
 	private String currencySymbol;
+
+	private boolean isDeleted;
 
 	public int getId() {
 		return id;
@@ -170,6 +172,14 @@ public class Branch {
 
 	public void setOverduePenaltyPercentage(BigDecimal overduePenaltyPercentage) {
 		this.overduePenaltyPercentage = overduePenaltyPercentage;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 
 }

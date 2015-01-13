@@ -10,6 +10,11 @@
     <b>Overdue penalty percentage:</b> {{selectedBranch.overduePenaltyPercentage}}<br/>
 
     <br/>
+    <button class="btn btn-xs btn-danger" style="margin-left:5px" ng-click="deleteBranch()">
+      <span class="glyphicon glyphicon-trash"/>
+      Delete
+    </button>
+
     <button class="btn btn-xs btn-warning" style="margin-left:5px" ng-click="editBranch()">
       <span class="glyphicon glyphicon-edit"/>
       Edit
