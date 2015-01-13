@@ -204,7 +204,8 @@ public class ReservationService {
 
 		EmailServices.sendEmail(customer.getUser().getEmail(), "CRM+ Booking confirmation",
 				"<h2>Your invoice</h2>" +
-				"<p>Thank you for your reservation. Your reservation id is: " + timestamp + "</p>");
+				"<p>Thank you for your reservation. Your reservation id is: " + timestamp + "</p>" +
+				"<p>You could check your reservations detail here: <a href='http://localhost:9090/CarRentalManagement/customers/check-reservation.jsf'>here</a></p>");
 
 		String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
 	    String basePath = request.getContextPath();
