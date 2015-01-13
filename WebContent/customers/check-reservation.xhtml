@@ -39,7 +39,7 @@
                   <td>
                     {{group.data[0].customer.user.lastName}}
                     <div style="margin-top:10px" align="right">
-                      <b>{{totalPrice(group.data)}}</b>
+                      <b>{{group.data[0].inventory.owner.currencySymbol}} {{totalPrice(group.data)}}</b>
                     </div>
                   </td>
                   <td>
@@ -67,7 +67,7 @@
                 <td data-title="'Firstname'" sortable="'customer.user.firstName'">
                 </td>
                 <td data-title="'Lastname'" sortable="'customer.user.lastName'" align="right">
-                  {{event.inventoryFee}}
+                  {{event.inventory.owner.currencySymbol}} {{event.inventoryFee}}
                 </td>
                 <td data-title="'From'" sortable="'start'"></td>
                 <td data-title="'To'" sortable="'end'"></td>

@@ -4,7 +4,8 @@
     <b>Timezone:</b> {{selectedBranch.timezone}}<br/>
     <b>Opening hour:</b> {{selectedBranch.openingHour}}<br/>
     <b>Closing hour:</b> {{selectedBranch.closingHour}}<br/>
-    <b>Driver fee:</b> {{selectedBranch.driverFee}}<br/>
+    <b>Currency symbol:</b> {{selectedBranch.currencySymbol}}<br/>
+    <b>Driver fee per day:</b> {{selectedBranch.driverFee}}<br/>
     <b>Buffer hour:</b> {{selectedBranch.bufferHour}}<br/>
     <b>Overdue penalty percentage:</b> {{selectedBranch.overduePenaltyPercentage}}<br/>
     <hr/>
@@ -46,7 +47,7 @@
                 <td>
                   {{group.data[0].customer.user.lastName}}
                   <div style="margin-top:10px" align="right">
-                    <b>{{totalPrice(group.data)}}</b>
+                    <b>{{selectedBranch.currencySymbol}} {{totalPrice(group.data)}}</b>
                   </div>
                 </td>
                 <td>
@@ -76,7 +77,7 @@
                 <span class="label label-warning" ng-if="event.inventory.status == 'RETURNED'">{{event.inventory.status}}</span>
               </td>
               <td data-title="'Lastname'" sortable="'customer.user.lastName'" align="right">
-                {{event.inventoryFee}}
+                {{selectedBranch.currencySymbol}} {{event.inventoryFee}}
               </td>
               <td data-title="'From'" sortable="'start'"></td>
               <td data-title="'To'" sortable="'end'"></td>

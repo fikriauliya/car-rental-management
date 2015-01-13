@@ -65,8 +65,19 @@ public class Branch {
 	@JoinTable(name = "T_BRANCH_USER")
 	private List<User> users;
 
+	@Length(max=50)
+	private String currencySymbol;
+
 	public int getId() {
 		return id;
+	}
+
+	public String getCurrencySymbol() {
+		return currencySymbol;
+	}
+
+	public void setCurrencySymbol(String currencySymbol) {
+		this.currencySymbol = currencySymbol;
 	}
 
 	public void setId(int id) {

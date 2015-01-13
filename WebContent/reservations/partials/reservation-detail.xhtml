@@ -158,17 +158,17 @@
       <tbody>
         <tr ng-repeat="reservation in reservations">
           <td>{{reservation.inventory.name}}</td>
-          <td>{{reservation.inventoryFee}}</td>
+          <td align="right">{{selectedBranch.currencySymbol}} {{reservation.inventoryFee}}</td>
         </tr>
         <tr ng-if="reservations[0].assignedDriver">
           <td>Driver</td>
-          <td>{{reservations[0].driverFee}}</td>
+          <td align="right">{{selectedBranch.currencySymbol}} {{reservations[0].driverFee}}</td>
         </tr>
       </tbody>
       <tfoot>
         <tr>
           <td><b>Total</b></td>
-          <td><b>{{totalPrice(reservations)}}</b></td>
+          <td align="right"><b>{{selectedBranch.currencySymbol}} {{totalPrice(reservations)}}</b></td>
         </tr>
       </tfoot>
     </table>

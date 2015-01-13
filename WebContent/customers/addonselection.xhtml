@@ -40,7 +40,7 @@
                     {{inventory.minWeight}}<br/>
                     <b>Maximum weight (kg): </b>
                     {{inventory.maxWeight}}<br/>
-                    <h3><span class="label label-success">{{inventory.totalPrice}}</span></h3>
+                    <h3><span class="label label-success">{{currencySymbol}} {{inventory.totalPrice}}</span></h3>
                   </div>
                   <div class="col col-md-2">
                     <button ng-click="addInventory(inventory)" class="btn btn-primary btn-sm" ng-if="!isInSelectedInventory(inventory)">
@@ -102,7 +102,7 @@
                     <b>Screen size (mm): </b>
                     {{inventory.screenSize ? "Yes" : "No"}}<br/>
 
-                    <h3><span class="label label-success">{{inventory.totalPrice}}</span></h3>
+                    <h3><span class="label label-success">{{currencySymbol}} {{inventory.totalPrice}}</span></h3>
                   </div>
                   <div class="col col-md-2">
                     <button ng-click="addInventory(inventory)" class="btn btn-primary btn-sm" ng-if="!isInSelectedInventory(inventory)">
@@ -126,7 +126,7 @@
         <div class="col-md-3">
           <h3>Hire driver option</h3>
           <input type="checkbox" ng-model="newReservation.driverRequired" />
-          I need a driver (additional {{driverFee}})
+          I need a driver (additional {{currencySymbol}} {{driverFee}})
 
           <hr/>
           <div class="alert alert-danger" ng-if="errors">
@@ -211,7 +211,7 @@
         <div class="col-md-2 well">
           <h4>Selected car</h4>
           Name: <b>{{selectedCar.name}}</b><br/>
-          Price: <b>{{selectedCar.totalPrice}}</b>
+          Price: <b>{{currencySymbol}} {{selectedCar.totalPrice}}</b>
           <hr/>
 
           <h4>Itenary</h4>
@@ -223,7 +223,7 @@
           <ul ng-if = "selectedInventories.length > 0">
             <li ng-repeat="inventory in selectedInventories track by inventory.id">
               Name: <b>{{inventory.name}}</b><br/>
-              Price: <b>{{inventory.totalPrice}}</b>
+              Price: <b>{{currencySymbol}} {{inventory.totalPrice}}</b>
             </li>
           </ul>
           <div ng-if = "selectedInventories.length == 0">
@@ -238,7 +238,7 @@
             <hr/>
           </div>
           <h4>Total:</h4>
-             <h3><span class="label label-success">{{calculateTotal(selectedCar, selectedInventories, newReservation.driverRequired)}}</span></h3>
+             <h3><span class="label label-success">{{currencySymbol}} {{calculateTotal(selectedCar, selectedInventories, newReservation.driverRequired)}}</span></h3>
         </div>
       </div>
     </div>

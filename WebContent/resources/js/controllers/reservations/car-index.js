@@ -194,6 +194,7 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 		$cookieStore.put('timezone', $scope.selectedBranch.timezone);
 		$cookieStore.put('startTime', TimezoneConverter.convertToTargetTimeZoneTime($scope.search.startTime, $scope.selectedBranch.timezone));
 		$cookieStore.put('endTime', TimezoneConverter.convertToTargetTimeZoneTime($scope.search.endTime, $scope.selectedBranch.timezone));
+		$cookieStore.put('currencySymbol', $scope.selectedBranch.currencySymbol);
 
 		if (!isLoggedIn) {
 			window.location="customers/registration.jsf";

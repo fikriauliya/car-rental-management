@@ -31,6 +31,7 @@ public class BranchEJB {
 		b.setDriverFee(branch.getDriverFee());
 		b.setBufferHour(branch.getBufferHour());
 		b.setOverduePenaltyPercentage(branch.getOverduePenaltyPercentage());
+		b.setCurrencySymbol(branch.getCurrencySymbol());
 		em.persist(b);
 	}
 

@@ -5,6 +5,7 @@
         <div class="col col-md-3 well">
           <b>Address:</b> {{selectedBranch.address}}<br/>
           <b>Timezone:</b> {{selectedBranch.timezone}}<br/>
+          <b>Currency:</b> {{selectedBranch.currencySymbol}}<br/>
           <b>Opening hour:</b> {{selectedBranch.openingHour}}<br/>
           <b>Closing hour:</b> {{selectedBranch.closingHour}}
         </div>
@@ -71,7 +72,7 @@
       </slide>
     </carousel>
   </div>
-  <div class="col col-md-8">
+  <div class="col col-md-7">
     <div class="col col-md-12"><h3>{{car.name}}</h4><br/></div>
     <div class="col col-md-6">
       <div class="row">
@@ -138,8 +139,8 @@
       </div>
     </div>
   </div>
-  <div class="col col-md-1">
-    <h1><span class="label label-success">{{car.totalPrice}}</span></h1>
+  <div class="col col-md-2">
+    <h2><span class="label label-success">{{selectedBranch.currencySymbol}} {{car.totalPrice}}</span></h2>
     <br/>
     <a ng-click="reserve(car)" class="btn btn-primary btn-md">
       <span class="glyphicon glyphicon-shopping-cart"/>

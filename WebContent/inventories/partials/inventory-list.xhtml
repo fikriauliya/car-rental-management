@@ -19,7 +19,7 @@
             <td data-title="'Name'" sortable="'name'" ng-class="{highlighted: highlightInventoryId == data.id}">
               <a ui-sref="branch.detail({branchId: selectedBranch.id, inventoryId: data.id, entity: 'car'})">{{data.name}}</a>
             </td>
-            <td data-title="'Price'" sortable="'price'" ng-class="{highlighted: highlightInventoryId == data.id}">{{data.price}}</td>
+            <td data-title="'Price'" sortable="'price'" ng-class="{highlighted: highlightInventoryId == data.id}" align="right">{{selectedBranch.currencySymbol}} {{data.price}}</td>
             <td data-title="'Status'" sortable="'status'" ng-class="{highlighted: highlightInventoryId == data.id}">
               <span class="label label-primary" ng-if="data.status == 'AVAILABLE'">{{data.status}}</span>
               <span class="label label-success" ng-if="data.status == 'RENTED'">{{data.status}}</span>
@@ -58,7 +58,7 @@
             <td data-title="'Name'" sortable="'name'" ng-class="{highlighted: highlightInventoryId == data.id}">
               <a ui-sref="branch.detail({branchId: selectedBranch.id, inventoryId: data.id, entity: 'baby_seat'})">{{data.name}}</a>
             </td>
-            <td data-title="'Price'" sortable="'price'" ng-class="{highlighted: highlightInventoryId == data.id}">{{data.price}}</td>
+            <td data-title="'Price'" sortable="'price'" ng-class="{highlighted: highlightInventoryId == data.id}" align="right">{{selectedBranch.currencySymbol}} {{data.price}}</td>
             <td data-title="'Status'" sortable="'status'" ng-class="{highlighted: highlightInventoryId == data.id}">
               <span class="label label-primary" ng-if="data.status == 'AVAILABLE'">{{data.status}}</span>
               <span class="label label-success" ng-if="data.status == 'RENTED'">{{data.status}}</span>
@@ -97,7 +97,7 @@
             <td data-title="'Name'" sortable="'name'" ng-class="{highlighted: highlightInventoryId == data.id}">
               <a ui-sref="branch.detail({branchId: selectedBranch.id, inventoryId: data.id, entity: 'gps'})">{{data.name}}</a>
             </td>
-            <td data-title="'Price'" sortable="'price'" ng-class="{highlighted: highlightInventoryId == data.id}">{{data.price}}</td>
+            <td data-title="'Price'" sortable="'price'" ng-class="{highlighted: highlightInventoryId == data.id}" align="right">{{selectedBranch.currencySymbol}} {{data.price}}</td>
             <td data-title="'Status'" sortable="'status'" ng-class="{highlighted: highlightInventoryId == data.id}">
               <span class="label label-primary" ng-if="data.status == 'AVAILABLE'">{{data.status}}</span>
               <span class="label label-success" ng-if="data.status == 'RENTED'">{{data.status}}</span>

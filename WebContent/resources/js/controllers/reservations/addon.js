@@ -22,6 +22,7 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 		if ($scope.progress == 0) ngProgress.complete();
 	};
 
+	$scope.currencySymbol = $cookieStore.get('currencySymbol');
 	$scope.selectedCar = $cookieStore.get('selectedCar');
 	$scope.timezone = $cookieStore.get('timezone');
 	$scope.startTime = TimezoneConverter.convertToLocalTimeZoneTime($cookieStore.get('startTime'), $scope.timezone);
