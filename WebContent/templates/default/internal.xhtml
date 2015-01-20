@@ -8,16 +8,20 @@
 
 <ui:composition template="/templates/default/main.xhtml">
   <ui:define name="navbar-header">
-    <a class="navbar-brand" href="#{request.contextPath}/internal-index.jsf">CRMS+</a>
+    <h:outputLink rendered="#{request.isUserInRole('employee')}" class="navbar-brand" value="#{request.contextPath}/internal-index.jsf">A+ Car Rental</h:outputLink>
+    <h:outputLink rendered="#{!request.isUserInRole('employee')}" class="navbar-brand" value="#{request.contextPath}">A+ Car Rental</h:outputLink>
+
   </ui:define>
   <ui:define name="navbar">
-    <li><a href="#{request.contextPath}/users/index.jsf">Employee</a></li>
-    <li><a href="#{request.contextPath}/branches/index.jsf">Branch</a></li>
-    <li><a href="#{request.contextPath}/inventories/index.jsf">Inventories</a></li>
-    <li><a href="#{request.contextPath}/reservations/index.jsf">Reservations</a></li>
-    <li><a href="#{request.contextPath}/statistics/index.jsf">Statistics</a></li>
-    <li><a href="#{request.contextPath}/maps/index.jsf">Map</a></li>
-    <li><a href="#{request.contextPath}/users/agenda.jsf?userId=#{userSessionController.userName}">My Agenda</a></li>
+    <li><h:outputLink rendered="#{!request.isUserInRole('employee')}" value="#{request.contextPath}/customers/check-reservation.jsf">Check my reservations</h:outputLink></li>
+
+    <li><h:outputLink rendered="#{request.isUserInRole('employee')}" value="#{request.contextPath}/users/index.jsf">Employee</h:outputLink></li>
+    <li><h:outputLink rendered="#{request.isUserInRole('employee')}" value="#{request.contextPath}/branches/index.jsf">Branch</h:outputLink></li>
+    <li><h:outputLink rendered="#{request.isUserInRole('employee')}" value="#{request.contextPath}/inventories/index.jsf">Inventories</h:outputLink></li>
+    <li><h:outputLink rendered="#{request.isUserInRole('employee')}" value="#{request.contextPath}/reservations/index.jsf">Reservations</h:outputLink></li>
+    <li><h:outputLink rendered="#{request.isUserInRole('employee')}" value="#{request.contextPath}/statistics/index.jsf">Statistics</h:outputLink></li>
+    <li><h:outputLink rendered="#{request.isUserInRole('employee')}" value="#{request.contextPath}/maps/index.jsf">Map</h:outputLink></li>
+    <li><h:outputLink rendered="#{request.isUserInRole('employee')}" value="#{request.contextPath}/users/agenda.jsf?userId=#{userSessionController.userName}">My Agenda</h:outputLink></li>
   </ui:define>
   <ui:define name="header">
     <ui:insert name="header" />
