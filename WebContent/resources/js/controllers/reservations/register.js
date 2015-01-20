@@ -1,6 +1,6 @@
 reservationManagementApp = angular.module('reservationManagementApp');
-reservationManagementApp.controller('CreateCustomerController', ['$scope', '$timeout', 'Customers', 'ngProgress',
-  function($scope, $timeout, Customers, ngProgress) {
+reservationManagementApp.controller('CreateCustomerController', ['$scope', '$timeout', 'Customers', 'ngProgress', '$cookieStore',
+  function($scope, $timeout, Customers, ngProgress, $cookieStore) {
 	$scope.errors = [];
 	$scope.info = "";
 	$scope.progress = 0;
@@ -32,6 +32,10 @@ reservationManagementApp.controller('CreateCustomerController', ['$scope', '$tim
 
 	$scope.createCustomer = function() {
 		$scope.startProgress();
+		if (isAdmin) {
+			$cookieStore.put('reservedForUserId', $scope.newCustomer.id);
+		}
+
 		$scope.newCustomer.$save({},
 			function(data, header) {
 				window.location = "addonselection.jsf";
@@ -45,7 +49,14 @@ reservationManagementApp.controller('CreateCustomerController', ['$scope', '$tim
 	   );
 	};
 
-	if (isLoggedIn) {
+	$scope.generatePassword = function() {
+		$scope.newCustomer.password = Math.random().toString(36).slice(-10);
+		console.log($scope.newCustomer.password);
+	};
+
+	$scope.isAdmin = isAdmin;
+
+	if (isLoggedIn && !isAdmin) {
 		window.location = "addonselection.jsf";
 	}
 }]);

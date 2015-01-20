@@ -13,6 +13,7 @@ public class ReservationInfo {
 	private boolean isDriverRequired;
 	private boolean cardPayment = true;
 	private int branchId;
+	private String reservedForUserId;
 
 	public boolean isCardPayment() {
 		return cardPayment;
@@ -73,6 +74,12 @@ public class ReservationInfo {
 	}
 	public void setBranchId(int branchId) {
 		this.branchId = branchId;
+	}
+	public String getReservedForUserId() {
+		return reservedForUserId;
+	}
+	public void setReservedForUserId(String reservedForUserId) {
+		this.reservedForUserId = reservedForUserId;
 	}
 
 }

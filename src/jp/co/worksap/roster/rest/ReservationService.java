@@ -112,7 +112,13 @@ public class ReservationService {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Reservation create(ReservationInfo reservationInfo, @Context SecurityContext context, @Context HttpServletRequest request) {
 		//recheck inventory availability
-		String userId = context.getUserPrincipal().getName();
+		String userId;
+		if (reservationInfo.getReservedForUserId() != null) {
+			userId = reservationInfo.getReservedForUserId();
+		} else {
+			userId = context.getUserPrincipal().getName();
+		}
+
 		long timestamp = (new Date()).getTime();
 		Customer customer = customerEJB.findCustomerByUserId(userId);
 		Reservation firstCreatedReservation = null;

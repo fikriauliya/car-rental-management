@@ -32,6 +32,13 @@
               </div>
             </div>
             <div class="form-group">
+              <label class="col-sm-3 control-label">Password</label>
+              <div class="col-sm-9">
+                <input type="password" class="form-control" id="password" ng-model="newCustomer.password"/>
+                <button class="btn btn-primary btn-xs" style="margin-top:10px" ng-click="generatePassword()">Generate</button>
+              </div>
+            </div>
+            <div class="form-group">
               <label class="col-sm-3 control-label">First name</label>
               <div class="col-sm-9">
                 <input class="form-control" id="firstName" ng-model="newCustomer.firstName"/>
@@ -53,12 +60,6 @@
               <label class="col-sm-3 control-label">Phone</label>
               <div class="col-sm-9">
                 <input class="form-control" id="phone" ng-model="newCustomer.phone"/>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-3 control-label">Password</label>
-              <div class="col-sm-9">
-                <input type="password" class="form-control" id="password" ng-model="newCustomer.password"/>
               </div>
             </div>
             <div class="form-group">
@@ -98,19 +99,19 @@
             </div>
           </form>
         </div>
-        <div class="col col-md-8">
+        <div class="col col-md-8" ng-if="!isAdmin">
           <h3>Existing customer</h3>
           <hr/>
           <h:form class="form-horizontal">
             <h:messages globalOnly="true" />
             <div class="form-group">
-              <label class="col-sm-2 control-label">Username:</label>
+              <label class="col-sm-2 control-label">Username</label>
               <div class="col-sm-4">
                 <h:inputText id="username" value="#{auth.username}" autocomplete="off" size="20" class="form-control" />
               </div>
             </div>
             <div class="form-group">
-              <label class="col-sm-2 control-label">Password:</label>
+              <label class="col-sm-2 control-label">Password</label>
               <div class="col-sm-4">
                 <h:inputSecret id="password" value="#{auth.password}" autocomplete="off" size="20" class="form-control" />
               </div>

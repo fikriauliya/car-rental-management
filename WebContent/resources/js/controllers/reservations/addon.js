@@ -27,6 +27,7 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 	$scope.timezone = $cookieStore.get('timezone');
 	$scope.startTime = TimezoneConverter.convertToLocalTimeZoneTime($cookieStore.get('startTime'), $scope.timezone);
 	$scope.endTime = TimezoneConverter.convertToLocalTimeZoneTime($cookieStore.get('endTime'), $scope.timezone);
+	$scope.reservedForUserId = $cookieStore.get('reservedForUserId');
 
 	$scope.driverFee = $cookieStore.get('driverFee') * (($scope.endTime.getTime() - $scope.startTime.getTime() + 1) / (24 * 60 * 60 * 1000));
 	$scope.selectedCar.totalPrice = $scope.selectedCar.price * (($scope.endTime.getTime() - $scope.startTime.getTime() + 1) / (60 * 60 * 1000));
@@ -140,11 +141,16 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 		$scope.newReservation.endTime = TimezoneConverter.convertToTargetTimeZoneTime($scope.endTime, $scope.timezone);
 		$scope.newReservation.cardPayment = cardPayment;
 		$scope.newReservation.branchId = $scope.selectedCar.owner.id;
+		if ($scope.reservedForUserId) {
+			$scope.newReservation.reservedForUserId = $scope.reservedForUserId;
+		}
 
 		$scope.newReservation.$save(
 			function(d, h) {
 				$scope.clearNotification();
 				console.log(d);
+				$scope.clearCookies();
+
 				window.location = "confirmation.jsf#?id=" + d.groupId;
 
 				$scope.endProgress();
@@ -155,6 +161,16 @@ reservationManagementApp.controller('AddOnController', ['$scope', '$timeout', 'C
 				$scope.endProgress();
 			}
 		);
+	};
+
+	$scope.clearCookies = function() {
+		$cookieStore.remove('currencySymbol');
+		$cookieStore.remove('selectedCar');
+		$cookieStore.remove('timezone');
+		$cookieStore.remove('startTime');
+		$cookieStore.remove('endTime');
+		$cookieStore.remove('reservedForUserId');
+		$cookieStore.remove('driverFee');
 	};
 
 	if (!isLoggedIn) {

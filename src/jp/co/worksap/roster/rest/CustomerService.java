@@ -19,6 +19,7 @@ import jp.co.worksap.roster.ejb.UserEJB;
 import jp.co.worksap.roster.entity.Customer;
 import jp.co.worksap.roster.entity.User;
 import jp.co.worksap.roster.rest.modelview.CustomerInfo;
+import jp.co.worksap.roster.utilities.EmailServices;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -34,7 +35,7 @@ public class CustomerService {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response create(CustomerInfo c, @Context HttpServletRequest request) {
+	public User create(CustomerInfo c, @Context HttpServletRequest request) {
 		User u = new User();
 		u.setAttached(false);
 		u.setEmail(c.getEmail());
@@ -56,11 +57,22 @@ public class CustomerService {
 
 		customerEJB.createCustomer(cust);
 		try {
-			request.login(c.getId(), c.getPassword());
+			if (request.getUserPrincipal() != null) {
+
+			} else {
+				request.login(c.getId(), c.getPassword());
+			}
 		} catch (ServletException e) {
 			throw new WebServiceException("Can't login");
 		}
 
-		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
+		EmailServices.sendEmail(u.getEmail(), "Your log in information",
+				"<h2>Your log in credential</h2>" +
+				"<p>Thank you for your registering with us. </p>" +
+				"<p>This is your login credential information. Please keep this information secured.</p>" +
+				"<p>Username: " + c.getId() + "<br/>" +
+				"Password: " + c.getPassword() + "</p>");
+
+		return u;
 	}
 }
