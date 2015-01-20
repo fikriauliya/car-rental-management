@@ -1,9 +1,10 @@
 reservationManagementApp = angular.module('reservationManagementApp');
-reservationManagementApp.controller('CreateCustomerController', ['$scope', '$timeout', 'Customers', 'ngProgress', '$cookieStore',
-  function($scope, $timeout, Customers, ngProgress, $cookieStore) {
+reservationManagementApp.controller('CreateCustomerController', ['$scope', '$timeout', 'Customers', 'ngProgress', '$cookieStore', 'Search',
+  function($scope, $timeout, Customers, ngProgress, $cookieStore, Search) {
 	$scope.errors = [];
 	$scope.info = "";
 	$scope.progress = 0;
+	$scope.searchCustomer = {id: ""};
 
 	$scope.clearNotification = function() {
 		$scope.errors = [];
@@ -47,6 +48,22 @@ reservationManagementApp.controller('CreateCustomerController', ['$scope', '$tim
 				$scope.endProgress();
 			}
 	   );
+	};
+
+	$scope.selectCustomer = function() {
+		$scope.startProgress();
+
+		console.log($scope.searchCustomer.id);
+		Search.get({entity: 'customer', id: $scope.searchCustomer.id}, function() {
+			$cookieStore.put('reservedForUserId', $scope.searchCustomer.id);
+			window.location = "addonselection.jsf";
+
+			$scope.endProgress();
+		}, function() {
+			$scope.errors = ["User " + $scope.searchCustomer.id + " not found"];
+
+			$scope.endProgress();
+		});
 	};
 
 	$scope.generatePassword = function() {

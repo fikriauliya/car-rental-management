@@ -13,14 +13,14 @@
   <ui:define name="content">
     <div ng-app="reservationManagementApp" ng-controller="CreateCustomerController">
       <div class="row">
+        <div class="alert alert-danger" ng-if="errors">
+          <ul>
+            <li ng-repeat="error in errors">{{error}}</li>
+          </ul>
+        </div>
         <div class="col-md-4">
           <h3>New customer</h3>
           <hr/>
-          <div class="alert alert-danger" ng-if="errors">
-            <ul>
-              <li ng-repeat="error in errors">{{error}}</li>
-            </ul>
-          </div>
           <div class="alert alert-info" ng-if="info">
             {{info}}
           </div>
@@ -35,7 +35,7 @@
               <label class="col-sm-3 control-label">Password</label>
               <div class="col-sm-9">
                 <input type="password" class="form-control" id="password" ng-model="newCustomer.password"/>
-                <button class="btn btn-primary btn-xs" style="margin-top:10px" ng-click="generatePassword()">Generate</button>
+                <button class="btn btn-success btn-xs" style="margin-top:10px" ng-click="generatePassword()">Generate</button>
               </div>
             </div>
             <div class="form-group">
@@ -95,6 +95,23 @@
             <div class="form-group">
               <div class="col-sm-offset-3 col-sm-4">
                 <button class="btn btn-primary btn-sm" ng-click="createCustomer()">Register</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="col col-md-8" ng-if="isAdmin">
+          <h3>Existing customer</h3>
+          <hr/>
+          <form class="form-horizontal">
+            <div class="form-group">
+              <label class="col-sm-2 control-label">Username</label>
+              <div class="col-sm-4">
+                <input class="form-control" id="id" ng-model="searchCustomer.id"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-4">
+                <button class="btn btn-primary btn-sm" ng-click="selectCustomer()">Select</button>
               </div>
             </div>
           </form>

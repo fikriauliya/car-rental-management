@@ -132,7 +132,7 @@ inventoryManagementApp.config(['$stateProvider', '$urlRouterProvider', function(
 
 var reservationManagementApp = angular.module('reservationManagementApp', ['customerServices', 'branchServices', 'timezoneServices', 'imageServices',
                                'inventoryServices', 'ui.bootstrap', 'ngTable', 'ui.calendar', 'ngProgress', 'ui.router',
-                               'ui.bootstrap.datetimepicker', 'ngCookies', 'reservationServices']);
+                               'ui.bootstrap.datetimepicker', 'ngCookies', 'reservationServices', 'searchServices']);
 reservationManagementApp.factory('myHttpInterceptor', ['$q', httpInterceptor]);
 
 reservationManagementApp.config(function($provide, $httpProvider, $locationProvider) {
