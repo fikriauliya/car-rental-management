@@ -62,9 +62,13 @@
   <div class="col col-md-12">
     <i>Search result for period: {{searchResult.startTime | date:'medium'}} to {{searchResult.endTime | date:'medium'}}</i>
     <br/><br/>
+    <input style='width:500px; float:left; margin-right:10px' type="text" placeholder="Car name" class="form-control" ng-model="filterText.value"/>
+    <input style='width:150px; float:left; margin-right:10px' type="text" placeholder="Minimum price" class="form-control" ng-model="filterText.minPrice"/>
+    <input style='width:150px; float:left; margin-right:10px' type="text" placeholder="Maximum price" class="form-control" ng-model="filterText.maxPrice"/>
+    <button class="btn btn-warning" ng-click="resetFilterText()">Clear</button>
   </div>
 </div>
-<div class="row" ng-repeat="car in carInventories" ng-if="carInventories.length > 0">
+<div class="row" ng-repeat="car in carInventories | filter:{name: filterText.value} | filter:{totalPrice:filterText.minPrice}:minPriceComparator | filter:{totalPrice:filterText.maxPrice}:maxPriceComparator" ng-if="carInventories.length > 0">
   <div class="col col-md-3">
     <carousel>
       <slide ng-repeat="slide in car.slides" active="slide.active">

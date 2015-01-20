@@ -9,7 +9,7 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
      ];
 
 	$scope.selectedInventory = {};
-
+	$scope.filterText = {value: "", minPrice: "", maxPrice: ""};
 	$scope.carInventories = [];
 
 	if ($stateParams.branchId) {
@@ -34,6 +34,24 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 			};
 		});
 	}
+
+	$scope.resetFilterText = function() {
+		$scope.filterText = {value: "", minPrice: "", maxPrice: ""};
+	}
+
+	$scope.minPriceComparator = function (actual, expected) {
+		if (expected) {
+			return actual >= expected;
+		}
+		return true;
+    };
+
+    $scope.maxPriceComparator = function (actual, expected) {
+    	if (expected) {
+    		return actual <= expected;
+    	}
+    	return true;
+    };
 
 	$scope.carLoaded = false;
 
