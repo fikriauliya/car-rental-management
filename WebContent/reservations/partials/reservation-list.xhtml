@@ -18,7 +18,15 @@
   <div class="col col-md-7">
     <div class="row">
       <div class="col-sm-12">
-        <input type="text" placeholder="Search (type inventory name/customer name/reservation id here)" class="form-control" ng-model="filterText" ng-change="filterReservation()"/>
+        <input style='width:90%; float:left; margin-right:10px' type="text" placeholder="Search (type inventory name/customer name/reservation id here)" class="form-control" ng-model="filterText" ng-change="filterReservation()"/>
+        <button class="btn btn-warning" ng-click="filterText=''; filterReservation()">Clear</button>
+      </div>
+      <div class="col-sm-12" style="margin-top:10px">
+        Quick filter:
+        <button class="btn btn-primary btn-xs" ng-click="filterText='SCHEDULED'; filterReservation()">SCHEDULED</button>
+        <button class="btn btn-success btn-xs" ng-click="filterText='STARTED'; filterReservation()">STARTED</button>
+        <button class="btn btn-danger btn-xs" ng-click="filterText='CANCELED'; filterReservation()">CANCELED</button>
+        <button class="btn btn-warning btn-xs" ng-click="filterText='FINISHED'; filterReservation()">FINISHED</button>
       </div>
     </div>
     <div class="row">
@@ -53,8 +61,8 @@
                 <td>
                   {{group.data[0].start | date:'medium'}}
                   <div style="margin-top:10px; margin-bottom:5px">
-                    <span class="label label-danger" ng-if="!group.data[0].paid">Unpaid</span>
-                    <span class="label label-success" ng-if="group.data[0].paid">Paid</span>
+                    <span class="label label-danger" ng-if="!group.data[0].paid">UNPAID</span>
+                    <span class="label label-success" ng-if="group.data[0].paid">PAID</span>
 
                     <span class="label label-danger" ng-if="group.data[0].overdueFee > 0 && !group.data[0].overduePaid">Overdue Unpaid</span>
                     <span class="label label-success" ng-if="group.data[0].overdueFee > 0 && group.data[0].overduePaid">Overdue Paid</span>

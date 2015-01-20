@@ -29,19 +29,6 @@ var IndexReservationController = function($scope, $state, $stateParams, $filter,
 
 	        	$scope.detailedReservations = d;
 
-	        	var d2 = _.groupBy(d, 'groupId');
-	        	var res = [];
-
-	        	_.each(d2, function(d) {
-	        		var newRes = {};
-	        		newRes.title = d[0].customer.user.firstName;
-	        		newRes.start = d[0].startTime;
-	        		newRes.end = d[0].endTime;
-	        		newRes.groupId = d[0].groupId;
-	        		res.push(newRes);
-	        	});
-
-	        	$scope.reservations[0] = res;
 	        	$scope.tableParams.reload();
 
 	        	$scope.endProgress();
@@ -52,6 +39,22 @@ var IndexReservationController = function($scope, $state, $stateParams, $filter,
 			$scope.endProgress();
 		});
 	};
+
+	$scope.refreshCalendar = function(d) {
+		var d2 = _.groupBy(d, 'groupId');
+    	var res = [];
+
+    	_.each(d2, function(d) {
+    		var newRes = {};
+    		newRes.title = d[0].customer.user.firstName;
+    		newRes.start = d[0].startTime;
+    		newRes.end = d[0].endTime;
+    		newRes.groupId = d[0].groupId;
+    		res.push(newRes);
+    	});
+
+    	$scope.reservations[0] = res;
+	}
 
 	$scope.tableParams = new ngTableParams(
 	{
@@ -68,6 +71,8 @@ var IndexReservationController = function($scope, $state, $stateParams, $filter,
 	        var orderedData = params.sorting() ? $filter('orderBy')(filteredData, params.orderBy()) : filteredData;
 
 	        params.total(orderedData.length);
+
+	        $scope.refreshCalendar(orderedData);
 	        $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 	    }
 	});
