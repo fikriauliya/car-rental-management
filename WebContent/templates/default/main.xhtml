@@ -85,6 +85,9 @@
               <h:link class="btn btn-warning btn-sm" outcome="/passwords/change.jsf" style="margin-right:5px">Change Password</h:link>
               <h:commandButton value="Logout" id="logout" action="#{userSessionController.logout}" class="btn btn-danger btn-sm"/>
             </h:form>
+            <h:form rendered="#{!userSessionController.userLoggedIn}"  style="margin-top:10px">
+              <h:link class="btn btn-success btn-sm" outcome="/login.jsf" style="margin-right:5px">Login</h:link>
+            </h:form>
           </li>
         </ul>
       </div>
