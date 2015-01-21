@@ -8,8 +8,21 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
       	{id: 'PLUG_IN_HYBRID', name: 'Plug-in hybrid'}
      ];
 
+	$scope.driverSide = [
+	    {id: 'Any driver side', value: "null"},
+	    {id: 'Left', value: "left"},
+	    {id: 'Right', value: "right"},
+	];
+
 	$scope.selectedInventory = {};
-	$scope.filterText = {value: "", minPrice: "", maxPrice: ""};
+	$scope.filterText = {
+		value: "",
+		minPrice: "",
+		maxPrice: "",
+		minSeat: "",
+		maxSeat: "",
+		driverSide: {value: "null"},
+		transmission: ""};
 	$scope.carInventories = [];
 
 	if ($stateParams.branchId) {
@@ -36,22 +49,35 @@ var IndexCarController = function($scope, $state, $stateParams, $filter, $timeou
 	}
 
 	$scope.resetFilterText = function() {
-		$scope.filterText = {value: "", minPrice: "", maxPrice: ""};
+		$scope.filterText = {
+				value: "",
+				minPrice: "",
+				maxPrice: "",
+				minSeat: "",
+				maxSeat: "",
+				driverSide: {value: "null"},
+				transmission: ""};
 	}
 
-	$scope.minPriceComparator = function (actual, expected) {
+	$scope.minComparator = function (actual, expected) {
 		if (expected) {
 			return actual >= expected;
 		}
 		return true;
     };
 
-    $scope.maxPriceComparator = function (actual, expected) {
+    $scope.maxComparator = function (actual, expected) {
     	if (expected) {
     		return actual <= expected;
     	}
     	return true;
     };
+
+    $scope.driverSideComparator = function (actual, expected) {
+    	if (expected == "left") return actual == false;
+    	if (expected == "right") return actual == true;
+    	return true;
+    }
 
 	$scope.carLoaded = false;
 

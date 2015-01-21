@@ -62,13 +62,17 @@
   <div class="col col-md-12">
     <i>Search result for period: {{searchResult.startTime | date:'medium'}} to {{searchResult.endTime | date:'medium'}}</i>
     <br/><br/>
-    <input style='width:500px; float:left; margin-right:10px' type="text" placeholder="Car name" class="form-control" ng-model="filterText.value"/>
-    <input style='width:150px; float:left; margin-right:10px' type="text" placeholder="Minimum price" class="form-control" ng-model="filterText.minPrice"/>
-    <input style='width:150px; float:left; margin-right:10px' type="text" placeholder="Maximum price" class="form-control" ng-model="filterText.maxPrice"/>
+    <input style='width:300px; float:left; margin-right:10px' type="text" placeholder="Car name" class="form-control" ng-model="filterText.value"/>
+    <input style='width:90px; float:left; margin-right:10px' type="text" placeholder="Min seat" class="form-control" ng-model="filterText.minSeat"/>
+    <input style='width:90px; float:left; margin-right:10px' type="text" placeholder="Max seat" class="form-control" ng-model="filterText.maxSeat"/>
+    <input style='width:90px; float:left; margin-right:10px' type="text" placeholder="Min price" class="form-control" ng-model="filterText.minPrice"/>
+    <input style='width:90px; float:left; margin-right:10px' type="text" placeholder="Max price" class="form-control" ng-model="filterText.maxPrice"/>
+    <select style='width:150px; float:left; margin-right:10px' class="form-control" ng-options="i.id for i in driverSide track by i.value" ng-model="filterText.driverSide"/>
+    <input style='width:140px; float:left; margin-right:10px' type="text" placeholder="Transmission" class="form-control" ng-model="filterText.transmission"/>
     <button class="btn btn-warning" ng-click="resetFilterText()">Clear</button>
   </div>
 </div>
-<div class="row" ng-repeat="car in carInventories | filter:{name: filterText.value} | filter:{totalPrice:filterText.minPrice}:minPriceComparator | filter:{totalPrice:filterText.maxPrice}:maxPriceComparator" ng-if="carInventories.length > 0">
+<div class="row" ng-repeat="car in carInventories | filter:{name: filterText.value} | filter:{totalPrice:filterText.minPrice}:minComparator | filter:{totalPrice:filterText.maxPrice}:maxComparator | filter:{numOfSeat:filterText.minSeat}:minComparator| filter:{numOfSeat:filterText.maxSeat}:maxComparator | filter:{rightSideDriver:filterText.driverSide.value}:driverSideComparator | filter:{transmission:filterText.transmission}" ng-if="carInventories.length > 0">
   <div class="col col-md-3">
     <carousel>
       <slide ng-repeat="slide in car.slides" active="slide.active">
