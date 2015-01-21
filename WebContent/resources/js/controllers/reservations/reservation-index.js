@@ -116,8 +116,7 @@ var IndexReservationController = function($scope, $state, $stateParams, $filter,
 	};
 
 	$scope.alertOnEventClick = function(calEvent, jsEvent, view) {
-		$scope.filterText = calEvent.groupId;
-		$scope.filterReservation();
+		$scope.filterReservation(calEvent.groupId);
     }
 
 	if ($stateParams.branchId) {
