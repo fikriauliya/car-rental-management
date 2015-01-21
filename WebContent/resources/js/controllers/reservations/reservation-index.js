@@ -84,6 +84,7 @@ var IndexReservationController = function($scope, $state, $stateParams, $filter,
 	}
 
 	$scope.filterReservation = function() {
+		$scope.tableParams.page(1);
 		$scope.tableParams.reload();
 	};
 
