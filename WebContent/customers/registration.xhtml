@@ -18,12 +18,12 @@
             <li ng-repeat="error in errors">{{error}}</li>
           </ul>
         </div>
+        <div class="alert alert-info" ng-if="info">
+          {{info}}
+        </div>
         <div class="col-md-4">
           <h3>New customer</h3>
           <hr/>
-          <div class="alert alert-info" ng-if="info">
-            {{info}}
-          </div>
           <form class="form-horizontal">
             <div class="form-group">
               <label class="col-sm-3 control-label">Username</label>
@@ -35,7 +35,7 @@
               <label class="col-sm-3 control-label">Password</label>
               <div class="col-sm-9">
                 <input type="password" class="form-control" id="password" ng-model="newCustomer.password"/>
-                <button class="btn btn-success btn-xs" style="margin-top:10px" ng-click="generatePassword()">Generate</button>
+                <button class="btn btn-success btn-xs" style="margin-top:10px" ng-click="generatePassword()" ng-if="isAdmin">Generate</button>
               </div>
             </div>
             <div class="form-group">

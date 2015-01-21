@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/templates/default/internal.xhtml">
+  <ui:define name="header">
+      <h:outputScript name="js/controllers/passwords/change.js" />
+  </ui:define>
+  <ui:define name="content">
+    <div ng-app="passwordManagementApp" ng-controller="ChangePasswordController">
+      <div class="row">
+        <div class="alert alert-danger" ng-if="errors">
+          <ul>
+            <li ng-repeat="error in errors">{{error}}</li>
+          </ul>
+        </div>
+        <div class="alert alert-info" ng-if="info">
+          {{info}}
+        </div>
+        <div class="col-md-4">
+          <h3>Change password</h3>
+          <hr/>
+          <form class="form-horizontal">
+            <div class="form-group">
+              <label class="col-sm-3 control-label">Old password</label>
+              <div class="col-sm-9">
+                <input type="password" class="form-control" id="id" ng-model="oldPassword"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">New password</label>
+              <div class="col-sm-9">
+                <input type="password" class="form-control" id="id" ng-model="newPassword"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-3 col-sm-4">
+                <button class="btn btn-primary btn-sm" ng-click="changePassword()">Change</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </ui:define>
+</ui:composition>
+</html>

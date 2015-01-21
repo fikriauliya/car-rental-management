@@ -89,6 +89,17 @@
 		<web-resource-collection>
 			<web-resource-name>Secure Pages</web-resource-name>
 			<description />
+			<url-pattern>/passwords/change.jsf</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>customer</role-name>
+			<role-name>employee</role-name>
+		</auth-constraint>
+	</security-constraint>
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Secure Pages</web-resource-name>
+			<description />
 			<url-pattern>/branches/index.jsf</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>

@@ -316,3 +316,21 @@ mapsApp.config([ '$stateProvider', '$urlRouterProvider',
 				}
 			})
 		} ]);
+
+var passwordManagementApp = angular.module('passwordManagementApp', ['passwordServices', 'ngProgress']);
+passwordManagementApp.factory('myHttpInterceptor', [ '$q', httpInterceptor ]);
+
+passwordManagementApp.config(function($provide, $httpProvider, $locationProvider) {
+	$httpProvider.interceptors.push('myHttpInterceptor');
+	$locationProvider.html5Mode(false);
+});
+
+passwordManagementApp.run([
+		'$rootScope',
+		'$log',
+		function($rootScope, $log) {
+			$rootScope.$on('$stateChangeStart', function(event, toState,
+					toParams, fromState, fromParams) {
+				$log.log(fromState, fromParams, " -> ", toState, toParams);
+			});
+		} ]);

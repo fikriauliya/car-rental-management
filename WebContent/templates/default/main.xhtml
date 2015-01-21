@@ -81,8 +81,9 @@
         <ul class="nav navbar-nav navbar-right">
           <li><a href=""><h:outputText value="#{userSessionController.userName}" rendered="#{userSessionController.userLoggedIn}" /></a></li>
           <li>
-            <h:form rendered="#{userSessionController.userLoggedIn}">
-              <h:commandButton value="Logout" id="logout" action="#{userSessionController.logout}" class="btn btn-danger btn-sm" style="margin-top:10px"/>
+            <h:form rendered="#{userSessionController.userLoggedIn}"  style="margin-top:10px">
+              <h:link class="btn btn-warning btn-sm" outcome="/passwords/change.jsf" style="margin-right:5px">Change Password</h:link>
+              <h:commandButton value="Logout" id="logout" action="#{userSessionController.logout}" class="btn btn-danger btn-sm"/>
             </h:form>
           </li>
         </ul>

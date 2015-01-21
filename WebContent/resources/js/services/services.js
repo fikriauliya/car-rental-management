@@ -116,6 +116,15 @@ imageServices.factory("Images",
 	  });
    }
   ]);
+passwordServices = angular.module('passwordServices', ['ngResource']);
+passwordServices.factory("Passwords",
+  ["$resource",
+   function($resource) {
+	  return $resource(basePath + "/api/passwords/", {}, {
+		  'update': { method:'PUT' }
+	  });
+   }
+  ]);
 
 timezoneServices = angular.module('timezoneServices', ['ngResource']);
 timezoneServices.factory("Timezones",
