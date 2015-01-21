@@ -1,5 +1,7 @@
 <div class="row">
-  <div class="col col-md-12">
+  <div class="col col-md-4">
+    <h4>Branch detail</h4>
+
     <b>Address:</b> {{selectedBranch.address}}<br/>
     <b>Timezone:</b> {{selectedBranch.timezone}}<br/>
     <b>Opening hour:</b> {{selectedBranch.openingHour}}<br/>
@@ -10,6 +12,34 @@
     <b>Overdue penalty percentage:</b> {{selectedBranch.overduePenaltyPercentage}}<br/>
     <hr/>
   </div>
+  <div class="col col-md-4">
+    <h4>Pending return</h4>
+    <ol ng-if="pendingReturns">
+      <li ng-repeat="r in pendingReturns">
+        <a href="" ng-click="filterReservation(r[0].groupId)" >{{r[0].groupId}} ({{r[0].customer.user.firstName}} {{r[0].customer.user.lastName}})</a>
+      </li>
+    </ol>
+    <div ng-if="!pendingReturns">None</div>
+    <hr/>
+    <h4>Pending return (late)</h4>
+    <ol ng-if="lateReturns">
+      <li ng-repeat="r in lateReturns">
+        <a href="" ng-click="filterReservation(r[0].groupId)" >{{r[0].groupId}} ({{r[0].customer.user.firstName}} {{r[0].customer.user.lastName}})</a>
+      </li>
+    </ol>
+    <div ng-if="!lateReturns">None</div>
+    <hr/>
+  </div>
+  <div class="col col-md-4">
+    <h4>Pending Payback</h4>
+    <ol ng-if="pendingPaybacks">
+      <li ng-repeat="r in pendingPaybacks">
+        <a href="" ng-click="filterReservation(r[0].groupId)" >{{r[0].groupId}} ({{r[0].customer.user.firstName}} {{r[0].customer.user.lastName}})</a>
+      </li>
+    </ol>
+    <div ng-if="!pendingPaybacks">None</div>
+    <hr/>
+  </div>
 </div>
 <div class="row">
   <div class="col col-md-5">
@@ -18,15 +48,15 @@
   <div class="col col-md-7">
     <div class="row">
       <div class="col-sm-12">
-        <input style='width:90%; float:left; margin-right:10px' type="text" placeholder="Search (type inventory name/customer name/reservation id here)" class="form-control" ng-model="filterText" ng-change="filterReservation()"/>
-        <button class="btn btn-warning" ng-click="filterText=''; filterReservation()">Clear</button>
+        <input style='width:90%; float:left; margin-right:10px' type="text" placeholder="Search (type inventory name/customer name/reservation id here)" class="form-control" ng-model="filterText" ng-change="filterReservation(filterText)"/>
+        <button class="btn btn-warning" ng-click="filterReservation('')">Clear</button>
       </div>
       <div class="col-sm-12" style="margin-top:10px">
         Quick filter:
-        <button class="btn btn-primary btn-xs" ng-click="filterText='SCHEDULED'; filterReservation()">SCHEDULED</button>
-        <button class="btn btn-success btn-xs" ng-click="filterText='STARTED'; filterReservation()">STARTED</button>
-        <button class="btn btn-danger btn-xs" ng-click="filterText='CANCELED'; filterReservation()">CANCELED</button>
-        <button class="btn btn-warning btn-xs" ng-click="filterText='FINISHED'; filterReservation()">FINISHED</button>
+        <button class="btn btn-primary btn-xs" ng-click="filterReservation('SCHEDULED')">SCHEDULED</button>
+        <button class="btn btn-success btn-xs" ng-click="filterReservation('STARTED')">STARTED</button>
+        <button class="btn btn-danger btn-xs" ng-click="filterReservation('CANCELED')">CANCELED</button>
+        <button class="btn btn-warning btn-xs" ng-click="filterReservation('FINISHED')">FINISHED</button>
       </div>
     </div>
     <div class="row">

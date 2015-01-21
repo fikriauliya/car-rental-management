@@ -29,6 +29,32 @@ var IndexReservationController = function($scope, $state, $stateParams, $filter,
 
 	        	$scope.detailedReservations = d;
 
+	        	var now = new Date().getTime();
+
+	        	$scope.pendingReturns = _.groupBy(_.filter(d, function(dd) {
+	        		if (dd.status == 'STARTED') {
+	        			return true;
+	        		} else {
+	        			return false;
+	        		}
+	        	}), 'groupId');
+
+	        	$scope.lateReturns = _.filter($scope.pendingReturns, function(dd) {
+	        		if (dd[0].end.getTime() < now) {
+	        			return true;
+	        		} else {
+	        			return false;
+	        		}
+	        	})
+
+	        	$scope.pendingPaybacks = _.groupBy(_.filter(d, function(dd) {
+	        		if ((dd.status == 'CANCELED') && (dd.paid || (dd.overdueFee > 0 && dd.overduePaid))) {
+	        			return true;
+	        		} else {
+	        			return false;
+	        		}
+	        	}), 'groupId');
+
 	        	$scope.tableParams.reload();
 
 	        	$scope.endProgress();
@@ -83,7 +109,8 @@ var IndexReservationController = function($scope, $state, $stateParams, $filter,
 		return a;
 	}
 
-	$scope.filterReservation = function() {
+	$scope.filterReservation = function(filterText) {
+		$scope.filterText = filterText;
 		$scope.tableParams.page(1);
 		$scope.tableParams.reload();
 	};
