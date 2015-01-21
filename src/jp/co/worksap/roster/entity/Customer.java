@@ -12,6 +12,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
@@ -27,13 +28,15 @@ public class Customer {
 	@NotNull
 	private User user;
 
-	@NotEmpty
+	@Length(max=100)
 	private String address;
 
 	@NotEmpty
+	@Length(max=20)
 	private String postalCode;
 
 	@NotEmpty
+	@Length(max=50)
 	private String country;
 
 	@NotNull
