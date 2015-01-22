@@ -88,12 +88,14 @@ var ReservationDetailController = function($scope, $state, $stateParams, $filter
 	};
 
 	$scope.markUnpaid = function() {
-		Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "markUnpaid"}, function(d, h){
-			$scope.refreshReservationDetail();
-		}, function(d, h) {
-			$scope.refreshReservationDetail();
-			alert(d.data);
-		});
+		if (confirm("Are you sure want to set this reservation as Unpaid? Please make sure the money has been payed back to the customer first")) {
+			Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "markUnpaid"}, function(d, h){
+				$scope.refreshReservationDetail();
+			}, function(d, h) {
+				$scope.refreshReservationDetail();
+				alert(d.data);
+			});
+		}
 	};
 
 	$scope.markOverduePaid = function() {
@@ -106,12 +108,14 @@ var ReservationDetailController = function($scope, $state, $stateParams, $filter
 	};
 
 	$scope.markOverdueUnpaid = function() {
-		Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "markOverdueUnpaid"}, function(d, h){
-			$scope.refreshReservationDetail();
-		}, function(d, h) {
-			$scope.refreshReservationDetail();
-			alert(d.data);
-		});
+		if (confirm("Are you sure want to set this reservation as Unpaid? Please make sure the money has been payed back to the customer first")) {
+			Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "markOverdueUnpaid"}, function(d, h){
+				$scope.refreshReservationDetail();
+			}, function(d, h) {
+				$scope.refreshReservationDetail();
+				alert(d.data);
+			});
+		}
 	};
 
 	$scope.refreshMap = function() {
