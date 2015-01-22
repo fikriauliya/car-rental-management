@@ -104,7 +104,7 @@ public class Reservation {
 	private Date returnedTime;
 
 	@NotNull
-	private boolean isOverduePaid = true;
+	private boolean isOverduePaid = false;
 
 	private BigDecimal overdueFee;
 
