@@ -254,6 +254,9 @@ public class ReservationService {
 			if (reservations.get(0).getStatus() != ReservationStatus.SCHEDULED) {
 				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");
 			}
+			if (!reservations.get(0).isPaid()) {
+				throw new WebServiceException("Please make the payment first before starting the rental");
+			}
 			if (reservationEJB.isEligibleForRent(reservations)) {
 				reservationEJB.updateInventories(reservations, InventoryStatus.RENTED);
 				reservationEJB.updateStatus(reservations, ReservationStatus.STARTED);

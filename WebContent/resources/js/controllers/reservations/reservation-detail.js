@@ -47,7 +47,7 @@ var ReservationDetailController = function($scope, $state, $stateParams, $filter
 			$scope.refreshReservationDetail();
 		}, function(d, h) {
 			$scope.refreshReservationDetail();
-			alert("You can't start renting on this reservation. Please make sure all inventories reserved are available");
+			alert(d.data);
 		});
 	};
 
