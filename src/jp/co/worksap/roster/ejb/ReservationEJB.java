@@ -75,6 +75,12 @@ public class ReservationEJB {
 		}
 	}
 
+	public void reschedule(Reservation reservation, Date newStartTime, Date newEndTime) {
+		reservation.setStartTime(newStartTime);
+		reservation.setEndTime(newEndTime);
+		em.persist(reservation);
+	}
+
 	public void updateInventories(List<Reservation> reservations, InventoryStatus status) {
 		for (Reservation reservation : reservations) {
 			Inventory inventory = reservation.getInventory();

@@ -9,6 +9,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -75,24 +76,24 @@ public class InventoryServices {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/car")
 	public List<Inventory> indexCar(@PathParam("branchId") int branchId,
-			@QueryParam("startTime") long startTime, @QueryParam("endTime") long endTime) {
-		return inventoryEJB.findInventories(InventoryType.CAR, branchId, timestampToDate(startTime), timestampToDate(endTime));
+			@QueryParam("startTime") long startTime, @QueryParam("endTime") long endTime, @DefaultValue("-1") @QueryParam("exemptedReservationGroupId") int exemptedReservationGroupId) {
+		return inventoryEJB.findInventories(InventoryType.CAR, branchId, timestampToDate(startTime), timestampToDate(endTime), exemptedReservationGroupId);
 	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/baby_seat")
 	public List<Inventory> indexBabySeat(@PathParam("branchId") int branchId,
-			@QueryParam("startTime") long startTime, @QueryParam("endTime") long endTime) {
-		return inventoryEJB.findInventories(InventoryType.BABY_SEAT, branchId, timestampToDate(startTime), timestampToDate(endTime));
+			@QueryParam("startTime") long startTime, @QueryParam("endTime") long endTime, @DefaultValue("-1") @QueryParam("exemptedReservationGroupId") int exemptedReservationGroupId) {
+		return inventoryEJB.findInventories(InventoryType.BABY_SEAT, branchId, timestampToDate(startTime), timestampToDate(endTime), exemptedReservationGroupId);
 	}
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("/gps")
 	public List<Inventory> indexGps(@PathParam("branchId") int branchId,
-			@QueryParam("startTime") long startTime, @QueryParam("endTime") long endTime) {
-		return inventoryEJB.findInventories(InventoryType.GPS, branchId, timestampToDate(startTime), timestampToDate(endTime));
+			@QueryParam("startTime") long startTime, @QueryParam("endTime") long endTime, @DefaultValue("-1") @QueryParam("exemptedReservationGroupId") int exemptedReservationGroupId) {
+		return inventoryEJB.findInventories(InventoryType.GPS, branchId, timestampToDate(startTime), timestampToDate(endTime), exemptedReservationGroupId);
 	}
 
 	private Date timestampToDate(long timestamp) {

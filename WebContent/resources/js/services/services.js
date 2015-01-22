@@ -99,6 +99,15 @@ reservationServices.factory("Reservations",
 	  });
    }
   ]);
+reservationServices.factory("ReservationReschedules",
+  ["$resource",
+   function($resource) {
+	  return $resource(basePath + "/api/reservation_reschedules", {}, {
+		  'update': { method:'PUT', isArray: true }
+	  });
+   }
+  ]);
+
 reservationServices.factory("ReservationHistories",
   ["$resource",
    function($resource) {

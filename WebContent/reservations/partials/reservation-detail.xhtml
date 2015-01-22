@@ -30,7 +30,7 @@
         <span class="glyphicon glyphicon-ok"/>
         Mark as paid
       </button>
-      <button class="btn btn-sm btn-primary" ng-click="markUnpaid()" ng-if="reservations[0].paid">
+      <button class="btn btn-sm btn-primary" ng-click="markUnpaid()" ng-if="reservations[0].paid && (reservations[0].status == 'SCHEDULED' || reservations[0].status == 'CANCELED')">
         <span class="glyphicon glyphicon-remove"/>
         Mark as unpaid
       </button>
@@ -94,14 +94,39 @@
       <tbody>
         <tr>
           <td>From</td>
-          <td>{{reservations[0].startTime | date: 'medium'}}</td>
+          <td ng-if="!inEditScheduleMode">{{reservations[0].startTime | date: 'medium'}}</td>
+          <td ng-if="inEditScheduleMode">
+            <div class="dropdown control-label" style="text-align:left">
+              <a  class="dropdown-toggle" id="dropdown1" role="button"
+                data-toggle="dropdown" data-target="#" href="">{{newSchedule.startTime | date:'medium'}}</a>
+              <ul class="dropdown-menu" role="menu">
+                  <datetimepicker data-ng-model="newSchedule.startTime"
+                    data-datetimepicker-config="{ dropdownSelector: '#dropdown1', minView: 'hour' }"/>
+              </ul>
+            </div>
+          </td>
         </tr>
         <tr>
           <td>To</td>
-          <td>{{reservations[0].endTime | date: 'medium'}}</td>
+          <td ng-if="!inEditScheduleMode">{{reservations[0].endTime | date: 'medium'}}</td>
+          <td ng-if="inEditScheduleMode">
+            <div class="dropdown control-label" style="text-align:left">
+              <a  class="dropdown-toggle" id="dropdown2" role="button"
+                data-toggle="dropdown" data-target="#" href="">{{newSchedule.endTime | date:'medium'}}</a>
+              <ul class="dropdown-menu" role="menu">
+                  <datetimepicker data-ng-model="newSchedule.endTime"
+                    data-datetimepicker-config="{ dropdownSelector: '#dropdown2', minView: 'hour' }"/>
+              </ul>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
+    <div ng-if="reservations[0].status != 'FINISHED' && reservations[0].status != 'CANCELED'">
+      <button ng-if="!inEditScheduleMode" class="btn btn-danger btn-sm" ng-click="editSchedule(true)">Reschedule</button>
+      <button ng-if="inEditScheduleMode" class="btn btn-primary btn-sm" ng-click="confirmReschedule();">Save</button>
+      <button ng-if="inEditScheduleMode" class="btn btn-warning btn-sm" ng-click="editSchedule(false)">Cancel</button>
+    </div>
     <hr/>
     <div ng-if="reservations[0].assignedDriver">
       <h4>Driver required</h4>

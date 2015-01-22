@@ -129,7 +129,7 @@ public class ReservationService {
 
 		Branch branch = null;
 
-		Set<Integer> reservedInventories = inventoryEJB.findReservedInventories(reservationInfo.getBranchId(), timestampToDate(reservationInfo.getStartTime().getTime()), timestampToDate(reservationInfo.getEndTime().getTime()));
+		Set<Integer> reservedInventories = inventoryEJB.findReservedInventories(reservationInfo.getBranchId(), timestampToDate(reservationInfo.getStartTime().getTime()), timestampToDate(reservationInfo.getEndTime().getTime()), -1);
 
 		for (int inventoryId : reservationInfo.getInventoryIds()) {
 			Reservation reservation = new Reservation();

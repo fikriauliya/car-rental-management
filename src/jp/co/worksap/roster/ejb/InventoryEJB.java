@@ -13,6 +13,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import com.sun.faces.facelets.tag.jsf.core.SetPropertyActionListenerHandler;
+
 import jp.co.worksap.roster.entity.BabySeatInventory;
 import jp.co.worksap.roster.entity.Branch;
 import jp.co.worksap.roster.entity.CarInventory;
@@ -74,7 +76,7 @@ public class InventoryEJB {
 		return res.getSingleResult();
 	}
 
-	public List<Inventory> findInventories(Inventory.InventoryType type, int branchId, Date startTime, Date endTime) {
+	public List<Inventory> findInventories(Inventory.InventoryType type, int branchId, Date startTime, Date endTime, int exemptedReservationGroupId) {
 		TypedQuery<Inventory> q1 = null;
 		switch (type) {
 			case CAR:
@@ -91,7 +93,7 @@ public class InventoryEJB {
 		q1.setParameter("ownerId", branchId);
 		List<Inventory> inventories = q1.getResultList();
 
-		Set<Integer> reservedInventoryIds = findReservedInventories(branchId, startTime, endTime);
+		Set<Integer> reservedInventoryIds = findReservedInventories(branchId, startTime, endTime, exemptedReservationGroupId);
 
 		List<Inventory> res = new LinkedList<Inventory>();
 		for (Inventory inventory : inventories) {
@@ -103,12 +105,22 @@ public class InventoryEJB {
 		return res;
 	}
 
-	public Set<Integer> findReservedInventories(int branchId, Date startTime, Date endTime) {
+	public Set<Integer> findReservedInventories(int branchId, Date startTime, Date endTime, long exemptedGroupId) {
 		Branch branch = branchEJB.findBranch(branchId);
-		TypedQuery<Integer> q2 = em.createNamedQuery("findReservedInventoriesByDate", Integer.class)
-				.setParameter("startTime", timestampToDate(startTime.getTime() - branch.getBufferHour() * 60 * 60 * 1000))
-				.setParameter("endTime", timestampToDate(endTime.getTime() + branch.getBufferHour() * 60 * 60 * 1000))
-				.setParameter("branchId", branchId);
+		TypedQuery<Integer> q2;
+
+		if (exemptedGroupId == -1) {
+			q2 = em.createNamedQuery("findReservedInventoriesByDate", Integer.class)
+					.setParameter("startTime", timestampToDate(startTime.getTime() - branch.getBufferHour() * 60 * 60 * 1000))
+					.setParameter("endTime", timestampToDate(endTime.getTime() + branch.getBufferHour() * 60 * 60 * 1000))
+					.setParameter("branchId", branchId);
+		} else {
+			q2 = em.createNamedQuery("findReservedInventoriesByDateWithExemption", Integer.class)
+					.setParameter("startTime", timestampToDate(startTime.getTime() - branch.getBufferHour() * 60 * 60 * 1000))
+					.setParameter("endTime", timestampToDate(endTime.getTime() + branch.getBufferHour() * 60 * 60 * 1000))
+					.setParameter("branchId", branchId)
+					.setParameter("exemptedGroupId", exemptedGroupId);
+		}
 
 		Set<Integer> reservedInventoryIds = new HashSet<Integer>(q2.getResultList());
 		return reservedInventoryIds;
