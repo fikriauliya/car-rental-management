@@ -261,7 +261,7 @@ public class ReservationService {
 				reservationEJB.updateInventories(reservations, InventoryStatus.RENTED);
 				reservationEJB.updateStatus(reservations, ReservationStatus.STARTED);
 			} else {
-				return Response.status(Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON).build();
+	            throw new WebServiceException("You can't start renting on this reservation. Please make sure all inventories reserved are available");
 			}
 		} else if (operation.equals("finishRental")) {
 			if (reservations.get(0).getStatus() != ReservationStatus.STARTED) {
