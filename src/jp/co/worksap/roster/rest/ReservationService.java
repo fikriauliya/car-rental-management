@@ -334,7 +334,7 @@ public class ReservationService {
 			}
 			reservationEJB.markAsPaid(reservations);
 		} else if (operation.equals("markUnpaid")) {
-			if (!reservations.get(0).isPaid()) {
+			if (!reservations.get(0).isPaid() || !(reservations.get(0).getStatus() == ReservationStatus.SCHEDULED || reservations.get(0).getStatus() == ReservationStatus.CANCELED)) {
 				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");
 			}
 			reservationEJB.markAsUnpaid(reservations);
