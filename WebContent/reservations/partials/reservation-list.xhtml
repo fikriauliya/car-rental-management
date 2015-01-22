@@ -19,7 +19,6 @@
         <a href="" ng-click="filterReservation(r[0].groupId)" >{{r[0].groupId}} ({{r[0].customer.user.firstName}} {{r[0].customer.user.lastName}})</a>
       </li>
     </ol>
-    <div ng-if="!pendingReturns">None</div>
     <hr/>
     <h4>Pending return (late)</h4>
     <ol ng-if="lateReturns">
@@ -27,7 +26,6 @@
         <a href="" ng-click="filterReservation(r[0].groupId)" >{{r[0].groupId}} ({{r[0].customer.user.firstName}} {{r[0].customer.user.lastName}})</a>
       </li>
     </ol>
-    <div ng-if="!lateReturns">None</div>
     <hr/>
   </div>
   <div class="col col-md-4">
@@ -37,7 +35,6 @@
         <a href="" ng-click="filterReservation(r[0].groupId)" >{{r[0].groupId}} ({{r[0].customer.user.firstName}} {{r[0].customer.user.lastName}})</a>
       </li>
     </ol>
-    <div ng-if="!pendingPaybacks">None</div>
     <hr/>
   </div>
 </div>
