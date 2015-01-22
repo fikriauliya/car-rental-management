@@ -36,10 +36,6 @@
       </button>
 
       <span ng-if="totalOverdueFee > 0">
-        |
-        <b ng-style="{color:reservations[0].overduePaid?'blue':'red'}">
-          Overdue: {{totalOverdueFee}}
-        </b>
         <button class="btn btn-sm btn-primary" ng-click="markOverduePaid()" ng-if="!reservations[0].overduePaid && reservations[0].status != 'CANCELED'">
           <span class="glyphicon glyphicon-ok"/>
           Mark overdue as paid
@@ -169,6 +165,14 @@
         <tr>
           <td><b>Total</b></td>
           <td align="right"><b>{{selectedBranch.currencySymbol}} {{totalPrice(reservations)}}</b></td>
+        </tr>
+        <tr ng-style="{color:reservations[0].overduePaid?'black':'red'}" ng-if="totalOverdueFee > 0">
+          <td><b>Overdue</b></td>
+          <td align="right"><b>{{selectedBranch.currencySymbol}} {{totalOverdueFee}}</b></td>
+        </tr>
+        <tr>
+          <td><b>Grand Total</b></td>
+          <td align="right"><b>{{selectedBranch.currencySymbol}} {{totalOverdueFee + totalPrice(reservations)}}</b></td>
         </tr>
       </tfoot>
     </table>
