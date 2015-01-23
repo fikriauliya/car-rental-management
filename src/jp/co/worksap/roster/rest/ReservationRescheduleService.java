@@ -52,6 +52,7 @@ public class ReservationRescheduleService {
 				reservation.setStartTime(data.getStartTime());
 				reservation.setEndTime(data.getEndTime());
 				reservation.setInventoryFee(reservation.getInventory().getPrice().multiply(new BigDecimal((reservation.getEndTime().getTime() - reservation.getStartTime().getTime() + 1) / (60.0 * 60 * 1000))));
+				reservation.setFullyPaid(false);
 
 				reservationEJB.update(reservation);
 				//TODO: update other fields (e.g. fee)
