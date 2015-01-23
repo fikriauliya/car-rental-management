@@ -36,6 +36,7 @@ var IndexStatisticsController = function($scope, $state, $stateParams, $filter, 
 	    		else dd.type = "gps";
 			});
 			$scope.groupedInventories = _.sortBy(_.groupBy(inventories, function(r) { return r.id; }), function(r) { return -r.length});
+			$scope.totalRental = _.reduce($scope.groupedInventories, function(memo, data) { return memo + data.length; }, 0);
 		});
 	};
 
