@@ -130,6 +130,9 @@ public class ReservationService {
 
 		Set<Integer> reservedInventories = inventoryEJB.findReservedInventories(reservationInfo.getBranchId(), timestampToDate(reservationInfo.getStartTime().getTime()), timestampToDate(reservationInfo.getEndTime().getTime()), -1);
 
+		BigDecimal totalFee = new BigDecimal(0);
+		List<Reservation> allReservations = new LinkedList<Reservation>();
+
 		for (int inventoryId : reservationInfo.getInventoryIds()) {
 			Reservation reservation = new Reservation();
 			reservation.setGroupId(timestamp);
@@ -148,8 +151,10 @@ public class ReservationService {
 			reservation.setStartTime(reservationInfo.getStartTime());
 			reservation.setEndTime(reservationInfo.getEndTime());
 			reservation.setCustomer(customer);
+
 			reservation.setPaid(reservationInfo.isCardPayment());
 			reservation.setInventoryFee(inventory.getPrice().multiply(new BigDecimal((reservationInfo.getEndTime().getTime() - reservationInfo.getStartTime().getTime() + 1) / (60.0 * 60 * 1000))));
+			totalFee = totalFee.add(reservation.getInventoryFee());
 
 			if (!reservationInfo.isCardPayment()) {
 				reservation.setCardCIV(" ");
@@ -201,10 +206,18 @@ public class ReservationService {
 
 			reservationEJB.createReservation(reservation);
 			if (firstCreatedReservation == null) firstCreatedReservation = reservation;
+
+			allReservations.add(reservation);
 		}
 
 		if (!driverAssigned && reservationInfo.isDriverRequired()) {
 			throw new WebServiceException("No driver is available");
+		}
+
+		if (reservationInfo.isCardPayment()) {
+			totalFee = totalFee.add(driverFee);
+			reservationEJB.updatePaidAmount(allReservations, totalFee);
+			reservationEJB.markAsFullyPaid(allReservations);
 		}
 
 		EmailServices.sendEmail(customer.getUser().getEmail(), "CRM+ Booking confirmation",

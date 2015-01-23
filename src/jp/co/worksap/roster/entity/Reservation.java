@@ -121,7 +121,7 @@ public class Reservation {
 	private boolean isFullyPaid = false;
 
 	@NotNull
-	private BigDecimal paidAmount;
+	private BigDecimal paidAmount = new BigDecimal(0);
 
 	public int getId() {
 		return id;
