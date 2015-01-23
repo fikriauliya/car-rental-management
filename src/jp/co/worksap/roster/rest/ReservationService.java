@@ -339,7 +339,7 @@ public class ReservationService {
 			}
 			reservationEJB.updateInventories(reservations, InventoryStatus.AVAILABLE);
 			reservationEJB.updateStatus(reservations, ReservationStatus.CANCELED);
-			userAgendaEJB.deleteUserAgendaByTitle(String.valueOf(data.getBranchId()) + "-" + String.valueOf(data.getGroupId()));
+			userAgendaEJB.deleteUserAgendaByTitle(String.valueOf(data.getBranchId()) + "-" + String.valueOf(data.getGroupId()) + "-" + reservations.get(0).getCustomer().getUser().getFirstName() + " " + reservations.get(0).getCustomer().getUser().getLastName());
 		} else if (operation.equals("markFullyPaid")) {
 			if (reservations.get(0).isFullyPaid() ||  (reservations.get(0).getStatus() == ReservationStatus.CANCELED)) {
 				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");

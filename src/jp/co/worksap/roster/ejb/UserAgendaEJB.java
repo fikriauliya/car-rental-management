@@ -53,6 +53,17 @@ public class UserAgendaEJB {
 		return q.executeUpdate();
 	}
 
+	public void changeUserAgendaByTitle(String title, Date newStartTime, Date newEndTime) {
+		TypedQuery<UserAgenda> q = em.createNamedQuery("selectUserAgendaByTitle", UserAgenda.class)
+				.setParameter("title", title);
+		List<UserAgenda> uas = q.getResultList();
+		for (UserAgenda ua:uas) {
+			ua.setStartTime(newStartTime);
+			ua.setEndTime(newEndTime);
+			em.persist(ua);
+		}
+	}
+
 	public UserAgenda findUserAgenda(int id) {
 		TypedQuery<UserAgenda> q = em.createNamedQuery("findUserAgenda", UserAgenda.class)
 				.setParameter("id", id);

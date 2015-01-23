@@ -17,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 
 import jp.co.worksap.roster.ejb.InventoryEJB;
 import jp.co.worksap.roster.ejb.ReservationEJB;
+import jp.co.worksap.roster.ejb.UserAgendaEJB;
 import jp.co.worksap.roster.entity.Inventory;
 import jp.co.worksap.roster.entity.Reservation;
 import jp.co.worksap.roster.rest.modelview.ReservationRescheduleData;
@@ -29,6 +30,9 @@ public class ReservationRescheduleService {
 
 	@EJB
 	private ReservationEJB reservationEJB;
+
+	@EJB
+	private UserAgendaEJB userAgendaEJB;
 
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -55,10 +59,9 @@ public class ReservationRescheduleService {
 				reservation.setFullyPaid(false);
 
 				reservationEJB.update(reservation);
-				//TODO: update other fields (e.g. fee)
 			}
+			userAgendaEJB.changeUserAgendaByTitle(String.valueOf(reservations.get(0).getInventory().getOwner().getId()) + "-" + String.valueOf(data.getGroupId()) + "-" + reservations.get(0).getCustomer().getUser().getFirstName() + " " + reservations.get(0).getCustomer().getUser().getLastName(), data.getStartTime(), data.getEndTime());
 		}
-
 		return alreadyReservedInventory;
 	}
 }
