@@ -25,10 +25,10 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name = "S_USERS")
 @NamedQueries({
 	@NamedQuery(name="findAllUsers", query = "SELECT u from User u ORDER BY u.id"),
-	@NamedQuery(name="findAllUsersByIdNameAndEmail", query = "SELECT u from User u WHERE (LOWER(u.id) LIKE :token) OR (LOWER(u.firstName) LIKE :token) " +
-			"OR (LOWER(u.lastName) LIKE :token) OR (LOWER(u.email) LIKE :token) OR (LOWER(u.phone) LIKE :token) ORDER BY u.id"),
-	@NamedQuery(name="countAllUsersByIdNameAndEmail", query = "SELECT COUNT(u) from User u WHERE (LOWER(u.id) LIKE :token) OR (LOWER(u.firstName) LIKE :token) " +
-			"OR (LOWER(u.lastName) LIKE :token) OR (LOWER(u.email) LIKE :token) OR (LOWER(u.phone) LIKE :token)"),
+	@NamedQuery(name="findAllEmployeesByIdNameAndEmail", query = "SELECT u from User u WHERE ((LOWER(u.id) LIKE :token) OR (LOWER(u.firstName) LIKE :token) " +
+			"OR (LOWER(u.lastName) LIKE :token) OR (LOWER(u.email) LIKE :token) OR (LOWER(u.phone) LIKE :token)) AND (u.unit.id IS NOT NULL) ORDER BY u.id"),
+	@NamedQuery(name="countAllEmployeesByIdNameAndEmail", query = "SELECT COUNT(u) from User u WHERE ((LOWER(u.id) LIKE :token) OR (LOWER(u.firstName) LIKE :token) " +
+			"OR (LOWER(u.lastName) LIKE :token) OR (LOWER(u.email) LIKE :token) OR (LOWER(u.phone) LIKE :token)) AND (u.unit.id IS NOT NULL)"),
 	@NamedQuery(name="findAllUsersInUnitByIsAttachedOrderByLeaveTimestamp", query = "SELECT u from User u WHERE u.unit.id = :unitId AND u.isAttached = :isAttached ORDER BY u.leaveTimestamp"),
 	@NamedQuery(name="findAllUsersInUnit", query = "SELECT u from User u WHERE u.unit.id = :unitId ORDER BY u.id"),
 	@NamedQuery(name="findAllUsersInUnitByIsAttached", query = "SELECT u from User u WHERE u.unit.id = :unitId AND u.isAttached = :isAttached ORDER BY u.id"),

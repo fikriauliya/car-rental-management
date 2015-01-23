@@ -50,11 +50,11 @@ public class UserEJB {
 	}
 
 	public Pair<List<User>, Long> findAllUsers(String token, int page, int size) {
-		TypedQuery<User> q = em.createNamedQuery("findAllUsersByIdNameAndEmail", User.class)
+		TypedQuery<User> q = em.createNamedQuery("findAllEmployeesByIdNameAndEmail", User.class)
 				.setParameter("token", "%" + token.toLowerCase() + "%")
 				.setFirstResult(page * size)
 				.setMaxResults(size);
-		TypedQuery<Long> q1 = em.createNamedQuery("countAllUsersByIdNameAndEmail", Long.class)
+		TypedQuery<Long> q1 = em.createNamedQuery("countAllEmployeesByIdNameAndEmail", Long.class)
 				.setParameter("token", "%" + token.toLowerCase() + "%");
 		return Pair.of(q.getResultList(), q1.getSingleResult());
 	}
