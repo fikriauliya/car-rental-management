@@ -13,6 +13,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.validator.constraints.Length;
@@ -51,21 +52,22 @@ public class Branch {
 	@NotEmpty
 	private String closingHour;
 
-	@Min(value=0)
+	@NotNull
 	private BigDecimal driverFee;
 
 	@Min(value=0)
 	@Max(value=1000)
 	private int bufferHour;
 
-	@Min(value=0)
+	@NotNull
 	private BigDecimal overduePenaltyPercentage;
 
 	@ManyToMany
 	@JoinTable(name = "T_BRANCH_USER")
 	private List<User> users;
 
-	@Length(max=50)
+	@Length(max=50, min=1)
+	@NotEmpty
 	private String currencySymbol;
 
 	private boolean isDeleted;
