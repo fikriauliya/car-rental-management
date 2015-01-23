@@ -112,20 +112,6 @@ public class ReservationEJB {
 		}
 	}
 
-	public void markOverdueAsPaid(List<Reservation> reservations) {
-		for (Reservation reservation : reservations) {
-			reservation.setOverduePaid(true);
-			em.persist(reservation);
-		}
-	}
-
-	public void markOverdueAsUnpaid(List<Reservation> reservations) {
-		for (Reservation reservation : reservations) {
-			reservation.setOverduePaid(false);
-			em.persist(reservation);
-		}
-	}
-
 	public void updatePaidAmount(List<Reservation> reservations, BigDecimal paidAmount) {
 		for (Reservation reservation : reservations) {
 			reservation.setPaidAmount(paidAmount);

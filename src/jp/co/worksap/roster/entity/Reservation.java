@@ -99,9 +99,6 @@ public class Reservation {
 	@NotNull
 	private ReservationStatus status = ReservationStatus.SCHEDULED;
 
-	@NotNull
-	private boolean isPaid = true;
-
 	private BigDecimal driverFee;
 
 	private User assignedDriver;
@@ -111,9 +108,6 @@ public class Reservation {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date returnedTime;
-
-	@NotNull
-	private boolean isOverduePaid = false;
 
 	private BigDecimal overdueFee;
 
@@ -219,14 +213,6 @@ public class Reservation {
 		this.status = status;
 	}
 
-	public boolean isPaid() {
-		return isPaid;
-	}
-
-	public void setPaid(boolean isPaid) {
-		this.isPaid = isPaid;
-	}
-
 	public User getAssignedDriver() {
 		return assignedDriver;
 	}
@@ -257,14 +243,6 @@ public class Reservation {
 
 	public void setReturnedTime(Date returnedTime) {
 		this.returnedTime = returnedTime;
-	}
-
-	public boolean isOverduePaid() {
-		return isOverduePaid;
-	}
-
-	public void setOverduePaid(boolean isOverduePaid) {
-		this.isOverduePaid = isOverduePaid;
 	}
 
 	public BigDecimal getOverdueFee() {

@@ -152,7 +152,6 @@ public class ReservationService {
 			reservation.setEndTime(reservationInfo.getEndTime());
 			reservation.setCustomer(customer);
 
-			reservation.setPaid(reservationInfo.isCardPayment());
 			reservation.setInventoryFee(inventory.getPrice().multiply(new BigDecimal((reservationInfo.getEndTime().getTime() - reservationInfo.getStartTime().getTime() + 1) / (60.0 * 60 * 1000))));
 			totalFee = totalFee.add(reservation.getInventoryFee());
 
@@ -345,16 +344,6 @@ public class ReservationService {
 				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");
 			}
 			reservationEJB.markAsFullyPaid(reservations);
-		} else if (operation.equals("markOverduePaid")) {
-			if (reservations.get(0).isOverduePaid() ||  (reservations.get(0).getStatus() == ReservationStatus.CANCELED)) {
-				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");
-			}
-			reservationEJB.markOverdueAsPaid(reservations);
-		} else if (operation.equals("markOverdueUnpaid")) {
-			if (!reservations.get(0).isOverduePaid()) {
-				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");
-			}
-			reservationEJB.markOverdueAsUnpaid(reservations);
 		} else if (operation.equals("finishChecking")) {
 			if (reservations.get(0).getStatus() != ReservationStatus.FINISHED) {
 				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");
