@@ -12,7 +12,9 @@
 
     <div class="row">
       <div class="col col-md-12">
-        <ul class="nav nav-pills nav-stacked" ng-repeat="branch in branches">
+        <input class="form-control" placeholder="Enter city/country name here" ng-model="filterBranch"/>
+        <hr/>
+        <ul class="nav nav-pills nav-stacked" ng-repeat="branch in branches | filter:{name:filterBranch}">
           <li role="presentation" ng-class="selectedBranch == branch ? 'active' : ''"><a ui-sref="branch.members({branchId: branch.id})" ng-click="changeBranch(branch)">{{branch.name}}</a></li>
         </ul>
       </div>
