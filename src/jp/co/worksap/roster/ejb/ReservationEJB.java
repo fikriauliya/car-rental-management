@@ -75,9 +75,7 @@ public class ReservationEJB {
 		}
 	}
 
-	public void reschedule(Reservation reservation, Date newStartTime, Date newEndTime) {
-		reservation.setStartTime(newStartTime);
-		reservation.setEndTime(newEndTime);
+	public void update(Reservation reservation) {
 		em.persist(reservation);
 	}
 

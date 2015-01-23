@@ -1,5 +1,6 @@
 package jp.co.worksap.roster.rest;
 
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -48,7 +49,11 @@ public class ReservationRescheduleService {
 		if (alreadyReservedInventory.isEmpty()) {
 			//proceed with the reschedule
 			for (Reservation reservation : reservations) {
-				reservationEJB.reschedule(reservation, data.getStartTime(), data.getEndTime());
+				reservation.setStartTime(data.getStartTime());
+				reservation.setEndTime(data.getEndTime());
+				reservation.setInventoryFee(reservation.getInventory().getPrice().multiply(new BigDecimal((reservation.getEndTime().getTime() - reservation.getStartTime().getTime() + 1) / (60.0 * 60 * 1000))));
+
+				reservationEJB.update(reservation);
 				//TODO: update other fields (e.g. fee)
 			}
 		}
