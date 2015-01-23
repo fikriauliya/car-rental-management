@@ -157,37 +157,44 @@
       <tbody>
         <tr ng-repeat="reservation in reservations">
           <td>{{reservation.inventory.name}}</td>
-          <td align="right">{{selectedBranch.currencySymbol}} {{reservation.inventoryFee}}</td>
+          <td ng-if="reservation.status == 'CANCELED'" align="right">{{selectedBranch.currencySymbol}} 0</td>
+          <td ng-if="reservation.status != 'CANCELED'" align="right">{{selectedBranch.currencySymbol}} {{reservation.inventoryFee}}</td>
         </tr>
         <tr ng-if="reservations[0].assignedDriver">
           <td>Driver</td>
-          <td align="right">{{selectedBranch.currencySymbol}} {{reservations[0].driverFee}}</td>
+          <td ng-if="reservations[0].status == 'CANCELED'" align="right">{{selectedBranch.currencySymbol}} 0</td>
+          <td ng-if="reservations[0].status != 'CANCELED'" align="right">{{selectedBranch.currencySymbol}} {{reservations[0].driverFee}}</td>
         </tr>
       </tbody>
       <tfoot>
         <tr>
           <td><b>Total</b></td>
-          <td align="right"><b>{{selectedBranch.currencySymbol}} {{totalPrice(reservations)}}</b></td>
+          <td ng-if="reservations[0].status == 'CANCELED'" align="right"><b>{{selectedBranch.currencySymbol}} 0</b></td>
+          <td ng-if="reservations[0].status != 'CANCELED'" align="right"><b>{{selectedBranch.currencySymbol}} {{totalPrice(reservations)}}</b></td>
         </tr>
         <tr ng-style="{color:reservations[0].overduePaid?'black':'red'}" ng-if="totalOverdueFee > 0">
           <td><b>Overdue</b></td>
-          <td align="right"><b>{{selectedBranch.currencySymbol}} {{totalOverdueFee}}</b></td>
+          <td ng-if="reservations[0].status == 'CANCELED'" align="right"><b>{{selectedBranch.currencySymbol}} 0</b></td>
+          <td ng-if="reservations[0].status != 'CANCELED'" align="right"><b>{{selectedBranch.currencySymbol}} {{totalOverdueFee}}</b></td>
         </tr>
         <tr>
           <td><b>Grand Total</b></td>
-          <td align="right"><b>{{selectedBranch.currencySymbol}} {{totalOverdueFee + totalPrice(reservations)}}</b></td>
+          <td ng-if="reservations[0].status == 'CANCELED'" align="right"><b>{{selectedBranch.currencySymbol}} 0</b></td>
+          <td ng-if="reservations[0].status != 'CANCELED'" align="right"><b>{{selectedBranch.currencySymbol}} {{totalOverdueFee + totalPrice(reservations)}}</b></td>
         </tr>
         <tr style="margin-top:200px">
           <td><b>Paid amount</b></td>
           <td align="right">
             <b>{{selectedBranch.currencySymbol}} <input style="float:right; margin-left: 10px; width:100px; text-align:right;" class="form-control" ng-model="reservations[0].paidAmount"/></b>
             <br/>
-            <button style="margin-top:10px" class="btn btn-xs btn-warning" ng-click="reservations[0].paidAmount = totalOverdueFee + totalPrice(reservations)">Copy Grant Total</button>
+            <button ng-if="reservations[0].status == 'CANCELED'" style="margin-top:10px" class="btn btn-xs btn-warning" ng-click="reservations[0].paidAmount = 0">Copy Grant Total</button>
+            <button ng-if="reservations[0].status != 'CANCELED'" style="margin-top:10px" class="btn btn-xs btn-warning" ng-click="reservations[0].paidAmount = totalOverdueFee + totalPrice(reservations)">Copy Grant Total</button>
           </td>
         </tr>
         <tr>
           <td><b style="color:blue">Balance</b></td>
-          <td align="right" style="color:blue"><b>{{selectedBranch.currencySymbol}} {{reservations[0].paidAmount - (totalOverdueFee + totalPrice(reservations))}}</b></td>
+          <td ng-if="reservations[0].status == 'CANCELED'" align="right" style="color:blue"><b>{{selectedBranch.currencySymbol}} {{reservations[0].paidAmount}}</b></td>
+          <td ng-if="reservations[0].status != 'CANCELED'" align="right" style="color:blue"><b>{{selectedBranch.currencySymbol}} {{reservations[0].paidAmount - (totalOverdueFee + totalPrice(reservations))}}</b></td>
         </tr>
         <tr>
           <td></td>
