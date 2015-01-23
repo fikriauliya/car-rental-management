@@ -65,9 +65,11 @@ public class ReservationEJB {
 				Date now = new Date();
 				reservation.setReturnedTime(now);
 				if (now.getTime() > reservation.getEndTime().getTime()) {
+					// Overdue
 					BigDecimal overduePenaltyPercentage = reservation.getInventory().getOwner().getOverduePenaltyPercentage();
 					double elapsedHour = (now.getTime() - reservation.getEndTime().getTime()) / (60.0 * 60 * 1000);
 					reservation.setOverdueFee(reservation.getInventory().getPrice().multiply(new BigDecimal(elapsedHour)).multiply(overduePenaltyPercentage).divide(new BigDecimal(100), RoundingMode.HALF_UP));
+					reservation.setFullyPaid(false);
 				}
 			}
 
@@ -96,16 +98,16 @@ public class ReservationEJB {
 		return true;
 	}
 
-	public void markAsPaid(List<Reservation> reservations) {
+	public void markAsFullyPaid(List<Reservation> reservations) {
 		for (Reservation reservation : reservations) {
-			reservation.setPaid(true);
+			reservation.setFullyPaid(true);
 			em.persist(reservation);
 		}
 	}
 
-	public void markAsUnpaid(List<Reservation> reservations) {
+	public void markAsFullyUnpaid(List<Reservation> reservations) {
 		for (Reservation reservation : reservations) {
-			reservation.setPaid(false);
+			reservation.setFullyPaid(false);
 			em.persist(reservation);
 		}
 	}
@@ -120,6 +122,13 @@ public class ReservationEJB {
 	public void markOverdueAsUnpaid(List<Reservation> reservations) {
 		for (Reservation reservation : reservations) {
 			reservation.setOverduePaid(false);
+			em.persist(reservation);
+		}
+	}
+
+	public void updatePaidAmount(List<Reservation> reservations, BigDecimal paidAmount) {
+		for (Reservation reservation : reservations) {
+			reservation.setPaidAmount(paidAmount);
 			em.persist(reservation);
 		}
 	}

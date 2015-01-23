@@ -22,9 +22,9 @@ var IndexStatisticsController = function($scope, $state, $stateParams, $filter, 
 	    		dd.endTime = TimezoneConverter.convertToLocalTimeZoneTime(dd.end, $scope.selectedBranch.timezone);
 	    		dd.end = TimezoneConverter.convertToLocalTimeZoneTime(dd.end, $scope.selectedBranch.timezone);
 			});
-			var paidReservations = _.filter(d, function(r) { return r.paid; });
+			var paidReservations = _.filter(d, function(r) { return r.paidAmount > 0; });
 			$scope.groupedReservations = _.groupBy(paidReservations, function(r) { return r.groupId; });
-			$scope.totalIncome = _.reduce($scope.groupedReservations, function(memo, data) { return memo + $scope.totalPrice(data); }, 0);
+			$scope.totalIncome = _.reduce($scope.groupedReservations, function(memo, data) { return memo + data[0].paidAmount; }, 0);
 
 			var inventories = _.map(paidReservations, function(r) { return r.inventory; });
 			_.each(inventories, function(dd) {
@@ -38,22 +38,6 @@ var IndexStatisticsController = function($scope, $state, $stateParams, $filter, 
 			$scope.groupedInventories = _.sortBy(_.groupBy(inventories, function(r) { return r.id; }), function(r) { return -r.length});
 		});
 	};
-
-	$scope.totalPrice = function(reservations) {
-		console.log(reservations);
-		var a = _.reduce(reservations, function(memo, item){ console.log(item); return memo + item.inventoryFee; }, 0);
-		console.log(a);
-		if (reservations.length > 0 && reservations[0].assignedDriver) { return a + reservations[0].driverFee; }
-
-		var totalOverdueFee = _.reduce(reservations, function(memo, dd) {
-			if (dd.overduePaid) {
-				return memo + dd.overdueFee;
-			} else {
-				return memo;
-			}
-		}, 0);
-		return a + totalOverdueFee;
-	}
 
 	$scope.reservationDetailLink = function(branchId, groupId) {
 		return baseUrl + basePath + "/reservations/index.jsf#/" + branchId + "/reservations/" + groupId;

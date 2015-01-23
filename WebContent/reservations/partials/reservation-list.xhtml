@@ -88,11 +88,8 @@
                 <td>
                   {{group.data[0].start | date:'medium'}}
                   <div style="margin-top:10px; margin-bottom:5px">
-                    <span class="label label-danger" ng-if="!group.data[0].paid">UNPAID</span>
-                    <span class="label label-success" ng-if="group.data[0].paid">PAID</span>
-
-                    <span class="label label-danger" ng-if="group.data[0].overdueFee > 0 && !group.data[0].overduePaid">Overdue Unpaid</span>
-                    <span class="label label-success" ng-if="group.data[0].overdueFee > 0 && group.data[0].overduePaid">Overdue Paid</span>
+                    <span class="label label-danger" ng-if="!group.data[0].fullyPaid">INCOMPLETE PAYMENT</span>
+                    <span class="label label-success" ng-if="group.data[0].fullyPaid">COMPLETE PAYMENT</span>
                   </div>
                 </td>
                 <td>{{group.data[0].end | date:'medium'}}</td>

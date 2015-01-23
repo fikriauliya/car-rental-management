@@ -2,11 +2,8 @@
   <div class="col-md-12">
     <h4>
       Reservation Details #{{reservations[0].groupId}}
-      <span class="label label-danger" ng-if="!reservations[0].paid">Unpaid</span>
-      <span class="label label-success" ng-if="reservations[0].paid">Paid</span>
-
-      <span class="label label-danger" ng-if="totalOverdueFee > 0 && !reservations[0].overduePaid">Overdue Unpaid</span>
-      <span class="label label-success" ng-if="totalOverdueFee > 0 && reservations[0].overduePaid">Overdue Paid</span>
+      <span class="label label-danger" ng-if="!reservations[0].fullyPaid">INCOMPLETE PAYMENT</span>
+      <span class="label label-success" ng-if="reservations[0].fullyPaid">COMPLETE PAYMENT</span>
 
       <span class="label label-primary" ng-if="reservations[0].status == 'SCHEDULED'">{{reservations[0].status}}</span>
       <span class="label label-danger" ng-if="reservations[0].status == 'CANCELED'">{{reservations[0].status}}</span>
@@ -26,25 +23,6 @@
         <span class="glyphicon glyphicon-remove-circle"/>
         Cancel reservation
       </button>
-      <button class="btn btn-sm btn-primary" ng-click="markPaid()" ng-if="!reservations[0].paid && reservations[0].status != 'CANCELED'">
-        <span class="glyphicon glyphicon-ok"/>
-        Mark as paid
-      </button>
-      <button class="btn btn-sm btn-primary" ng-click="markUnpaid()" ng-if="reservations[0].paid && (reservations[0].status == 'SCHEDULED' || reservations[0].status == 'CANCELED')">
-        <span class="glyphicon glyphicon-remove"/>
-        Mark as unpaid
-      </button>
-
-      <span ng-if="totalOverdueFee > 0">
-        <button class="btn btn-sm btn-primary" ng-click="markOverduePaid()" ng-if="!reservations[0].overduePaid && reservations[0].status != 'CANCELED'">
-          <span class="glyphicon glyphicon-ok"/>
-          Mark overdue as paid
-        </button>
-        <button class="btn btn-sm btn-primary" ng-click="markOverdueUnpaid()" ng-if="reservations[0].overduePaid">
-          <span class="glyphicon glyphicon-remove"/>
-          Mark overdue as unpaid
-        </button>
-      </span>
     </div>
     <hr/>
   </div>
@@ -168,12 +146,12 @@
     </ol>
   </div>
   <div class="col-md-3">
-    <h4>Price breakdown</h4>
+    <h4>Payment</h4>
     <table class="table table-condensed table-striped">
       <thead>
         <tr>
           <th>Name</th>
-          <th>Price</th>
+          <th align="right">Price</th>
         </tr>
       </thead>
       <tbody>
@@ -198,6 +176,28 @@
         <tr>
           <td><b>Grand Total</b></td>
           <td align="right"><b>{{selectedBranch.currencySymbol}} {{totalOverdueFee + totalPrice(reservations)}}</b></td>
+        </tr>
+        <tr style="margin-top:200px">
+          <td><b>Paid amount</b></td>
+          <td align="right">
+            <b>{{selectedBranch.currencySymbol}} <input style="float:right; margin-left: 10px; width:100px; text-align:right;" class="form-control" ng-model="reservations[0].paidAmount"/></b>
+            <br/>
+            <button style="margin-top:10px" class="btn btn-xs btn-warning" ng-click="reservations[0].paidAmount = totalOverdueFee + totalPrice(reservations)">Copy Grant Total</button>
+          </td>
+        </tr>
+        <tr>
+          <td><b style="color:blue">Balance</b></td>
+          <td align="right" style="color:blue"><b>{{selectedBranch.currencySymbol}} {{reservations[0].paidAmount - (totalOverdueFee + totalPrice(reservations))}}</b></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td align="right">
+            <button class="btn btn-success btn-sm" ng-click="updatePayment()">Update payment</button><br/><br/>
+            <button class="btn btn-sm btn-primary" ng-click="markFullyPaid()" ng-if="!reservations[0].fullyPaid && reservations[0].status != 'CANCELED'">
+              <span class="glyphicon glyphicon-ok"/>
+              Full payment received
+            </button>
+          </td>
         </tr>
       </tfoot>
     </table>

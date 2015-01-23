@@ -117,6 +117,12 @@ public class Reservation {
 
 	private BigDecimal overdueFee;
 
+	@NotNull
+	private boolean isFullyPaid = false;
+
+	@NotNull
+	private BigDecimal paidAmount;
+
 	public int getId() {
 		return id;
 	}
@@ -267,6 +273,22 @@ public class Reservation {
 
 	public void setOverdueFee(BigDecimal overdueFee) {
 		this.overdueFee = overdueFee;
+	}
+
+	public boolean isFullyPaid() {
+		return isFullyPaid;
+	}
+
+	public void setFullyPaid(boolean isFullyPaid) {
+		this.isFullyPaid = isFullyPaid;
+	}
+
+	public BigDecimal getPaidAmount() {
+		return paidAmount;
+	}
+
+	public void setPaidAmount(BigDecimal paidAmount) {
+		this.paidAmount = paidAmount;
 	}
 
 

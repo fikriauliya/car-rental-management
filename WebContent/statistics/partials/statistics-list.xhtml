@@ -36,7 +36,7 @@
         <tr ng-repeat="(groupId, reservations) in groupedReservations">
           <td>{{$index + 1}}</td>
           <td><a ng-href="{{reservationDetailLink(reservations[0].inventory.owner.id, groupId)}}" target="_blank">{{groupId}}</a></td>
-          <td align="right">{{selectedBranch.currencySymbol}} {{totalPrice(reservations)}}</td>
+          <td align="right">{{selectedBranch.currencySymbol}} {{reservations[0].paidAmount}}</td>
         </tr>
       </tbody>
     </table>

@@ -219,8 +219,8 @@
             <td data-title="'From'" sortable="'start'">{{data.start | date:'medium'}}</td>
             <td data-title="'To'" sortable="'end'">{{data.end | date:'medium'}}</td>
             <td data-title="'Paid?'" sortable="'paid'">
-              <span class="label label-danger" ng-if="!data.paid">Unpaid</span>
-              <span class="label label-success" ng-if="data.paid">Paid</span>
+              <span class="label label-danger" ng-if="!data.fullyPaid">INCOMPLETE PAYMENT</span>
+              <span class="label label-success" ng-if="data.fullyPaid">COMPLETE PAYMENT</span>
             </td>
             <td data-title="'Status'" sortable="'status'">
               <span class="label label-primary" ng-if="data.status == 'SCHEDULED'">{{data.status}}</span>

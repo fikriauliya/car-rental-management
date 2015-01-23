@@ -45,16 +45,13 @@
                   <td>
                     {{group.data[0].start | date:'medium'}}
                     <div style="margin-top:10px; margin-bottom:5px">
-                      <span class="label label-danger" ng-if="!group.data[0].paid">Unpaid</span>
-                      <span class="label label-success" ng-if="group.data[0].paid">Paid</span>
-
-                      <span class="label label-danger" ng-if="group.data[0].overdueFee > 0 &amp;&amp; !group.data[0].overduePaid">Overdue Unpaid</span>
-                      <span class="label label-success" ng-if="group.data[0].overdueFee > 0 &amp;&amp; group.data[0].overduePaid">Overdue Paid</span>
+                      <span class="label label-danger" ng-if="!group.data[0].fullyPaid">INCOMPLETE PAYMENT</span>
+                      <span class="label label-success" ng-if="group.data[0].fullyPaid">COMPLETE PAYMENT</span>
                     </div>
                   </td>
                   <td>{{group.data[0].end | date:'medium'}}</td>
                   <td>
-                    <button class="btn btn-sm btn-danger" ng-click="cancelRental(group.data[0].inventory.owner.id, group.data[0].groupId)" ng-if="(!group.data[0].paid) &amp;&amp; (group.data[0].status == 'SCHEDULED')">
+                    <button class="btn btn-sm btn-danger" ng-click="cancelRental(group.data[0].inventory.owner.id, group.data[0].groupId)" ng-if="(!group.data[0].fullyPaid) &amp;&amp; (group.data[0].status == 'SCHEDULED')">
                       <span class="glyphicon glyphicon-remove-circle"/>
                       Cancel
                     </button>

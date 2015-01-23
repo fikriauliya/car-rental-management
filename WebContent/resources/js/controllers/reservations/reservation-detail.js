@@ -165,8 +165,8 @@ var ReservationDetailController = function($scope, $state, $stateParams, $filter
 		});
 	};
 
-	$scope.markPaid = function() {
-		Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "markPaid"}, function(d, h){
+	$scope.markFullyPaid = function() {
+		Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "markFullyPaid"}, function(d, h){
 			$scope.refreshReservationDetail();
 		}, function(d, h) {
 			$scope.refreshReservationDetail();
@@ -174,9 +174,25 @@ var ReservationDetailController = function($scope, $state, $stateParams, $filter
 		});
 	};
 
-	$scope.markUnpaid = function() {
+	$scope.updatePayment = function() {
+		Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "updatePayment_" + $scope.reservations[0].paidAmount}, function(d, h){
+			$scope.$parent.info = "Payment updated";
+			if ($scope.reservations[0].paidAmount - ($scope.totalOverdueFee + $scope.totalPrice($scope.reservations)) == 0) {
+				if (!$scope.reservations[0].fullyPaid && $scope.reservations[0].status != 'CANCELED') {
+					$scope.markFullyPaid();
+				}
+			} else {
+				$scope.refreshReservationDetail();
+			}
+		}, function(d, h) {
+			$scope.refreshReservationDetail();
+			alert(d.data);
+		});
+	}
+
+	$scope.markFullyUnpaid = function() {
 		if (confirm("Are you sure want to set this reservation as Unpaid? Please make sure the money has been payed back to the customer first")) {
-			Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "markUnpaid"}, function(d, h){
+			Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "markFullyUnpaid"}, function(d, h){
 				$scope.refreshReservationDetail();
 			}, function(d, h) {
 				$scope.refreshReservationDetail();

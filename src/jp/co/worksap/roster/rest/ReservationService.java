@@ -40,7 +40,6 @@ import jp.co.worksap.roster.entity.CarInventory;
 import jp.co.worksap.roster.entity.Customer;
 import jp.co.worksap.roster.entity.GpsInventory;
 import jp.co.worksap.roster.entity.Inventory;
-import jp.co.worksap.roster.entity.Inventory.InventoryType;
 import jp.co.worksap.roster.entity.InventoryStatus;
 import jp.co.worksap.roster.entity.Reservation;
 import jp.co.worksap.roster.entity.ReservationStatus;
@@ -254,7 +253,7 @@ public class ReservationService {
 			if (reservations.get(0).getStatus() != ReservationStatus.SCHEDULED) {
 				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");
 			}
-			if (!reservations.get(0).isPaid()) {
+			if (!reservations.get(0).isFullyPaid()) {
 				throw new WebServiceException("Please make the payment first before starting the rental");
 			}
 			if (reservationEJB.isEligibleForRent(reservations)) {
@@ -328,16 +327,11 @@ public class ReservationService {
 			reservationEJB.updateInventories(reservations, InventoryStatus.AVAILABLE);
 			reservationEJB.updateStatus(reservations, ReservationStatus.CANCELED);
 			userAgendaEJB.deleteUserAgendaByTitle(String.valueOf(data.getBranchId()) + "-" + String.valueOf(data.getGroupId()));
-		} else if (operation.equals("markPaid")) {
-			if (reservations.get(0).isPaid() ||  (reservations.get(0).getStatus() == ReservationStatus.CANCELED)) {
+		} else if (operation.equals("markFullyPaid")) {
+			if (reservations.get(0).isFullyPaid() ||  (reservations.get(0).getStatus() == ReservationStatus.CANCELED)) {
 				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");
 			}
-			reservationEJB.markAsPaid(reservations);
-		} else if (operation.equals("markUnpaid")) {
-			if (!reservations.get(0).isPaid() || !(reservations.get(0).getStatus() == ReservationStatus.SCHEDULED || reservations.get(0).getStatus() == ReservationStatus.CANCELED)) {
-				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");
-			}
-			reservationEJB.markAsUnpaid(reservations);
+			reservationEJB.markAsFullyPaid(reservations);
 		} else if (operation.equals("markOverduePaid")) {
 			if (reservations.get(0).isOverduePaid() ||  (reservations.get(0).getStatus() == ReservationStatus.CANCELED)) {
 				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");
@@ -353,6 +347,15 @@ public class ReservationService {
 				throw new WebServiceException("The status of this reservation has been modified & refreshed. Please check again");
 			}
 			reservationEJB.updateInventories(reservations, InventoryStatus.AVAILABLE);
+		} else if (operation.startsWith("updatePayment")) {
+			BigDecimal paidAmount = new BigDecimal("0");
+			try {
+				paidAmount = new BigDecimal(operation.split("_")[1]);
+			} catch (Exception ex) {
+				throw new WebServiceException("Invalid amount");
+			}
+			reservationEJB.markAsFullyUnpaid(reservations);
+			reservationEJB.updatePaidAmount(reservations, paidAmount);
 		}
 
 		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
