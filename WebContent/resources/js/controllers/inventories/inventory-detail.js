@@ -1,4 +1,4 @@
-var InventoryDetailController = function($scope, $state, $stateParams, $filter, $timeout, Inventories, ReservationHistories, ngTableParams) {
+var InventoryDetailController = function($scope, $state, $stateParams, $filter, $timeout, Inventories, ReservationHistories, TimezoneConverter, ngTableParams) {
 	$scope.inventory = {};
 	$scope.inventoryFuelTypes =
 	[
@@ -44,11 +44,23 @@ var InventoryDetailController = function($scope, $state, $stateParams, $filter, 
 
 	$scope.refreshReservationHistories = function() {
 		$scope.startProgress();
-		ReservationHistories.query({inventoryId: $stateParams.inventoryId}, function(d, h) {
-			$scope.reservationHistories = d;
-			$scope.tableParams.reload();
-			$scope.endProgress();
-		}, function(d, h) {
+		$scope.$parent.branchResolved.promise.then(function(b) {
+			ReservationHistories.query({inventoryId: $stateParams.inventoryId}, function(d, h) {
+				_.each(d, function(dd) {
+	        		dd.startTime = TimezoneConverter.convertToLocalTimeZoneTime(dd.start, $scope.selectedBranch.timezone);
+	        		dd.start = TimezoneConverter.convertToLocalTimeZoneTime(dd.start, $scope.selectedBranch.timezone);
+
+	        		dd.endTime = TimezoneConverter.convertToLocalTimeZoneTime(dd.end, $scope.selectedBranch.timezone);
+	        		dd.end = TimezoneConverter.convertToLocalTimeZoneTime(dd.end, $scope.selectedBranch.timezone);
+	    		});
+
+				$scope.reservationHistories = d;
+				$scope.tableParams.reload();
+				$scope.endProgress();
+			}, function(d, h) {
+				$scope.endProgress();
+			});
+		}, function() {
 			$scope.endProgress();
 		});
 	};
@@ -100,4 +112,4 @@ var InventoryDetailController = function($scope, $state, $stateParams, $filter, 
 
 angular.module('inventoryManagementApp').controller('InventoryDetailController',
 		['$scope', '$state', '$stateParams', '$filter',  '$timeout',
-		 'Inventories', 'ReservationHistories', 'ngTableParams', InventoryDetailController]);
+		 'Inventories', 'ReservationHistories', 'TimezoneConverter', 'ngTableParams', InventoryDetailController]);
