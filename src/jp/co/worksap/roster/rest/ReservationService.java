@@ -11,6 +11,7 @@ import java.util.TimeZone;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.NoResultException;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -119,7 +120,13 @@ public class ReservationService {
 		}
 
 		long timestamp = (new Date()).getTime();
-		Customer customer = customerEJB.findCustomerByUserId(userId);
+
+		Customer customer = null;
+		try {
+			customer = customerEJB.findCustomerByUserId(userId);
+		} catch (Exception ex) {
+			throw new WebServiceException("This user is not a customer");
+		}
 		Reservation firstCreatedReservation = null;
 
 		boolean driverAssigned = false;
