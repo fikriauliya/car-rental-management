@@ -105,9 +105,10 @@ var IndexReservationController = function($scope, $state, $stateParams, $filter,
 
 	$scope.totalPrice = function(reservations) {
 		var a = _.reduce(reservations, function(memo, item){ return memo + item.inventoryFee + item.overdueFee; }, 0);
-		if (reservations.length > 0 && reservations[0].assignedDriver) { return a + reservations[0].driverFee; }
+		if (reservations.length > 0 && reservations[0].assignedDriver) { a = a + reservations[0].driverFee; }
+		if (reservations.length > 0 && reservations[0].penaltyFee) { a = a + parseFloat(reservations[0].penaltyFee); };
 		return a;
-	}
+	};
 
 	$scope.filterReservation = function(filterText) {
 		$scope.filterText = filterText;

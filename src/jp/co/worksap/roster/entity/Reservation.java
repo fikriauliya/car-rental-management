@@ -109,7 +109,9 @@ public class Reservation {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date returnedTime;
 
-	private BigDecimal overdueFee;
+	private BigDecimal overdueFee = new BigDecimal(0);
+
+	private BigDecimal penaltyFee = new BigDecimal(0);
 
 	@NotNull
 	private boolean isFullyPaid = false;
@@ -267,6 +269,14 @@ public class Reservation {
 
 	public void setPaidAmount(BigDecimal paidAmount) {
 		this.paidAmount = paidAmount;
+	}
+
+	public BigDecimal getPenaltyFee() {
+		return penaltyFee;
+	}
+
+	public void setPenaltyFee(BigDecimal penaltyFee) {
+		this.penaltyFee = penaltyFee;
 	}
 
 

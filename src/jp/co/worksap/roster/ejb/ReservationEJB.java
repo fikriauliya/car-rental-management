@@ -118,4 +118,11 @@ public class ReservationEJB {
 			em.persist(reservation);
 		}
 	}
+
+	public void updatePenaltyFee(List<Reservation> reservations, BigDecimal penaltyFee) {
+		for (Reservation reservation : reservations) {
+			reservation.setPenaltyFee(penaltyFee);
+			em.persist(reservation);
+		}
+	}
 }

@@ -125,9 +125,10 @@ var ReservationDetailController = function($scope, $state, $stateParams, $filter
 
 	$scope.totalPrice = function(reservations) {
 		var a = _.reduce(reservations, function(memo, item){ return memo + item.inventoryFee + item.overdueFee; }, 0);
-		if (reservations.length > 0 && reservations[0].assignedDriver) { return a + reservations[0].driverFee; }
+		if (reservations.length > 0 && reservations[0].assignedDriver) { a = a + reservations[0].driverFee; }
+		if (reservations.length > 0 && reservations[0].penaltyFee) { a = a + parseFloat(reservations[0].penaltyFee); };
 		return a;
-	}
+	};
 
 	$scope.startRental = function() {
 		Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "startRental"}, function(d, h){
@@ -175,7 +176,7 @@ var ReservationDetailController = function($scope, $state, $stateParams, $filter
 	};
 
 	$scope.updatePayment = function() {
-		Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "updatePayment_" + $scope.reservations[0].paidAmount}, function(d, h){
+		Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "updatePayment_" + $scope.reservations[0].paidAmount + "_" + $scope.reservations[0].penaltyFee}, function(d, h){
 			$scope.$parent.info = "Payment updated";
 			if ($scope.reservations[0].paidAmount - ($scope.totalPrice($scope.reservations)) == 0) {
 				if (!$scope.reservations[0].fullyPaid && $scope.reservations[0].status != 'CANCELED') {

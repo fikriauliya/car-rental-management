@@ -351,13 +351,17 @@ public class ReservationService {
 			reservationEJB.updateInventories(reservations, InventoryStatus.AVAILABLE);
 		} else if (operation.startsWith("updatePayment")) {
 			BigDecimal paidAmount = new BigDecimal("0");
+			BigDecimal penaltyFee = new BigDecimal("0");
+
 			try {
 				paidAmount = new BigDecimal(operation.split("_")[1]);
+				penaltyFee = new BigDecimal(operation.split("_")[2]);
 			} catch (Exception ex) {
 				throw new WebServiceException("Invalid amount");
 			}
 			reservationEJB.markAsFullyUnpaid(reservations);
 			reservationEJB.updatePaidAmount(reservations, paidAmount);
+			reservationEJB.updatePenaltyFee(reservations, penaltyFee);
 		}
 
 		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
