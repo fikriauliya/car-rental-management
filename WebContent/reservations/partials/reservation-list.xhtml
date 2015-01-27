@@ -16,14 +16,14 @@
     <h4>Pending return</h4>
     <ol ng-if="pendingReturns">
       <li ng-repeat="r in pendingReturns">
-        <a href="" ng-click="filterReservation(r[0].groupId)" >{{r[0].groupId}} ({{r[0].customer.user.firstName}} {{r[0].customer.user.lastName}})</a>
+        <a href="" ui-sref="branch.details({branchId: selectedBranch.id, groupId: r[0].groupId})">{{r[0].groupId}} ({{r[0].customer.user.firstName}} {{r[0].customer.user.lastName}})</a>
       </li>
     </ol>
     <hr/>
     <h4>Pending return (late)</h4>
     <ol ng-if="lateReturns">
       <li ng-repeat="r in lateReturns">
-        <a href="" ng-click="filterReservation(r[0].groupId)" >{{r[0].groupId}} ({{r[0].customer.user.firstName}} {{r[0].customer.user.lastName}})</a>
+        <a href="" ui-sref="branch.details({branchId: selectedBranch.id, groupId: r[0].groupId})">{{r[0].groupId}} ({{r[0].customer.user.firstName}} {{r[0].customer.user.lastName}})</a>
       </li>
     </ol>
     <hr/>
@@ -32,7 +32,7 @@
     <h4>Pending Payback</h4>
     <ol ng-if="pendingPaybacks">
       <li ng-repeat="r in pendingPaybacks">
-        <a href="" ng-click="filterReservation(r[0].groupId)" >{{r[0].groupId}} ({{r[0].customer.user.firstName}} {{r[0].customer.user.lastName}})</a>
+        <a href="" ui-sref="branch.details({branchId: selectedBranch.id, groupId: r[0].groupId})">{{r[0].groupId}} ({{r[0].customer.user.firstName}} {{r[0].customer.user.lastName}})</a>
       </li>
     </ol>
     <hr/>
