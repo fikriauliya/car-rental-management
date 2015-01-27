@@ -253,6 +253,16 @@ var ReservationDetailController = function($scope, $state, $stateParams, $filter
 			$scope.newSchedule.endTime = $scope.reservations[0].endTime;
 		}
 		$scope.inEditScheduleMode = inEditScheduleMode;
+	};
+
+	$scope.removeReservation = function(reservation) {
+		if (confirm("Are you sure want to delete this?")) {
+			Reservations.delete({id: reservation.id}, function(d, h) {
+				$scope.refreshReservationDetail();
+			}, function(d, h) {
+				$scope.$parent.errors = d.data;
+			});
+		}
 	}
 
 	$scope.parentUrl = baseUrl + basePath;

@@ -142,6 +142,10 @@
         <span class="label label-danger" ng-if="reservation.inventory.status == 'BROKEN'">{{reservation.inventory.status}}</span>
         <span class="label label-default" ng-if="reservation.inventory.status == 'DELETED'">{{reservation.inventory.status}}</span>
         <span class="label label-warning" ng-if="reservation.inventory.status == 'RETURNED'">{{reservation.inventory.status}}</span>
+
+        <button class="btn btn-danger btn-xs" ng-click="removeReservation(reservation)" ng-if="reservation.status == 'SCHEDULED'">
+          <span class="glyphicon glyphicon-remove"/>
+        </button>
       </li>
     </ol>
   </div>

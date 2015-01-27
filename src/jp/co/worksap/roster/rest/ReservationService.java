@@ -14,6 +14,7 @@ import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -28,6 +29,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 import javax.xml.ws.WebServiceException;
+
+import org.glassfish.api.Param;
 
 import jp.co.worksap.roster.ejb.BranchEJB;
 import jp.co.worksap.roster.ejb.CustomerEJB;
@@ -371,6 +374,29 @@ public class ReservationService {
 			reservationEJB.updatePenaltyFee(reservations, penaltyFee);
 		}
 
+		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
+	}
+
+	@DELETE
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response destroy(@QueryParam("id") int id) {
+		Reservation reservation = reservationEJB.findReservation(id);
+		List<Reservation> reservations = reservationEJB.findReservations(reservation.getGroupId());
+
+		int removedIndex = -1;
+
+		int i = 0;
+		for (Reservation curReservation:reservations) {
+			if (curReservation.getId() == reservation.getId()) {
+				removedIndex = i;
+			}
+			i++;
+		}
+		reservations.remove(removedIndex);
+
+		reservationEJB.delete(reservation);
+		reservationEJB.markAsFullyUnpaid(reservations);
 		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
 	}
 }

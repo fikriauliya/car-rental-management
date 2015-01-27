@@ -30,6 +30,12 @@ public class ReservationEJB {
 		return q.getResultList();
 	}
 
+	public Reservation findReservation(int id) {
+		TypedQuery<Reservation> q = em.createNamedQuery("findReservationsById", Reservation.class)
+				.setParameter("id", id);
+		return q.getSingleResult();
+	}
+
 	public List<Reservation> findReservations(int branchId, Date startTime) {
 		TypedQuery<Reservation> q = em.createNamedQuery("findReservationsByStartDate", Reservation.class)
 				.setParameter("startTime", startTime)
@@ -124,5 +130,9 @@ public class ReservationEJB {
 			reservation.setPenaltyFee(penaltyFee);
 			em.persist(reservation);
 		}
+	}
+
+	public void delete(Reservation reservation) {
+		em.remove(reservation);
 	}
 }

@@ -24,6 +24,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name="T_RESERVATION")
 @FieldLessThan(first="startTime", second="endTime", message="start time must be less than end time")
 @NamedQueries({
+	@NamedQuery(name="findReservationsById", query="SELECT u from Reservation u " +
+			"WHERE (u.id = :id)"),
 	@NamedQuery(name="findReservationsByCustomerId", query="SELECT u from Reservation u " +
 			"WHERE (u.customer.user.id = :customerId)"),
 	@NamedQuery(name="findReservationsByDate", query="SELECT u from Reservation u " +
