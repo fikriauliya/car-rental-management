@@ -48,7 +48,7 @@ var IndexReservationController = function($scope, $state, $stateParams, $filter,
 	        	})
 
 	        	$scope.pendingPaybacks = _.groupBy(_.filter(d, function(dd) {
-	        		if ((dd.status == 'CANCELED') && (dd.fullyPaid)) {
+	        		if ((dd.status == 'CANCELED') && (dd.paidAmount > 0)) {
 	        			return true;
 	        		} else {
 	        			return false;
