@@ -2,9 +2,12 @@ package jp.co.worksap.roster.ejb;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,6 +22,9 @@ import jp.co.worksap.roster.entity.ReservationStatus;
 public class ReservationEJB {
 	@PersistenceContext(unitName="RosterManagement")
 	private EntityManager em;
+
+	@EJB
+	InventoryEJB inventoryEJB;
 
 	public void createReservation(Reservation r) {
 		em.persist(r);
@@ -130,6 +136,41 @@ public class ReservationEJB {
 			reservation.setPenaltyFee(penaltyFee);
 			em.persist(reservation);
 		}
+	}
+
+	private Date timestampToDate(long timestamp) {
+		return new Date(new Timestamp(timestamp).getTime());
+	}
+
+
+	public boolean addReservation(long groupId, Inventory inventory) {
+		Reservation other = this.findReservations(groupId).get(0);
+		Set<Integer> reservedInventories = inventoryEJB.findReservedInventories(other.getInventory().getOwner().getId(), timestampToDate(other.getStartTime().getTime()), timestampToDate(other.getEndTime().getTime()), -1);
+
+		if (reservedInventories.contains(inventory)) {
+			return false;
+		};
+		Reservation reservation = new Reservation();
+		reservation.setGroupId(groupId);
+		reservation.setCardCIV(other.getCardCIV());
+		reservation.setCardExpiryDate(other.getCardExpiryDate());
+		reservation.setCardName(other.getCardName());
+		reservation.setCardNumber(other.getCardNumber());
+
+		reservation.setInventory(inventory);
+		reservation.setInventoryVersion(inventory.getVersion());
+		reservation.setStartTime(other.getStartTime());
+		reservation.setEndTime(other.getEndTime());
+		reservation.setCustomer(other.getCustomer());
+		reservation.setInventoryFee(inventory.getPrice().multiply(new BigDecimal((other.getEndTime().getTime() - other.getStartTime().getTime() + 1) / (60.0 * 60 * 1000))));
+		reservation.setAssignedDriver(other.getAssignedDriver());
+		reservation.setDriverFee(other.getDriverFee());
+		reservation.setPaidAmount(other.getPaidAmount());
+		reservation.setStatus(other.getStatus());
+		reservation.setFullyPaid(other.isFullyPaid());
+
+		em.persist(reservation);
+		return true;
 	}
 
 	public void delete(Reservation reservation) {

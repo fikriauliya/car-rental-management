@@ -372,8 +372,20 @@ public class ReservationService {
 			reservationEJB.markAsFullyUnpaid(reservations);
 			reservationEJB.updatePaidAmount(reservations, paidAmount);
 			reservationEJB.updatePenaltyFee(reservations, penaltyFee);
-		}
+		} else if (operation.startsWith("addReservation")) {
+			int inventoryId = -1;
+			try {
+				inventoryId = Integer.valueOf(operation.split("_")[1]);
+			} catch (Exception ex) {
+				throw new WebServiceException("Invalid operation");
+			}
+			Inventory inventory = inventoryEJB.findInventory(inventoryId);
 
+			if (!reservationEJB.addReservation(groupId, inventory)) {
+				throw new WebServiceException("The inventory is already reserved by someone");
+			}
+			reservationEJB.markAsFullyUnpaid(reservations);
+		}
 		return Response.status(Status.ACCEPTED).type(MediaType.APPLICATION_JSON).build();
 	}
 

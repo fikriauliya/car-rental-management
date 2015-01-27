@@ -148,6 +148,7 @@
         </button>
       </li>
     </ol>
+    <button class="btn btn-success btn-xs" ng-click="displayAddReservation(true)" ng-if="reservations[0].status == 'SCHEDULED'">Add new item</button>
   </div>
   <div class="col-md-3">
     <h4>Payment</h4>
@@ -220,5 +221,186 @@
   <div class="col col-md-6">
     <h4>Location</h4>
     <div id="map-canvas"></div>
+  </div>
+</div>
+
+<div class="modal fade inventory-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Inventory</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <select style='width:150px; margin:10px' class="form-control" ng-options="i for i in ['CAR', 'BABY SEAT', 'GPS']" ng-model="filterType.value"/>
+        </div>
+        <div class="row" ng-if="filterType.value == 'CAR'">
+          <div class="col col-md-12">
+            <input style='width:300px; float:left; margin-right:10px' type="text" placeholder="Car name" class="form-control" ng-model="filterText.value"/>
+            <input style='width:90px; float:left; margin-right:10px' type="text" placeholder="Min seat" class="form-control" ng-model="filterText.minSeat"/>
+            <input style='width:90px; float:left; margin-right:10px' type="text" placeholder="Max seat" class="form-control" ng-model="filterText.maxSeat"/>
+            <input style='width:90px; float:left; margin-right:10px' type="text" placeholder="Min price" class="form-control" ng-model="filterText.minPrice"/>
+            <input style='width:90px; float:left; margin-right:10px' type="text" placeholder="Max price" class="form-control" ng-model="filterText.maxPrice"/>
+          </div>
+        </div>
+        <div ng-if="filterType.value == 'CAR'" class="row" ng-repeat="car in carInventories | filter:{name: filterText.value} | filter:{totalPrice:filterText.minPrice}:minComparator | filter:{totalPrice:filterText.maxPrice}:maxComparator | filter:{numOfSeat:filterText.minSeat}:minComparator| filter:{numOfSeat:filterText.maxSeat}:maxComparator | filter:{rightSideDriver:filterText.driverSide.value}:driverSideComparator | filter:{transmission:filterText.transmission}" ng-if="carInventories.length > 0">
+          <div class="col col-md-3">
+            <carousel>
+              <slide ng-repeat="slide in car.slides" active="slide.active">
+                <img ng-src="{{slide.image}}" onerror="this.src='images/404_image.svg';" style="margin:auto;"/>
+              </slide>
+            </carousel>
+          </div>
+          <div class="col col-md-7">
+            <div class="col col-md-12"><h3>{{car.name}}</h4><br/></div>
+            <div class="col col-md-6">
+              <div class="row">
+                <div class="col col-md-6"><b>Width (mm)</b></div>
+                <div class="col col-md-6">{{car.width}}</div>
+              </div>
+              <div class="row">
+                <div class="col col-md-6"><b>Height (mm)</b></div>
+                <div class="col col-md-6">{{car.height}}</div>
+              </div>
+              <div class="row">
+                <div class="col col-md-6"><b>Length (mm)</b></div>
+                <div class="col col-md-6">{{car.length}}</div>
+              </div>
+              <div class="row">
+                <div class="col col-md-6"><b>Driver on right side?</b></div>
+                <div class="col col-md-6">{{car.rightSideDriver ? "Yes" : "No"}}</div>
+              </div>
+              <div class="row">
+                <div class="col col-md-6"><b>Year of production</b></div>
+                <div class="col col-md-6">{{car.yearOfProduction}}</div>
+              </div>
+            </div>
+            <div class="col col-md-6">
+              <div class="row">
+                <div class="col col-md-6"><b>Number of seat</b></div>
+                <div class="col col-md-6">{{car.numOfSeat}}</div>
+              </div>
+              <div class="row">
+                <div class="col col-md-6"><b>Number of door</b></div>
+                <div class="col col-md-6">{{car.numOfDoor}}</div>
+              </div>
+              <div class="row">
+                <div class="col col-md-6"><b>Transmission type</b></div>
+                <div class="col col-md-6">{{car.transmission}}</div>
+              </div>
+              <div class="row">
+                <div class="col col-md-6"><b>Fuel type</b></div>
+                <div class="col col-md-6">{{car.fuelType.name}}</div>
+              </div>
+              <div class="row">
+                <div class="col col-md-6"><b>Maximum speed (km/h)</b></div>
+                <div class="col col-md-6">{{car.maxSpeed}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="col col-md-2">
+            <h3><span class="label label-success">{{selectedBranch.currencySymbol}} {{car.totalPrice}}</span></h3>
+            <br/>
+            <a ng-click="addReservation(car)" class="btn btn-primary btn-sm">
+              <span class="glyphicon glyphicon-plus"/>
+              Add
+            </a>
+          </div>
+          <div class="col col-md-12">
+            <hr/>
+          </div>
+        </div>
+
+        <div ng-if="babySeatInventories.length == 0 && filterType.value == 'BABY SEAT'">
+          <b>No option is currently available</b>
+          <hr/>
+        </div>
+        <div ng-repeat="inventory in babySeatInventories" ng-if="babySeatInventories.length > 0  && filterType.value == 'BABY SEAT'">
+          <div class="row">
+            <div class="col col-md-4">
+              <carousel>
+                <slide ng-repeat="slide in inventory.slides" active="slide.active">
+                  <img ng-src="{{slide.image}}" onerror="this.src='../images/404_image.svg';" style="margin:auto;"/>
+                </slide>
+              </carousel>
+            </div>
+            <div class="col col-md-6">
+              <h4>{{inventory.name}}</h4>
+              <b>Minimum weight (kg): </b>
+              {{inventory.minWeight}}<br/>
+              <b>Maximum weight (kg): </b>
+              {{inventory.maxWeight}}<br/>
+            </div>
+            <div class="col col-md-2">
+              <h3><span class="label label-success">{{selectedBranch.currencySymbol}} {{inventory.totalPrice}}</span></h3>
+              <br/>
+              <button ng-click="addReservation(inventory)" class="btn btn-primary btn-sm"">
+                <span class="glyphicon glyphicon-plus"/>
+                Add
+              </button>
+            </div>
+            <div class="col col-md-12">
+              <hr/>
+            </div>
+          </div>
+        </div>
+
+        <div ng-if="gpsInventories.length == 0 && filterType.value == 'GPS'">
+          <b>No option is currently available</b>
+          <hr/>
+        </div>
+        <div ng-repeat="inventory in gpsInventories" ng-if="gpsInventories.length > 0  && filterType.value == 'GPS'">
+          <div class="row">
+            <div class="col col-md-4">
+                <carousel>
+                <slide ng-repeat="slide in inventory.slides" active="slide.active">
+                  <img ng-src="{{slide.image}}" onerror="this.src='../images/404_image.svg';" style="margin:auto;"/>
+                </slide>
+              </carousel>
+            </div>
+            <div class="col col-md-6">
+              <h4>{{inventory.name}}</h4>
+
+              <b>Number of way points: </b>
+              {{inventory.numOfWayPoints}}<br/>
+
+              <b>Download capability: </b>
+              {{inventory.hasDownloadCapability ? "Yes" : "No"}}<br/>
+
+              <b>Download Colour display: </b>
+              {{inventory.hasColourDisplay ? "Yes" : "No"}}<br/>
+
+              <b>WAAS enabled: </b>
+              {{inventory.waasEnabled ? "Yes" : "No"}}<br/>
+
+              <b>Text to speech: </b>
+              {{inventory.hasTextToSpeech ? "Yes" : "No"}}<br/>
+
+              <b>Built in base map: </b>
+              {{inventory.hasBuiltInBaseMap ? "Yes" : "No"}}<br/>
+
+              <b>Voice prompts: </b>
+              {{inventory.hasVoicePrompts ? "Yes" : "No"}}<br/>
+
+              <b>Screen size (mm): </b>
+              {{inventory.screenSize ? "Yes" : "No"}}<br/>
+
+            </div>
+            <div class="col col-md-2">
+              <h3><span class="label label-success">{{selectedBranch.currencySymbol}} {{inventory.totalPrice}}</span></h3>
+              <br/>
+              <button ng-click="addReservation(inventory)" class="btn btn-primary btn-sm"">
+                <span class="glyphicon glyphicon-plus"/>
+                Add
+              </button>
+            </div>
+            <div class="col col-md-12">
+              <hr/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

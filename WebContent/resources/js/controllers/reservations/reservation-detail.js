@@ -1,10 +1,32 @@
-var ReservationDetailController = function($scope, $state, $stateParams, $filter, $timeout, Reservations, ReservationReschedules, Branches, TimezoneConverter, ngTableParams, ngProgress, Inventories) {
+var ReservationDetailController = function($scope, $state, $stateParams, $filter, $timeout, Reservations, ReservationReschedules, Branches, TimezoneConverter, ngTableParams, ngProgress, Inventories, Images) {
 	console.log($stateParams.branchId);
 	console.log($stateParams.groupId);
 	$scope.reservations = [];
 	$scope.inEditScheduleMode = false;
+	$scope.filterType = ['CAR', 'BABY SEAT', 'GPS'];
+
 
 	$scope.isAdmin = isAdmin;
+	$scope.filterText = {
+			value: "",
+			minPrice: "",
+			maxPrice: "",
+			minSeat: "",
+			maxSeat: ""};
+
+	$scope.minComparator = function (actual, expected) {
+		if (expected) {
+			return actual >= expected;
+		}
+		return true;
+    };
+
+    $scope.maxComparator = function (actual, expected) {
+    	if (expected) {
+    		return actual <= expected;
+    	}
+    	return true;
+    };
 
 	$scope.refreshReservationDetail = function() {
 		$scope.startProgress();
@@ -263,6 +285,133 @@ var ReservationDetailController = function($scope, $state, $stateParams, $filter
 				$scope.$parent.errors = d.data;
 			});
 		}
+	};
+
+	$scope.displayAddReservation = function(toDisplay) {
+		if (toDisplay) {
+			$('.inventory-modal').modal('show');
+
+			// CAR
+			Inventories.query({entity: 'car', branchId: $stateParams.branchId,
+				startTime: TimezoneConverter.convertToTargetTimeZoneTime($scope.reservations[0].startTime, $scope.selectedBranch.timezone),
+				endTime: TimezoneConverter.convertToTargetTimeZoneTime($scope.reservations[0].endTime, $scope.selectedBranch.timezone)},
+				function(d, h){
+					$scope.clearNotification();
+
+					$scope.carInventories = d;
+					_.each($scope.carInventories, function(d) { d.type = {id: 'car'}});
+					_.each($scope.carInventories, function(d) {
+						d.fuelType = _.find($scope.inventoryFuelTypes,
+								function(d1){
+									return d1.id == d.fuelType;
+								});
+						d.totalPrice = d.price * (($scope.reservations[0].endTime.getTime() - $scope.reservations[0].startTime.getTime() + 1) / (60 * 60 * 1000));
+					});
+					_.each($scope.carInventories, function(d) {
+						d.slides = [];
+
+						if (d.primaryImageId != -1) {
+							d.slides.push({
+								image: baseUrl + basePath + "/images/" + d.id + "/" + [d.primaryImageId]
+							});
+						}
+
+						Images.query({inventoryId: d.id}, function(images, h) {
+							_.each(images, function(curImage)  {
+								if (curImage != d.primaryImageId.toString()) {
+									d.slides.push({
+										image: baseUrl + basePath + "/images/" + d.id + "/" + curImage
+									});
+								}
+							});
+						});
+					});
+				},
+				function(d, h) {}
+			);
+
+			//BABY SEAT
+			Inventories.query({entity: 'baby_seat', branchId: $stateParams.branchId, startTime: $scope.reservations[0].startTime.getTime(),
+				endTime: $scope.reservations[0].endTime.getTime()},
+				function(d, h){
+					$scope.babySeatInventories = d;
+					_.each($scope.babySeatInventories, function(d) {
+						d.type = {id: 'baby_seat'};
+						d.totalPrice = d.price * (($scope.reservations[0].endTime.getTime() - $scope.reservations[0].startTime.getTime() + 1) / (60 * 60 * 1000));
+					});
+					_.each($scope.babySeatInventories, function(d) {
+						d.slides = [];
+
+						if (d.primaryImageId != -1) {
+							d.slides.push({
+								image: baseUrl + basePath + "/images/" + d.id + "/" + [d.primaryImageId]
+							});
+						}
+
+						Images.query({inventoryId: d.id}, function(images, h) {
+							_.each(images, function(curImage)  {
+								if (curImage != d.primaryImageId.toString()) {
+									d.slides.push({
+										image: baseUrl + basePath + "/images/" + d.id + "/" + curImage
+									});
+								}
+							});
+						});
+					});
+					$scope.endProgress();
+				},
+				function(d, h) {
+					$scope.endProgress();
+				}
+			);
+
+			// GPS
+			Inventories.query({entity: 'gps', branchId: $stateParams.branchId, startTime: $scope.reservations[0].startTime.getTime(),
+				endTime: $scope.reservations[0].endTime.getTime()},
+				function(d, h){
+					$scope.gpsInventories = d;
+					_.each($scope.gpsInventories, function(d) {
+						d.type = {id: 'gps'};
+						d.totalPrice = d.price * (($scope.reservations[0].endTime.getTime() - $scope.reservations[0].startTime.getTime() + 1) / (60 * 60 * 1000));
+					});
+					_.each($scope.gpsInventories, function(d) {
+						d.slides = [];
+
+						if (d.primaryImageId != -1) {
+							d.slides.push({
+								image: baseUrl + basePath + "/images/" + d.id + "/" + [d.primaryImageId]
+							});
+						}
+
+						Images.query({inventoryId: d.id}, function(images, h) {
+							_.each(images, function(curImage)  {
+								if (curImage != d.primaryImageId.toString()) {
+									d.slides.push({
+										image: baseUrl + basePath + "/images/" + d.id + "/" + curImage
+									});
+								}
+							});
+						});
+					});
+					$scope.endProgress();
+				},
+				function(d, h) {
+					$scope.endProgress();
+				}
+			);
+		} else {
+			$('.inventory-modal').modal('hide');
+		}
+	};
+
+	$scope.addReservation = function(inventory) {
+		Reservations.update({branchId: $stateParams.branchId, groupId: $stateParams.groupId, operation: "addReservation_" + inventory.id}, function(d, h){
+			$scope.refreshReservationDetail();
+			$scope.displayAddReservation(false);
+		}, function(d, h) {
+			$scope.$parent.$errors = d.data;
+			$scope.displayAddReservation(false);
+		});
 	}
 
 	$scope.parentUrl = baseUrl + basePath;
@@ -272,4 +421,4 @@ var ReservationDetailController = function($scope, $state, $stateParams, $filter
 
 angular.module('adminReservationManagementApp').controller('ReservationDetailController',
 		['$scope', '$state', '$stateParams', '$filter',  '$timeout',
-		 'Reservations', 'ReservationReschedules', 'Branches', 'TimezoneConverter', 'ngTableParams', 'ngProgress', 'Inventories', ReservationDetailController]);
+		 'Reservations', 'ReservationReschedules', 'Branches', 'TimezoneConverter', 'ngTableParams', 'ngProgress', 'Inventories', 'Images', ReservationDetailController]);

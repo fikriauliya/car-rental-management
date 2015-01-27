@@ -177,7 +177,7 @@ reservationManagementApp.config(['$stateProvider', '$urlRouterProvider', functio
 
 var adminReservationManagementApp = angular.module('adminReservationManagementApp', ['customerServices', 'branchServices', 'timezoneServices',
                                                                            'inventoryServices', 'ui.bootstrap', 'ngTable', 'ui.calendar', 'ngProgress', 'ui.router',
-                                                                           'ui.bootstrap.datetimepicker', 'ngCookies', 'reservationServices']);
+                                                                           'ui.bootstrap.datetimepicker', 'ngCookies', 'reservationServices', 'imageServices']);
 adminReservationManagementApp.factory('myHttpInterceptor', ['$q', httpInterceptor]);
 
 adminReservationManagementApp.config(function($provide, $httpProvider, $locationProvider) {
